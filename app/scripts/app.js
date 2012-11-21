@@ -7,6 +7,14 @@ var imqsBsApp = angular.module('imqsBsApp', [])
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
+      .when('/items', {
+        templateUrl: 'views/main.html',
+        controller: 'ItemsCtrl',
+      })
+      .when('/journals', {
+        templateUrl: 'views/main.html',
+        controller: 'JournalsCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

@@ -1,0 +1,34 @@
+<h1>
+	Items
+</h1>
+<div class="span10">
+	<div class="well well-small span8">
+		<a href class="btn">New</a>
+	</div>
+</div>
+<!-- <div class="span5">kjhk</div> -->
+
+<div class="span4">
+	<table class="table">	
+		<tr>
+			<th>Name</th>
+		</tr>
+		<tr ng-repeat="i in items">
+			<td>{{i.name}}</td>
+			<td>
+				<a href class="btn btn-primary">Edit</a>
+				<a href class="btn btn-danger">Delete</a>
+			</td>
+<!-- 			<td class="btn-group">
+				<a class="btn dropdown-toggle" data-toggle="dropdown" href>Action</a>
+				<ul class="dropdown-menu">
+					<li><a href>Edit</a></li>
+					<li><a href class="btn-danger">Delete</a></li>
+				</ul>
+			</td> -->
+
+			<!-- <td><a href class="btn">Edit</a></td>
+			<td><a href class="btn btn-danger">Delete</a></td> -->
+		</tr>
+	</table>
+</div>
