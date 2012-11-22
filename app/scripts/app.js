@@ -1,6 +1,6 @@
 'use strict';
 
-var imqsBsApp = angular.module('imqsBsApp', [])
+var imqsBsApp = angular.module('imqsBsApp', ['$strap.directives'])
   .config(['$routeProvider', function($routeProvider) {
     $routeProvider
       .when('/', {

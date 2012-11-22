@@ -8,16 +8,20 @@
 </div>
 <!-- <div class="span5">kjhk</div> -->
 
-<div class="span4">
+<div class="span6">
 	<table class="table">	
 		<tr>
+			<th>Code</th>
 			<th>Name</th>
+			<th>Brand</th>
 		</tr>
 		<tr ng-repeat="i in items">
+			<td>{{i.code}}</td>
 			<td>{{i.name}}</td>
+			<td>{{i.brand}}</td>
 			<td>
-				<a href class="btn btn-primary">Edit</a>
-				<a href class="btn btn-danger">Delete</a>
+				<button href class="btn btn-primary" bs-modal="'views/item_modal.html'">Edit</button>
+				<button href class="btn btn-danger" bs-modal="'views/del_modal.html'">Delete</button>
 			</td>
 <!-- 			<td class="btn-group">
 				<a class="btn dropdown-toggle" data-toggle="dropdown" href>Action</a>
