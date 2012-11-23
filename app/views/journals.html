@@ -1,1 +1,27 @@
-<p>This is the journals view.</p>
+<div class="well well-small span8">
+	<button class="btn">New</button>
+</div>
+
+<div class="span8">
+	<table class="table">
+		<tr>
+			<th>Number</th>
+			<th>Date</th>
+			<th>Type</th>
+			<th>Posted</th>
+		</tr>
+		<tr ng-repeat="j in journals">
+			<td>{{j.number}}</td>
+			<td>{{j.date}}</td>
+			<td>{{j.j_type}}</td>
+			<td><span class="label label-success">{{j.posted}}</span></td>
+			<td>
+				<button class="btn btn-primary">Edit</button>
+				<button class="btn btn-danger">Delete</button>
+			</td>
+			<td>
+				<button class="btn btn-warning">Post</button>
+			</td>
+		</tr>
+	</table>
+</div>
