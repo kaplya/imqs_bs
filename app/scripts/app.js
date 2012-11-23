@@ -15,6 +15,10 @@ var imqsBsApp = angular.module('imqsBsApp', ['$strap.directives'])
         templateUrl: 'views/main.html',
         controller: 'JournalsCtrl'
       })
+      .when('/locations', {
+        templateUrl: 'views/main.html',
+        controller: 'LocationsCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
