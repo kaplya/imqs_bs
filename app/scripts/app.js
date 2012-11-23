@@ -1,6 +1,6 @@
 'use strict';
 
-var imqsBsApp = angular.module('imqsBsApp', ['$strap.directives'])
+var imqsBsApp = angular.module('imqsBsApp', ['$strap'])
   .config(['$routeProvider', function($routeProvider) {
     $routeProvider
       .when('/', {
@@ -18,6 +18,10 @@ var imqsBsApp = angular.module('imqsBsApp', ['$strap.directives'])
       .when('/locations', {
         templateUrl: 'views/main.html',
         controller: 'LocationsCtrl'
+      })
+      .when('/report', {
+        templateUrl: 'views/main.html',
+        controller: 'ReportCtrl'
       })
       .otherwise({
         redirectTo: '/'
