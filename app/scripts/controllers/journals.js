@@ -7,7 +7,7 @@ imqsBsApp.controller('JournalsCtrl', function($scope) {
   
   $scope.journals = [
   	{ number: "0001", date: "01.11.2012", j_type: "Supply", posted: "true" },
-  	{ number: "0002", date: "02.11.2012", j_type: "Movement", posted: "false" },
+  	{ number: "0002", date: "02.11.2012", j_type: "Movement", posted: "false" }
   ]
 
 });
