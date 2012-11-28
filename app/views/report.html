@@ -1,1 +1,15 @@
-<p>This is the report view.</p>
+<h1>Report</h1>
+<table class="table">
+	<tr>
+		<td>Code</td>
+		<td>Name</td>
+		<td>Location</td>
+		<td>Quantity</td>
+	</tr>
+	<tr ng-repeat="l in lines">
+		<td>{{l.code}}</td>
+		<td>{{l.name}}</td>
+		<td>{{l.location}}</td>
+		<td>{{l.qty}}</td>
+	</tr>
+</table>

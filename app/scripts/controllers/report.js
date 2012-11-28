@@ -9,4 +9,10 @@ imqsBsApp.controller('ReportCtrl', function($scope) {
 	{ city: "Tokyo" },
 	{ city: "Paris" }
   ];
+
+  $scope.lines = [
+  	{code: "0001", name: "Juice", location: "Tokyo", qty: "10"},
+  	{code: "0002", name: "Beer", location: "Moscow", qty: "15"},
+
+  ];
 });
