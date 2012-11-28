@@ -5,7 +5,24 @@
 	<button class="btn">New</button>
 </div>
 
-<div class="span8">
+
+<div class="span8 well well-small" ng-repeat="j in journals">
+	<h4>
+		<span class="span1">{{j.number}}</span>
+		<span class="span2">{{j.date}}</span>
+		<span class="span3">{{j.j_type}}</span>
+		<span class="span3">
+			<button class="btn btn-primary">Edit</button>
+			<button class="btn btn-danger">Delete</button>
+		</span>
+		<button class="btn btn-warning">Post</button>
+		<div>
+			<button type="button" class="btn btn-link" ng-model="load" data-loading-text="Loading..." bs-button>Show lines</button>
+		</div>
+	</h4>
+</div>
+
+<!-- <div class="span8">
 	<table class="table">
 		<tr>
 			<th>Number</th>
@@ -28,3 +45,4 @@
 		</tr>
 	</table>
 </div>
+ -->
