@@ -10,4 +10,10 @@ imqsBsApp.controller('JournalsCtrl', function($scope) {
   	{ number: "0002", date: "02.11.2012", j_type: "Movement", posted: "false" }
   ]
 
+  $scope.journals[0].lines = [
+  	{date: "29.11.2012", item_code: "01", item_name: "Juice", qty: "10"},
+  	{date: "29.11.2012", item_code: "02", item_name: "Potato", qty: "7"},
+  	{date: "29.11.2012", item_code: "03", item_name: "Sugar", qty: "5"}
+  ];
+
 });
