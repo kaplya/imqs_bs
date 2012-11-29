@@ -13,7 +13,7 @@ var imqsBsApp = angular.module('imqsBsApp', ['$strap'])
       })
       .when('/journals', {
         templateUrl: 'views/main.html',
-        controller: 'JournalsCtrl'
+        controller: 'JournalsListCtrl'
       })
       .when('/locations', {
         templateUrl: 'views/main.html',

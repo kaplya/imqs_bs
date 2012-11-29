@@ -1,6 +1,7 @@
 'use strict';
 
-imqsBsApp.controller('JournalsCtrl', function($scope) {
+imqsBsApp
+.controller('JournalsListCtrl', ["$scope", function($scope) {
   $scope.templates = {};
   $scope.templates.sb = "views/journals_sb.html";
   $scope.templates.body = "views/journals.html";
@@ -16,4 +17,7 @@ imqsBsApp.controller('JournalsCtrl', function($scope) {
   	{date: "29.11.2012", item_code: "03", item_name: "Sugar", qty: "5"}
   ];
 
-});
+}])
+.controller('JournalFormCtrl', ["$scope", function($scope) {
+  $scope.show_lines = false;
+}]);
