@@ -1,5 +1,5 @@
 'use strict';
 
-imqsBsApp.controller('MainCtrl', function($scope) {
+imqsBsApp.controller('MainCtrl', ["$scope", function($scope) {
 
-});
+}]);

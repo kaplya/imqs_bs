@@ -1,6 +1,6 @@
 'use strict';
 
-imqsBsApp.controller('ItemsCtrl', function($scope) {
+imqsBsApp.controller('ItemsCtrl', ["$scope", function($scope) {
   $scope.templates = {};
   $scope.templates.body = "views/items.html";
 
@@ -10,4 +10,4 @@ imqsBsApp.controller('ItemsCtrl', function($scope) {
 	{name: "Tea"}
   ];
 
-});
+}]);

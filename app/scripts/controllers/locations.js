@@ -1,6 +1,6 @@
 'use strict';
 
-imqsBsApp.controller('LocationsCtrl', function($scope) {
+imqsBsApp.controller('LocationsCtrl', ["$scope", function($scope) {
   $scope.templates = {};
   $scope.templates.body = "views/locations.html";
   // $scope.templates.sb = "'views/locations_sb.html'";
@@ -8,4 +8,4 @@ imqsBsApp.controller('LocationsCtrl', function($scope) {
   	{ name: "West Store", city: "Tokyo"},
   	{ name: "Europe Store", city: "Paris"}
   ];
-});
+}]);
