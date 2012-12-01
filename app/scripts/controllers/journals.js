@@ -18,6 +18,16 @@ imqsBsApp
   ];
 
 }])
-.controller('JournalFormCtrl', ["$scope", function($scope) {
-  $scope.show_lines = false;
+.controller('JournalFormCtrl', ["$scope", "$timeout", function($scope, $timeout) {
+  $scope.linesShown = false;
+  $scope.showLines = function () {
+    if (!$scope.linesShown) {
+      $scope.linesShown = undefined;
+      $timeout(function () {
+        $scope.linesShown = true;      
+      }, 1000);
+    } else {
+      $scope.linesShown = false;
+    }
+  };
 }]);
