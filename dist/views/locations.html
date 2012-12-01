@@ -1,0 +1,27 @@
+
+<h1>Locations</h1>
+<div class="span12">
+	<div class="btn-broup well well-small span8">
+		<button class="btn">New</button>
+	</div>
+</div>
+
+<div class="span8">
+
+	<table class="table">
+		<tr>
+			<th>Name</th>
+			<th>City</th>
+		</tr>
+		<tr ng-repeat="l in locations">
+			<td>{{l.name}}</td>
+			<td>{{l.city}}</td>
+			<td>
+				<button class="btn btn-primary" bs-modal="'views/location_modal.html'">Edit</button>
+				<button class="btn btn-danger" bs-modal="'views/del_modal.html'">Delete</button>
+			</td>
+		</tr>
+	</table>
+
+</div>
+
