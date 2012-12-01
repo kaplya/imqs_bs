@@ -1,3 +1,4 @@
-/temp
-/.sass-cache
+*sublime*
+.sass-cache/
+temp/
 
