@@ -26,4 +26,11 @@ var imqsBsApp = angular.module('imqsBsApp', ['$strap'])
       .otherwise({
         redirectTo: '/'
       });
+  }])
+  .controller('NavCtrl', ["$rootScope", "$location", "$scope", function($rootScope, $location, $scope) {
+    $rootScope.$on("$routeChangeSuccess", function (event, current) {
+      var location = $location.path().substring(1);
+      $scope.nav = {};
+      $scope.nav[(location || 'home')] = "active";
+    });
   }]);
