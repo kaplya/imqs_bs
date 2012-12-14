@@ -1,6 +1,6 @@
 /**
  * AngularStrap - Twitter Bootstrap directives for AngularJS
- * @version v0.5.1 - 2012-11-30
+ * @version v0.5.4 - 2012-12-13
  * @link http://angular-strap.github.com
  * @author Olivier Louvignes
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -229,6 +229,122 @@ angular.module('$strap.directives')
 	};
 }]);
 
+
+angular.module('$strap.directives')
+
+.directive('bsTooltip', ['$parse', '$compile', '$http', '$timeout',  function($parse, $compile, $http, $timeout) {
+	'use strict';
+
+	return {
+		restrict: 'A',
+		scope: true,
+		link: function postLink(scope, element, attr, ctrl) {
+
+			var getter = $parse(attr.bsTooltip),
+				setter = getter.assign;
+
+			if(!!attr.unique) {
+				element.on('show', function(ev) {
+					// Hide any active popover except self
+					$(".tooltip.in").each(function() {
+						var $this = $(this),
+							tooltip = $this.data('tooltip');
+						if(tooltip && !tooltip.$element.is(element)) {
+							$this.tooltip('hide');
+						}
+					});
+				});
+			}
+
+			// Initialize tooltip
+			element.tooltip({
+				title: getter(scope),
+				html: true
+			});
+
+			// Bootstrap override to provide events & tip() reference & refresh positions
+			var tooltip = element.data('tooltip');
+			tooltip.show = function() {
+				var e = $.Event('show');
+				this.$element.trigger(e);
+				if (e.isDefaultPrevented()) {
+					return;
+				}
+				var r = $.fn.tooltip.Constructor.prototype.show.apply(this, arguments);
+				// Bind popover to the tip()
+				this.$tip.data('tooltip', this);
+				return r;
+			};
+			tooltip.hide = function() {
+				var e = $.Event('hide');
+				this.$element.trigger(e);
+				if (e.isDefaultPrevented()) {
+					return;
+				}
+				return $.fn.tooltip.Constructor.prototype.hide.apply(this, arguments);
+			};
+
+		}
+	};
+
+}]);
+
+
+angular.module('$strap.directives')
+
+.directive('bsDropdown', ['$parse', '$compile', function($parse, $compile) {
+  'use strict';
+
+  var slice = Array.prototype.slice;
+
+  var template = '' +
+  '<ul class="dropdown-menu" role="menu" aria-labelledby="drop1">' +
+    '<li ng-repeat="item in items" ng-class="{divider: !!item.divider, \'dropdown-submenu\': !!item.submenu && item.submenu.length}">' +
+      '<a ng-hide="!!item.divider" tabindex="-1" ng-href="{{item.href}}" ng-click="{{item.click}}">{{item.text}}</a>' +
+    '</li>' +
+  '</ul>';
+
+  var linkSubmenu = function(items, parent, scope) {
+    var subitems, submenu, subscope;
+    for (var i = 0, l = items.length; i < l; i++) {
+      if(subitems = items[i].submenu) {
+        subscope = scope.$new();
+        subscope.items = subitems;
+        submenu = $compile(template)(subscope);
+        submenu = submenu.appendTo(parent.children('li:nth-child(' + (i+1) + ')'));
+        asyncLinkSubmenu(subitems, submenu, subscope);
+      }
+    }
+  };
+
+  var asyncLinkSubmenu = function() {
+    var args = slice.call(arguments);
+    setTimeout(function() {
+      linkSubmenu.apply(null, args);
+    });
+  };
+
+  return {
+    restrict: 'EA',
+    scope: true,
+    link: function postLink(scope, element, attr) {
+
+      var getter = $parse(attr.bsDropdown);
+
+      scope.items = getter(scope);
+      var dropdown = $compile(template)(scope);
+      asyncLinkSubmenu(scope.items, dropdown, scope);
+      dropdown.insertAfter(element);
+
+      element
+        .addClass('dropdown-toggle')
+        .attr('data-toggle', "dropdown");
+
+    }
+  };
+
+}]);
+
 // https://github.com/eternicode/bootstrap-datepicker
 
 angular.module('$strap.directives')
@@ -350,13 +466,9 @@ angular.module('$strap.directives')
 					element.popover('show');
 				};
 
-				// Visibility handling
-				element.on('click', function(ev) {
-					var popover = element.data('popover'),
-						visibility = !popover.tip().hasClass('in');
-
-					// Hide any active popover except self
-					if(!!attr.unique && visibility) {
+				if(!!attr.unique) {
+					element.on('show', function(ev) {
+						// Hide any active popover except self
 						$(".popover.in").each(function() {
 							var $this = $(this),
 								popover = $this.data('popover');
@@ -364,36 +476,72 @@ angular.module('$strap.directives')
 								$this.popover('hide');
 							}
 						});
-					}
+					});
+				}
 
-					// Toggle the popover
-					element.popover(visibility ? 'show' : 'hide');
-				});
-
-				// Create popover
-				//$timeout(function () { // ui-lag?
+				// Initialize popover
 				element.popover({
 					content: function() {
-						$timeout(function(){
-							$compile(element.data('popover').tip())(scope);
+						$timeout(function() {
+
+							var popover = element.data('popover'),
+								$tip = popover.tip();
+
+							$compile($tip)(scope);
+
+							setTimeout(function() {
+								popover.refresh();
+							});
+
 						});
+
 						return data;
 					},
-					trigger: 'manual',
 					html: true
 				});
 
-				// Bootstrap override to provide events & tip() reference
+				// Bootstrap override to provide events & tip() reference & refresh positions
 				var popover = element.data('popover');
+				popover.refresh = function() {
+					var $tip = this.tip(), inside, pos, actualWidth, actualHeight, placement, tp;
+
+					placement = typeof this.options.placement === 'function' ?
+						this.options.placement.call(this, $tip[0], this.$element[0]) :
+						this.options.placement;
+
+					inside = /in/.test(placement);
+
+					pos = this.getPosition(inside);
+
+					actualWidth = $tip[0].offsetWidth;
+					actualHeight = $tip[0].offsetHeight;
+
+					switch (inside ? placement.split(' ')[1] : placement) {
+						case 'bottom':
+						tp = {top: pos.top + pos.height + 10, left: pos.left + pos.width / 2 - actualWidth / 2};
+						break;
+						case 'top':
+						tp = {top: pos.top - actualHeight - 10, left: pos.left + pos.width / 2 - actualWidth / 2};
+						break;
+						case 'left':
+						tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth - 10};
+						break;
+						case 'right':
+						tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width + 10};
+						break;
+					}
+
+					$tip.offset(tp);
+				};
 				popover.show = function() {
 					var e = $.Event('show');
 					this.$element.trigger(e);
 					if (e.isDefaultPrevented()) {
 						return;
 					}
-					var r = $.fn.tooltip.Constructor.prototype.show.apply(this, arguments);
+					var r = $.fn.popover.Constructor.prototype.show.apply(this, arguments);
 					// Bind popover to the tip()
-					this.tip().data('popover', this);
+					this.$tip.data('popover', this);
 					return r;
 				};
 				popover.hide = function() {
@@ -402,9 +550,8 @@ angular.module('$strap.directives')
 					if (e.isDefaultPrevented()) {
 						return;
 					}
-					return $.fn.tooltip.Constructor.prototype.hide.apply(this, arguments);
+					return $.fn.popover.Constructor.prototype.hide.apply(this, arguments);
 				};
-				//}, 0, false);
 
 			});
 		}
