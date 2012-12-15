@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: LocationsCtrl', function() {
+xdescribe('Controller: LocationsCtrl', function() {
 
   // load the controller's module
   beforeEach(module('imqsBsApp'));

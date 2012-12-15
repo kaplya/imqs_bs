@@ -1,13 +1,14 @@
 'use strict';
 
-imqsBsApp.controller('ItemsCtrl', ["$scope", function($scope) {
+imqsBsApp
+  .factory('Item', ['$resource', function ($resource) {
+	return $resource('/items/:id/:action');  	
+  }])
+.controller('ItemsCtrl', ["$scope", 'Item', function($scope, Item) {
   $scope.templates = {};
   $scope.templates.body = "views/items.html";
-
-  $scope.items = [
-	{name: "Beer", code: "02700"},
-	{name: "Juice", brand: "J7"},
-	{name: "Tea"}
-  ];
+  Item.query(function(data) {
+  	$scope.items = data;
+  });
 
 }]);

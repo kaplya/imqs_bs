@@ -6,17 +6,33 @@ describe('Controller: ItemsCtrl', function() {
   beforeEach(module('imqsBsApp'));
 
   var ItemsCtrl,
-    scope;
+    scope,
+    $httpBackend;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function($controller) {
-    scope = {};
-    ItemsCtrl = $controller('ItemsCtrl', {
-      $scope: scope
-    });
+  beforeEach(inject(function(_$httpBackend_, $rootScope, $controller) {
+    
+    var items = [
+      {name: "Beer", code: "02700"},
+      {name: "Juice", brand: "J7"},
+      {name: "Tea"}
+    ];
+    $httpBackend = _$httpBackend_;
+    $httpBackend.expect('GET', '/items').respond(items);
+
+    scope = $rootScope.$new();
+    ItemsCtrl = $controller('ItemsCtrl', { $scope: scope });
+
   }));
 
-  it('should attach a list of awesomeThings to the scope', function() {
-    expect(scope.awesomeThings.length).toBe(3);
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
+  });
+
+  it('should attach a list of items to the scope', function() {
+    expect(scope.items).toBeUndefined();
+    $httpBackend.flush();
+    expect(scope.items.length).toBe(3);
   });
 });

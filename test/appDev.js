@@ -1,0 +1,1 @@
+var imqsBsAppDev = angular.module('imqsBsAppDev', ['imqsBsApp', 'ngMockE2E']);

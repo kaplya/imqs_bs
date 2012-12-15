@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: ReportCtrl', function() {
+xdescribe('Controller: ReportCtrl', function() {
 
   // load the controller's module
   beforeEach(module('imqsBsApp'));

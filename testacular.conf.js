@@ -10,10 +10,13 @@ files = [
   JASMINE,
   JASMINE_ADAPTER,
   'app/scripts/vendor/angular.js',
+  'app/scripts/vendor/angular-resource.js',
+  'app/scripts/vendor/angular-strap.js',
   'test/vendor/angular-mocks.js',
   'app/scripts/*.js',
-  'app/scripts/**/*.js',
-  'test/mock/**/*.js',
+  'app/scripts/controllers/*.js',
+  // 'test/appDev.js',
+  // 'test/mock/items_mockup.js',
   'test/spec/**/*.js'
 ];
 
@@ -47,7 +50,7 @@ logLevel = LOG_INFO;
 
 
 // enable / disable watching file and executing tests whenever any file changes
-autoWatch = false;
+autoWatch = true;
 
 
 // Start these browsers, currently available:
@@ -57,7 +60,7 @@ autoWatch = false;
 // - Opera
 // - Safari
 // - PhantomJS
-browsers = ['PhantomJS'];
+browsers = ['Chrome'];
 
 
 // Continuous Integration mode

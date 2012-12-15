@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: JournalsCtrl', function() {
+xdescribe('Controller: JournalsCtrl', function() {
 
   // load the controller's module
   beforeEach(module('imqsBsApp'));
