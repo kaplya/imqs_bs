@@ -175,6 +175,15 @@ module.exports = function( grunt ) {
     });
   });
 
+  // Alias the `test` task to run `testacular` instead
+  grunt.registerTask('test-e2e', 'run the testacular e2e test', function () {
+    var done = this.async();
+    require('child_process').exec('testacular start testacular-e2e.conf.js', function (err, stdout) {
+      grunt.log.write(stdout);
+      done(err);
+    });
+  });
+
   grunt.registerTask('tk_ns', 'take angular strap lib', function () {
     var done = this.async();
     require('child_process').exec('cp ../angular-strap/build/angular-strap.js app/scripts/vendor/', function (err, stdout) {
