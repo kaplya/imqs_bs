@@ -17,11 +17,12 @@ imqsBsApp
   });
 
   $scope.edit = function () {
-	this.modal.shown = true;
+    // this.modal.d = { name:"Tea" };
+    this.modal.shown = true;
   };
   
   $scope.new = function () {
-	this.modal.shown = true;
+    this.modal.shown = true;
   };
 
   $scope.delete = function () {

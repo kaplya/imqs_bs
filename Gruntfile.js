@@ -178,7 +178,7 @@ module.exports = function( grunt ) {
   // Alias the `test` task to run `testacular` instead
   grunt.registerTask('test-e2e', 'run the testacular e2e test', function () {
     var done = this.async();
-    require('child_process').exec('testacular start testacular-e2e.conf.js', function (err, stdout) {
+    require('child_process').exec('testacular start testacular-e2e.conf.js --single-run', function (err, stdout) {
       grunt.log.write(stdout);
       done(err);
     });
