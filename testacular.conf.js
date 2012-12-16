@@ -9,14 +9,15 @@ basePath = '';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
+  'app/scripts/vendor/jquery-1.8.3.min.js',
   'app/scripts/vendor/angular.js',
   'app/scripts/vendor/angular-resource.js',
+  'app/scripts/vendor/angular-mocks.js',
   'app/scripts/vendor/angular-strap.js',
-  'test/vendor/angular-mocks.js',
-  'app/scripts/*.js',
+  'test/vendor/*.js',
+  'app/scripts/app.js',
   'app/scripts/controllers/*.js',
-  // 'test/appDev.js',
-  // 'test/mock/items_mockup.js',
+  'app/scripts/directives/*.js',
   'test/spec/**/*.js'
 ];
 
