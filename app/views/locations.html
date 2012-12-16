@@ -2,7 +2,7 @@
 <h1>Locations</h1>
 <div class="span12">
 	<div class="btn-broup well well-small span8">
-		<button class="btn">New</button>
+		<button class="btn" ng-click="new()">New</button>
 	</div>
 </div>
 
@@ -17,11 +17,13 @@
 			<td>{{l.name}}</td>
 			<td>{{l.city}}</td>
 			<td>
-				<button class="btn btn-primary" bs-modal="'views/location_modal.html'">Edit</button>
-				<button class="btn btn-danger" bs-modal="'views/del_modal.html'">Delete</button>
+				<button class="btn btn-primary" ng-click="edit()">Edit</button>
+				<button class="btn btn-danger" ng-click="delete()">Delete</button>
 			</td>
 		</tr>
 	</table>
 
 </div>
 
+<div ng-include="'views/location_modal.html'"></div>
+<div ng-include="'views/del_modal.html'"></div>

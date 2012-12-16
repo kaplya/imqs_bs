@@ -35,4 +35,5 @@ describe('Controller: ItemsCtrl', function() {
     $httpBackend.flush();
     expect(scope.items.length).toBe(3);
   });
+
 });

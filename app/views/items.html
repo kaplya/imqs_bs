@@ -3,10 +3,9 @@
 </h1>
 <div class="span10">
 	<div class="well well-small span8">
-		<a href class="btn">New</a>
+		<a href class="btn" ng-click="new()">New</a>
 	</div>
 </div>
-<!-- <div class="span5">kjhk</div> -->
 
 <div class="span6">
 	<table class="table">	
@@ -20,19 +19,12 @@
 			<td>{{i.name}}</td>
 			<td>{{i.brand}}</td>
 			<td>
-				<button href class="btn btn-primary" bs-modal="'views/item_modal.html'">Edit</button>
-				<button href class="btn btn-danger" bs-modal="'views/del_modal.html'">Delete</button>
+				<button href class="btn btn-danger" ng-click="delete()">Delete</button>
+				<button href class="btn btn-primary" ng-click="edit()">Edit</button>
 			</td>
-<!-- 			<td class="btn-group">
-				<a class="btn dropdown-toggle" data-toggle="dropdown" href>Action</a>
-				<ul class="dropdown-menu">
-					<li><a href>Edit</a></li>
-					<li><a href class="btn-danger">Delete</a></li>
-				</ul>
-			</td> -->
-
-			<!-- <td><a href class="btn">Edit</a></td>
-			<td><a href class="btn btn-danger">Delete</a></td> -->
 		</tr>
 	</table>
 </div>
+
+<div ng-include="'views/item_modal.html'"></div>
+<div ng-include="'views/del_modal.html'"></div>
