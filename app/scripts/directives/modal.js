@@ -1,4 +1,4 @@
-angular.module('ui', []).directive('modal', ['$parse',function($parse) {
+angular.module('ui').directive('modal', ['$parse',function($parse) {
   var backdropEl;
   var body = angular.element(document.getElementsByTagName('body')[0]);
   var defaultOpts = {

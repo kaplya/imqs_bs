@@ -34,3 +34,5 @@ var imqsBsApp = angular.module('imqsBsApp', ['$strap', 'ngResource', 'ui'])
       $scope.nav[(location || 'home')] = "active";
     });
   }]);
+
+  angular.module('ui', []);
