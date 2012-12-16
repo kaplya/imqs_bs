@@ -1,6 +1,6 @@
 'use strict';
 
-var imqsBsApp = angular.module('imqsBsApp', ['$strap', 'ngResource', 'ui'])
+var imqsBsApp = angular.module('imqsBsApp', ['ngResource', 'ui'])
   .config(['$routeProvider', function($routeProvider) {
     $routeProvider
       .when('/', {

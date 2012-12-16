@@ -13,7 +13,7 @@ files = [
   'app/scripts/vendor/angular.js',
   'app/scripts/vendor/angular-resource.js',
   'app/scripts/vendor/angular-mocks.js',
-  'app/scripts/vendor/angular-strap.js',
+  // 'app/scripts/vendor/angular-strap.js',
   'app/scripts/vendor/bootstrap-datepicker.js',
   'test/vendor/*.js',
   'app/scripts/app.js',
