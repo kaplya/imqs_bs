@@ -11,14 +11,24 @@ describe('items', function() {
   });
 
   it('should have three items', function () {
-  	expect(element('tr[ng-repeat]').count()).toEqual(3);
+  	expect(repeater('tr[ng-repeat="i in items"]').count()).toEqual(3);
   });
 
   it('should show filled edit form', function () {
 		var form = element("div[modal='modal.shown']");
 		expect(form.css("display")).toEqual("none");
-		element("button[ng-click='edit()']").click();
-  	expect(input('modal.d.name').val()).toEqual("Tea");
+		
+    var  r = repeater('tr[ng-repeat="i in items"]');
+    
+    using('tbody tr:nth-child(2)').element('button[ng-click="edit()"]').click();
+    expect(input('modal.d.name').val()).toEqual("Tea");
+
+    using('tbody tr:nth-child(3)').element('button[ng-click="edit()"]').click();
+    expect(input('modal.d.name').val()).toEqual("Juice");
+
+    using('tbody tr:nth-child(4)').element('button[ng-click="edit()"]').click();
+    expect(input('modal.d.name').val()).toEqual("Beer");
+    
   });
 
 });
