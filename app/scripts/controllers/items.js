@@ -17,7 +17,11 @@ imqsBsApp
   });
 
   $scope.edit = function () {
-    // this.modal.d = { name:"Tea" };
+    
+    Item.get( { id: this.i.id }, function (data) {
+      $scope.modal.d = data;
+    });
+
     this.modal.shown = true;
   };
   

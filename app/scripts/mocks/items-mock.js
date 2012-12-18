@@ -2,9 +2,9 @@
 
 imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
   var items = [
-    {name: "Beer", code: "02700"},
-    {name: "Juice", brand: "J7"},
-    {name: "Tea"}
+    {id: 1, name: "Beer", code: "02700"},
+    {id: 2, name: "Juice", brand: "J7"},
+    {id: 3, name: "Tea"}
   ];
   
   items.reverse();
@@ -12,6 +12,25 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
   var nextId = 3;
 
   $httpBackend.whenGET('/items').respond(items);
+
+  $httpBackend.whenGET(/items\/[1-9]+/).respond(function (method, url, data, headers) {
+    var r = angular.fromJson(data);
+    var id = /\/([0-9]+)/.exec(url)[1];
+
+    var i;
+    angular.forEach(items, function(v) {
+      if(v.id == id) {
+        i = v;
+        return false;
+      }
+    });
+    
+    if(i)
+      return [200, i];
+    else
+      return [402, 'not found'];
+
+  });
 
   $httpBackend.whenPUT(/items\/[1-9]+/).respond(function(method, url, data, headers) {
   	var r = angular.fromJson(data);
