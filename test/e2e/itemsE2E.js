@@ -97,11 +97,12 @@ describe('items', function() {
 
   it('should delete', function () {
     
-    using(ROW.replace('?', 2)).element(DEL_BTN).click();
+    using(ROW.replace('?', 3)).element(DEL_BTN).click();
     using(DEL_FORM).element(YES_BTN).click();
     expect(element(DEL_FORM).css("display")).toEqual("none");
     expect(repeater(ITEMS).count()).toEqual(2);
-    expect(repeater(ITEMS).row(0)).toEqual(["", "Juice", "J7"]);
+    expect(repeater(ITEMS).row(0)).toEqual(["", "Tea", ""]);
+    expect(repeater(ITEMS).row(1)).toEqual(["02700", "Beer", ""]);
 
   });
 

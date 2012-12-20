@@ -61,6 +61,7 @@ imqsBsApp
   };
 
   $scope.destroy = function () {
+    
     var index,
       id = $scope.modal.listData.id;
     Item.destroy({ id: id }, function () {
@@ -70,9 +71,9 @@ imqsBsApp
           return false;
         }
       });
+      $scope.items.splice(index,1);
+      $scope.modal.del = false;
     });
-    $scope.items.splice(index,1);
-    $scope.modal.del = false;
 
   };
 
