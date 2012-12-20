@@ -18,6 +18,7 @@ imqsBsApp
 
   $scope.edit = function () {
     
+    $scope.modal.listData = this.i;
     Item.get( { id: this.i.id }, function (data) {
       $scope.modal.d = data;
     });
@@ -31,6 +32,14 @@ imqsBsApp
 
   $scope.delete = function () {
   	this.modal.del = true;
+  };
+
+  $scope.createOrUpdate = function () {
+    
+    this.modal.shown = false;
+    Item.update({ id: this.modal.d.id }, this.modal.d, function (data) {
+      angular.copy(data, $scope.modal.listData);
+    });
   };
 
 }]);
