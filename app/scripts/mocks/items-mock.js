@@ -9,7 +9,7 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
   
   items.reverse();
 
-  var nextId = 3;
+  var nextId = 4;
 
   $httpBackend.whenGET('/items').respond(items);
 
@@ -24,7 +24,9 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
         return false;
       }
     });
-    
+
+    console.log(i);
+
     if(i)
       return [200, i];
     else
@@ -71,6 +73,7 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
     nextId++;
     
     items.unshift(r);
+    console.log(r);
     return [200, r];
 
   });

@@ -4,17 +4,17 @@
 		<h3>Item</h3>
 	</div>
 	<div class="modal-body">
-		<form>
+		<form ng-submit="createOrUpdate()">
 	<!-- 		<legend></legend> -->
 			
 			<label>Name</label>
 			<input type="text" placeholder="How do you call you item?" ng-model='modal.d.name'>
 
 			<label>Code</label>
-			<input type="text" placeholder="Unique code if it needs.">
+			<input type="text" placeholder="Unique code if it needs." ng-model="modal.d.code">
 
 			<label>Brand</label>
-			<input type="text" placeholder="Item's brand.">
+			<input type="text" placeholder="Item's brand." ng-model="modal.d.brand">
 
 			<samp class="help-block"></samp>
 			<input type="submit" class="btn btn-primary">
