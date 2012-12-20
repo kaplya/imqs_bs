@@ -6,7 +6,11 @@ describe('items', function() {
     EDIT_BTN = "button:contains('Edit')",
     SUBMIT_BTN = "input[type='submit']",
     FORM = "div[modal='modal.shown']",
-    ITEMS = 'tr[ng-repeat="i in items"]';
+    ITEMS = 'tr[ng-repeat="i in items"]',
+    DEL_FORM = 'div[modal="modal.del"]',
+    ROW = 'tbody tr:nth-child(?)',
+    DEL_BTN = 'button:contains("Delete")',
+    YES_BTN = 'button:contains("Yes")';
 
   beforeEach(function() {
     browser().navigateTo('/#/items');
@@ -87,7 +91,7 @@ describe('items', function() {
   
   });
 
-  it('should edit submited data', function () {
+  it('should edit submitted data', function () {
 
     element(NEW_BTN).click();
     using(FORM).input('modal.d.name').enter("For submit name");
@@ -95,6 +99,24 @@ describe('items', function() {
     using('tbody tr:nth-child(2)').element(EDIT_BTN).click();
     expect(using(FORM).input('modal.d.name').val()).toEqual("For submit name");
   
+  });
+
+  it('should show delete form', function () {
+
+    expect(element(DEL_FORM).css("display")).toEqual("none");
+    using(ROW.replace('?', 2)).element(DEL_BTN).click();
+    expect(element(DEL_FORM).css("display")).toEqual("block");
+
+  });
+
+  it('should delete', function () {
+    
+    using(ROW.replace('?', 2)).element(DEL_BTN).click();
+    using(DEL_FORM).element(YES_BTN).click();
+    expect(element(DEL_FORM).css("display")).toEqual("none");
+    expect(repeater(ITEMS).count()).toEqual(2);
+    expect(repeater(ITEMS).row(0)).toEqual(["", "Juice", "J7"]);
+
   });
 
 });

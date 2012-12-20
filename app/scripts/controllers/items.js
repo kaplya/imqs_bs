@@ -32,10 +32,6 @@ imqsBsApp
     this.modal.shown = true;
   };
 
-  $scope.delete = function () {
-  	this.modal.del = true;
-  };
-
   $scope.createOrUpdate = function () {
     
     var update = function () { 
@@ -56,6 +52,27 @@ imqsBsApp
 
     if ($scope.modal.d.id) update(); 
     else create();
+
+  };
+
+  $scope.delete = function () {
+    this.modal.del = true;
+    this.modal.listData = this.i;
+  };
+
+  $scope.destroy = function () {
+    var index,
+      id = $scope.modal.listData.id;
+    Item.destroy({ id: id }, function () {
+      angular.forEach($scope.items, function(v,i) {
+        if (v.id == id) {
+          index = i;
+          return false;
+        }
+      });
+    });
+    $scope.items.splice(index,1);
+    $scope.modal.del = false;
 
   };
 
