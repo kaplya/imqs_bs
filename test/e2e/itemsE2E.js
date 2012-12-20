@@ -21,22 +21,22 @@ describe('items', function() {
   });
 
   it('should have three items', function () {
-  	expect(repeater('tr[ng-repeat="i in items"]').count()).toEqual(3);
+  	expect(repeater(ITEMS).count()).toEqual(3);
   });
 
   it('should show filled edit form', function () {
 
     expect(element(FORM).css("display")).toEqual("none");
     
-    using('tbody tr:nth-child(2)').element(EDIT_BTN).click();
+    using(ROW.replace('?', 2)).element(EDIT_BTN).click();
     expect(element(FORM).css("display")).toEqual("block");
     expect(input('modal.d.name').val()).toEqual("Tea");
 
-    using('tbody tr:nth-child(3)').element(EDIT_BTN).click();
+    using(ROW.replace('?', 3)).element(EDIT_BTN).click();
     expect(element(FORM).css("display")).toEqual("block");
     expect(input('modal.d.name').val()).toEqual("Juice");
 
-    using('tbody tr:nth-child(4)').element(EDIT_BTN).click();
+    using(ROW.replace('?', 4)).element(EDIT_BTN).click();
 		expect(element(FORM).css("display")).toEqual("block");
     expect(input('modal.d.name').val()).toEqual("Beer");
     
@@ -82,7 +82,7 @@ describe('items', function() {
     element(NEW_BTN).click();
     using(FORM).input('modal.d.name').enter("For submit name");
     using(FORM).element(SUBMIT_BTN).click();
-    using('tbody tr:nth-child(2)').element(EDIT_BTN).click();
+    using(ROW.replace('?', 2)).element(EDIT_BTN).click();
     expect(using(FORM).input('modal.d.name').val()).toEqual("For submit name");
   
   });
