@@ -83,4 +83,13 @@ describe('items', function() {
     expect(repeater(ITEMS).row(0)).toEqual(["For submit code", "For submit name", "For submit brand"]);
   });
 
+  it('should edit submited data', function () {
+    element(NEW_BTN).click();
+    using(FORM).input('modal.d.name').enter("For submit name");
+    using(FORM).element(SUBMIT_BTN).click();
+    using('tbody tr:nth-child(2)').element(EDIT_BTN).click();
+    expect(using(FORM).input('modal.d.name').val()).toEqual("For submit name");
+
+  });
+
 });
