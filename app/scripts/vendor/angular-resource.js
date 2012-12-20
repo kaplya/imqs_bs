@@ -220,6 +220,7 @@ angular.module('ngResource', ['ng']).
       'query':  {method:'GET', isArray:true},
       'remove': {method:'DELETE'},
       'delete': {method:'DELETE'},
+      'create': {method:'POST'},
       'update': {method:'PUT'},
       'destroy':{method:'DELETE'}
     };

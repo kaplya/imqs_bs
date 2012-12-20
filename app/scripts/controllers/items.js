@@ -24,9 +24,11 @@ imqsBsApp
     });
 
     this.modal.shown = true;
+    
   };
   
   $scope.new = function () {
+    this.modal.d = {};
     this.modal.shown = true;
   };
 
@@ -36,10 +38,25 @@ imqsBsApp
 
   $scope.createOrUpdate = function () {
     
-    this.modal.shown = false;
-    Item.update({ id: this.modal.d.id }, this.modal.d, function (data) {
-      angular.copy(data, $scope.modal.listData);
-    });
+    var update = function () { 
+      Item.update({ id: $scope.modal.d.id }, $scope.modal.d, function (data) {
+        $scope.modal.shown = false;
+        angular.copy(data, $scope.modal.listData);
+      });
+    };
+
+    var create = function () { 
+      Item.create($scope.modal.d, function (data) { 
+        $scope.modal.shown = false;
+        $scope.items.unshift(data);
+      }, function (e) {
+        console.log(e);
+      });
+    };
+
+    if ($scope.modal.d.id) update(); 
+    else create();
+
   };
 
 }]);
