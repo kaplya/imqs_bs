@@ -44,29 +44,15 @@ describe('items', function() {
 
   it('should submit edited data', function () {
 
-    using('tbody tr:nth-child(2)').element(EDIT_BTN).click();
-    using(FORM).input('modal.d.code').enter("For submit code");
-    using(FORM).input('modal.d.name').enter("For submit name");
-    using(FORM).input('modal.d.brand').enter("For submit brand");
-    using(FORM).element(SUBMIT_BTN).click();
-    expect(element(FORM).css("display")).toEqual("none");
-    expect(repeater(ITEMS).row(0)).toEqual(["For submit code", "For submit name", "For submit brand"]);
-
-    using('tbody tr:nth-child(3)').element(EDIT_BTN).click();
-    using(FORM).input('modal.d.code').enter("For submit code");
-    using(FORM).input('modal.d.name').enter("For submit name");
-    using(FORM).input('modal.d.brand').enter("For submit brand");
-    using(FORM).element(SUBMIT_BTN).click();
-    expect(element(FORM).css("display")).toEqual("none");
-    expect(repeater(ITEMS).row(1)).toEqual(["For submit code", "For submit name", "For submit brand"]);
-
-    using('tbody tr:nth-child(4)').element(EDIT_BTN).click();
-    using(FORM).input('modal.d.code').enter("For submit code");
-    using(FORM).input('modal.d.name').enter("For submit name");
-    using(FORM).input('modal.d.brand').enter("For submit brand");
-    using(FORM).element(SUBMIT_BTN).click();
-    expect(element(FORM).css("display")).toEqual("none");
-    expect(repeater(ITEMS).row(2)).toEqual(["For submit code", "For submit name", "For submit brand"]);
+    for (var i=0; i<=2; i++) {
+      using(ROW.replace('?', i+2)).element(EDIT_BTN).click();
+      using(FORM).input('modal.d.code').enter("For submit code");
+      using(FORM).input('modal.d.name').enter("For submit name");
+      using(FORM).input('modal.d.brand').enter("For submit brand");
+      using(FORM).element(SUBMIT_BTN).click();
+      expect(element(FORM).css("display")).toEqual("none");
+      expect(repeater(ITEMS).row(i)).toEqual(["For submit code", "For submit name", "For submit brand"]);
+    }
 
   });
 
