@@ -4,21 +4,38 @@
 		<h3>Item</h3>
 	</div>
 	<div class="modal-body">
-		<form ng-submit="createOrUpdate()">
+		<form class="form-horizontal" ng-submit="createOrUpdate()">
 	<!-- 		<legend></legend> -->
+			<div class="control-group">				
+				<label class="control-label">Name</label>
+				<div class="controls">				
+					<input type="text" placeholder="How do you call you item?" ng-model='modal.d.name' error>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">Code</label>
+				<div class="controls">
+					<input type="text" placeholder="Unique code if it needs." ng-model="modal.d.code">
+				</div>
+			</div>
+
+			<div class="controls-group">
+				<label class='control-label'>Brand</label>
+				<div class="controls">
+					<input type="text" placeholder="Item's brand." ng-model="modal.d.brand">
+				</div>				
+				<samp class="help-inline"></samp>
+			</div>
 			
-			<label>Name</label>
-			<input type="text" placeholder="How do you call you item?" ng-model='modal.d.name'>
-
-			<label>Code</label>
-			<input type="text" placeholder="Unique code if it needs." ng-model="modal.d.code">
-
-			<label>Brand</label>
-			<input type="text" placeholder="Item's brand." ng-model="modal.d.brand">
-
-			<samp class="help-block"></samp>
-			<input type="submit" class="btn btn-primary">
-			<button class="btn btn-link" ng-click="modal.shown=false">Cancel</button>
+			<div class="controls-group">
+				<div class="controls">
+					<input type="submit" class="btn btn-primary">
+					<button class="btn btn-link" ng-click="modal.shown=false">Cancel</button>
+				</div>
+			</div>
+			
 		</form>
+		
 	</div>
 </div>
