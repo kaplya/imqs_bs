@@ -4,7 +4,7 @@ imqsBsApp
   .factory('Item', ['$resource', function ($resource) {
 	return $resource('/items/:id/:action');  	
   }])
-.controller('ItemsCtrl', ["$scope", 'Item', function($scope, Item) {
+  .controller('ItemsCtrl', ["$scope", 'Item', function($scope, Item) {
   
   $scope.templates = {
   	body: "views/items.html"
@@ -34,10 +34,13 @@ imqsBsApp
 
   $scope.createOrUpdate = function () {
     
+    $scope.modal.d.error = undefined;
     var update = function () { 
       Item.update({ id: $scope.modal.d.id }, $scope.modal.d, function (data) {
         $scope.modal.shown = false;
         angular.copy(data, $scope.modal.listData);
+      }, function (r) {
+        $scope.modal.d.error = r.data;
       });
     };
 
@@ -45,8 +48,8 @@ imqsBsApp
       Item.create($scope.modal.d, function (data) { 
         $scope.modal.shown = false;
         $scope.items.unshift(data);
-      }, function (e) {
-        console.log(e);
+      }, function (r) {
+        $scope.modal.d.error = r.data;
       });
     };
 

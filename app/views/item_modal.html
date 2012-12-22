@@ -16,16 +16,19 @@
 			<div class="control-group">
 				<label class="control-label">Code</label>
 				<div class="controls">
-					<input type="text" placeholder="Unique code if it needs." ng-model="modal.d.code">
+					<input type="text" placeholder="Unique code if it needs." ng-model="modal.d.code" error>
 				</div>
 			</div>
 
-			<div class="controls-group">
+			<div class="control-group">
 				<label class='control-label'>Brand</label>
 				<div class="controls">
-					<input type="text" placeholder="Item's brand." ng-model="modal.d.brand">
-				</div>				
-				<samp class="help-inline"></samp>
+					<input type="text" placeholder="Item's brand." ng-model="modal.d.brand" error>
+				</div>
+			</div>
+			
+			<div class="control-group controls" ng-show="modal.d.error.main">
+				<div ng-model='modal.d.main' error></div>
 			</div>
 			
 			<div class="controls-group">

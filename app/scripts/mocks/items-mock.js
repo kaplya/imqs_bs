@@ -39,8 +39,12 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
   	var id = /\/([0-9]+)/.exec(url)[1];
     var e = {};
 
-  	if(r.name == "" || r.name == null)
-  	  e.name = ["can't be blank"];
+    if(r.name == 'eRRoR_832232') {
+      e['name'] = ['error test 1', 'error test 2'];
+      e['code'] = ['error test 3'];
+      e['brand'] = ['error test 4'];
+      e['main'] = ['error test 5'];
+    };
 
   	if(!$.isEmptyObject(e))
   	  return [400, e];
@@ -63,8 +67,12 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
     if(r.name == '3')
       return [500];
 
-    if(r.name == "" || r.name == null)
-      e['name'] = ["can't be blank"];
+    if(r.name == 'eRRoR_832232') {
+      e['name'] = ['error test 1', 'error test 2'];
+      e['code'] = ['error test 3'];
+      e['brand'] = ['error test 4'];
+      e['main'] = ['error test 5'];
+    };
 
     if(!$.isEmptyObject(e))
       return [400, e];

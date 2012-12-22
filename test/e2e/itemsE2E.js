@@ -106,4 +106,26 @@ describe('items', function() {
 
   });
 
+  it('should show errors', function () {
+
+    function test() {      
+      input('modal.d.name').enter('eRRoR_832232');
+      element(SUBMIT_BTN).click();
+      expect(element(FORM).css("display")).toEqual("block");
+      var s = ['error test 1', 'error test 2'].join('; ');
+      expect(using(FORM).element('span:contains("?")'.replace('?', s)).text()).toEqual(s);
+      s = 'error test 3';
+      expect(using(FORM).element('span:contains("?")'.replace('?', s)).text()).toEqual(s);
+      s = 'error test 4';
+      expect(using(FORM).element('span:contains("?")'.replace('?', s)).text()).toEqual(s);
+      s = 'error test 5';
+      expect(using(FORM).element('span:contains("?")'.replace('?', s)).text()).toEqual(s);
+    }
+    element(NEW_BTN).click();
+    test();
+    
+    using(ROW.replace('?', 2)).element(EDIT_BTN).click();
+    test();
+  });
+
 });
