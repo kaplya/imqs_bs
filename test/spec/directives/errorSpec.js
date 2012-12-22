@@ -80,5 +80,22 @@ describe('msg', function () {
 
 	});
 
+	it('should add and remove span with a error', function () {
+		var elm = compile();
+		
+		expect(elm.find('input').next('span')[0]).toBeUndefined();
+		scope.$apply(function (s) {
+			s.error = { foo: ['bar 1', 'bar 2'] };
+		});
+		expect(elm.find('input').next('span')[0]).toBeDefined();
+		expect(elm.find('input').next('span').text()).toEqual('bar 1; bar 2');
+
+		scope.$apply(function (s) {
+			s.error = { foo: '' };
+		});
+		expect(elm.find('input').next('span')[0]).toBeUndefined();
+
+	});
+
 
 });
