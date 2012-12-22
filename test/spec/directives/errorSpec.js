@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe('msg', function () {
+describe('msg', function () {
 	
 	var scope,
 		sandbox,
@@ -8,7 +8,12 @@ ddescribe('msg', function () {
 		$compile;
 	
 	templates = {
-		default: "<form name='myForm'><input ng-model='foo' error></form>"
+		default: "<form name='myForm'><input ng-model='foo' error></form>",
+		group: '<form name="myForm">' +
+				'<div class="control-group">' +
+						'<input ng-model="foo" error>' +
+				'</div>' +
+			'</form>'
 	};
 
 	beforeEach(module('ui'));
@@ -30,7 +35,7 @@ ddescribe('msg', function () {
 		return $compile(template)(scope);
 	};
 
-	it('should supprot custom error name attr', function () {
+	it('should support custom error name attr', function () {
 		
 		var elm = compile("<form name='myForm'><input ng-model='foo' error='myError'></form>");
 		expect(scope.myForm.$invalid).toBeFalsy();
@@ -43,6 +48,7 @@ ddescribe('msg', function () {
 	});
 
 	it('should change form state', function () {
+		
 		var elm = compile();		
 		expect(scope.myForm.$invalid).toBeFalsy();
 		
@@ -58,6 +64,21 @@ ddescribe('msg', function () {
 
 	});
 
+	it('should add and remove error class on control group', function () {
+		var elm = compile('group');
+		expect(elm.find('div').hasClass('error')).toBeFalsy();
+		
+		scope.$apply(function (s) {
+			s.error = { foo: 'bar' };
+		});
+		expect(elm.find('div').hasClass('error')).toBeTruthy();
+		
+		scope.$apply(function (s) {
+			s.error = { foo: '' };
+		});
+		expect(elm.find('div').hasClass('error')).toBeFalsy();
+
+	});
 
 
 });
