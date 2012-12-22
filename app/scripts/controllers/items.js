@@ -10,7 +10,7 @@ imqsBsApp
   	body: "views/items.html"
   };
 
-  $scope.modal = { shown: false, del: false };
+  $scope.modalEdit = { shown: false };
   $scope.modalDel = { shown: false };
 
   Item.query(function(data) {
@@ -18,43 +18,40 @@ imqsBsApp
   });
 
   $scope.edit = function () {
-    
-    $scope.modal.listData = this.i;
+    $scope.modalEdit.listData = this.i;
     Item.get( { id: this.i.id }, function (data) {
-      $scope.modal.d = data;
+      $scope.modalEdit.d = data;
     });
-
-    this.modal.shown = true;
-    
+    this.modalEdit.shown = true;
   };
   
   $scope.new = function () {
-    this.modal.d = {};
-    this.modal.shown = true;
+    this.modalEdit.d = {};
+    this.modalEdit.shown = true;
   };
 
   $scope.createOrUpdate = function () {
+    $scope.modalEdit.d.error = undefined;
     
-    $scope.modal.d.error = undefined;
     var update = function () { 
-      Item.update({ id: $scope.modal.d.id }, $scope.modal.d, function (data) {
-        $scope.modal.shown = false;
-        angular.copy(data, $scope.modal.listData);
+      Item.update({ id: $scope.modalEdit.d.id }, $scope.modalEdit.d, function (data) {
+        $scope.modalEdit.shown = false;
+        angular.copy(data, $scope.modalEdit.listData);
       }, function (r) {
-        $scope.modal.d.error = r.data;
+        $scope.modalEdit.d.error = r.data;
       });
     };
 
     var create = function () { 
-      Item.create($scope.modal.d, function (data) { 
-        $scope.modal.shown = false;
+      Item.create($scope.modalEdit.d, function (data) { 
+        $scope.modalEdit.shown = false;
         $scope.items.unshift(data);
       }, function (r) {
-        $scope.modal.d.error = r.data;
+        $scope.modalEdit.d.error = r.data;
       });
     };
 
-    if ($scope.modal.d.id) update(); 
+    if ($scope.modalEdit.d.id) update(); 
     else create();
 
   };
@@ -80,7 +77,6 @@ imqsBsApp
         $scope.modalDel.shown = false;
       }, function (r) {
         $scope.modalDel.error = r.data;
-        console.log($scope.$id);
     });
   };
 

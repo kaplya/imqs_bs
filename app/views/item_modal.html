@@ -1,6 +1,6 @@
-<div modal="modal.shown" class="fade">
+<div modal="modalEdit.shown" class="fade">
 	<div class="modal-header">
-		<button type="button" class="close" ng-click="modal.shown=false">x</button>
+		<button type="button" class="close" ng-click="modalEdit.shown=false">x</button>
 		<h3>Item</h3>
 	</div>
 	<div class="modal-body">
@@ -9,32 +9,32 @@
 			<div class="control-group">				
 				<label class="control-label">Name</label>
 				<div class="controls">				
-					<input type="text" placeholder="How do you call you item?" ng-model='modal.d.name' error>
+					<input type="text" placeholder="How do you call you item?" ng-model='modalEdit.d.name' error>
 				</div>
 			</div>
 
 			<div class="control-group">
 				<label class="control-label">Code</label>
 				<div class="controls">
-					<input type="text" placeholder="Unique code if it needs." ng-model="modal.d.code" error>
+					<input type="text" placeholder="Unique code if it needs." ng-model="modalEdit.d.code" error>
 				</div>
 			</div>
 
 			<div class="control-group">
 				<label class='control-label'>Brand</label>
 				<div class="controls">
-					<input type="text" placeholder="Item's brand." ng-model="modal.d.brand" error>
+					<input type="text" placeholder="Item's brand." ng-model="modalEdit.d.brand" error>
 				</div>
 			</div>
 			
-			<div class="control-group controls" ng-show="modal.d.error.main">
-				<div ng-model='modal.d.main' error></div>
+			<div class="control-group controls" ng-show="modalEdit.d.error.main">
+				<div ng-model='modalEdit.d.main' error></div>
 			</div>
 			
 			<div class="controls-group">
 				<div class="controls">
 					<input type="submit" class="btn btn-primary">
-					<button class="btn btn-link" ng-click="modal.shown=false">Cancel</button>
+					<button class="btn btn-link" ng-click="modalEdit.shown=false">Cancel</button>
 				</div>
 			</div>
 			
