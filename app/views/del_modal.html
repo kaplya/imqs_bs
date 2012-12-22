@@ -1,4 +1,4 @@
-<div modal="modal.del" class="fade">
+<div modal="modalDel.shown" class="fade">
 	<div class="modal-header">
 		<h4>
 			Item Deletion
@@ -6,7 +6,10 @@
 	</div>
 	<div class="modal-body">
 		<p>Are you really want to delete the Item?</p>
+		<div class="control-group controls">
+			<div ng-model="modalDel.main" error></div>
+		</div>
 		<button class="btn btn-danger" ng-click="destroy()">Yes</button>
-		<button class="btn" ng-click="modal.del=false">No</button>
+		<button class="btn" ng-click="modalDel.shown=false">No</button>
 	</div>
 </div>

@@ -11,7 +11,8 @@ imqsBsApp
   };
 
   $scope.modal = { shown: false, del: false };
-  
+  $scope.modalDel = { shown: false };
+
   Item.query(function(data) {
   	$scope.items = data;
   });
@@ -59,25 +60,28 @@ imqsBsApp
   };
 
   $scope.delete = function () {
-    this.modal.del = true;
-    this.modal.listData = this.i;
+    $scope.modalDel.error = undefined;
+    this.modalDel.shown = true;
+    this.modalDel.listData = this.i;
   };
 
   $scope.destroy = function () {
-    
+    $scope.modalDel.error = undefined;
     var index,
-      id = $scope.modal.listData.id;
+      id = $scope.modalDel.listData.id;
     Item.destroy({ id: id }, function () {
-      angular.forEach($scope.items, function(v,i) {
-        if (v.id == id) {
-          index = i;
-          return false;
-        }
-      });
-      $scope.items.splice(index,1);
-      $scope.modal.del = false;
+        angular.forEach($scope.items, function(v,i) {
+          if (v.id == id) {
+            index = i;
+            return false;
+          }
+        });
+        $scope.items.splice(index,1);
+        $scope.modalDel.shown = false;
+      }, function (r) {
+        $scope.modalDel.error = r.data;
+        console.log($scope.$id);
     });
-
   };
 
 }]);

@@ -7,7 +7,7 @@ describe('items', function() {
     SUBMIT_BTN = "input[type='submit']",
     FORM = "div[modal='modal.shown']",
     ITEMS = 'tr[ng-repeat="i in items"]',
-    DEL_FORM = 'div[modal="modal.del"]',
+    DEL_FORM = 'div[modal="modalDel.shown"]',
     ROW = 'tbody tr:nth-child(?)',
     DEL_BTN = 'button:contains("Delete")',
     YES_BTN = 'button:contains("Yes")';
@@ -106,7 +106,7 @@ describe('items', function() {
 
   });
 
-  it('should show errors', function () {
+  it('should show errors edit form', function () {
 
     function test() {      
       input('modal.d.name').enter('eRRoR_832232');
@@ -126,6 +126,14 @@ describe('items', function() {
     
     using(ROW.replace('?', 2)).element(EDIT_BTN).click();
     test();
+  });
+
+  it('should show error for del form', function () {
+    using(ROW.replace('?', 4)).element(DEL_BTN).click();
+    using(DEL_FORM).element(YES_BTN).click();
+    expect(element(DEL_FORM).css('display')).toEqual('block');
+    var s = ['error test 1', 'error test 2'].join('; ');
+    expect(using(DEL_FORM).element('span:contains("?")'.replace('?', s)).text()).toEqual(s);
   });
 
 });
