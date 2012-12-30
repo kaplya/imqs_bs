@@ -24,9 +24,11 @@ angular.module('ui')
 				scope.$watch(iAttr.spin, function (newValue) {
 					if (newValue == true || newValue == 'true') {
 						spinner.spin(iElm[0]);
+						iElm.find('input, select, button, textarea').attr('disabled', 'disabled');
 					}
 					else {
 						spinner.stop();
+						iElm.find('input, select, button, textarea').attr('disabled', null);
 					}
 				});
 			}
