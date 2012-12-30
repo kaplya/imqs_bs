@@ -80,5 +80,40 @@ describe('modal', function() {
     $(".modal-backdrop").click();
     expect(elm).not.toHaveClass('in');
   });
+
+  it('should disable close when click on backdrop via controller', function () {
+    var elm = modal();
+    
+    ctrl = elm.data('$modalController');
+    expect(ctrl).toBeTruthy();
+    
+    ctrl.disableClickAndEscapeClose(true);
+    scope.$apply('modalShown = true');
+    $(".modal-backdrop").click();
+    expect(elm).toHaveClass('in');
+    
+    ctrl.disableClickAndEscapeClose(false);
+    $(".modal-backdrop").click();
+    expect(elm).not.toHaveClass('in');
+
+  });
+
+  it('should disable close on escape keyup via controller', function () {
+    var elm = modal();
+    
+    ctrl = elm.data('$modalController');
+    expect(ctrl).toBeTruthy();
+    
+    ctrl.disableClickAndEscapeClose(true);
+    scope.$apply('modalShown = true');
+    $("body").trigger({type :'keyup', which: 27}); //escape
+    expect(elm).toHaveClass('in');
+    
+    ctrl.disableClickAndEscapeClose(false);
+    $("body").trigger({type :'keyup', which: 27}); //escape
+    expect(elm).not.toHaveClass('in');
+
+  });
+
 });
 
