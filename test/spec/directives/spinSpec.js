@@ -5,7 +5,7 @@ describe('spin', function () {
 
 	beforeEach(inject(function ($compile, $rootScope) {
 		scope = $rootScope.$new();
-		elm = $compile('<div spin="state">'
+		elm = $compile('<div modal="show" spin="state">'
 			+ '<input>'
 			+ '<select><option>one</option></select>'
 			+ '<button type="button">Click</button>'
@@ -55,6 +55,28 @@ describe('spin', function () {
 
 		i = elm.find('textarea');
 		test(i);
+	});
+
+	it('should disable close modal on escape and click on backdrop', function () {
+		scope.$apply("show=true");
+		scope.$apply("state=true");
+		expect(elm).toHaveClass('in');
+		
+		$("body").trigger({type :'keyup', which: 27});
+		expect(elm).toHaveClass('in');
+		
+		$(".modal-backdrop").click();
+		expect(elm).toHaveClass('in');
+
+		scope.$apply("state=false");
+		$("body").trigger({type :'keyup', which: 27});
+		expect(elm).not.toHaveClass('in');
+		
+		scope.$apply("show=true");
+		expect(elm).toHaveClass('in');
+		
+		$(".modal-backdrop").click();
+		expect(elm).not.toHaveClass('in');
 	});
 
 });

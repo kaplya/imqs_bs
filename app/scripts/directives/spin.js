@@ -2,6 +2,7 @@ angular.module('ui')
 	.directive('spin', [function () {
 		return {
 			restrict: 'A',
+			require: '?modal',
 			link: function (scope, iElm, iAttr, ctrl) {
 				var opts = {
 				  lines: 13, // The number of lines to draw
@@ -25,10 +26,17 @@ angular.module('ui')
 					if (newValue == true || newValue == 'true') {
 						spinner.spin(iElm[0]);
 						iElm.find('input, select, button, textarea').attr('disabled', 'disabled');
+						if(ctrl) {
+							ctrl.disableClickAndEscapeClose(true);
+						}
 					}
 					else {
 						spinner.stop();
 						iElm.find('input, select, button, textarea').attr('disabled', null);
+						if(ctrl) {
+							ctrl.disableClickAndEscapeClose(false);
+						}
+
 					}
 				});
 			}
