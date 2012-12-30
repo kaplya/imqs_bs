@@ -1,7 +1,7 @@
 describe('modal', function() {
   var scope, $compile;
 
-  beforeEach(module('imqsBsApp'));
+  beforeEach(module('ui'));
   beforeEach(inject(function($rootScope, _$compile_) {
     scope = $rootScope.$new();
     $compile = _$compile_;
