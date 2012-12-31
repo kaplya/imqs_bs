@@ -19,7 +19,8 @@ imqsBsApp
     };
     
     $scope.new = function () {
-  		this.modal.shown = true;
+  		this.modalEdit.data = {};
+      this.modalEdit.shown = true;
     };
 
     $scope.createOrUpdate = function () {
@@ -29,9 +30,18 @@ imqsBsApp
           angular.copy(data, $scope.modalEdit.listData);
         })
       };
+      var create = function () {
+        Resource.create($scope.modalEdit.data, function (data) {
+          $scope.modalEdit.shown = false;
+          $scope.itemsList.unshift(data);
+        });
+      };
+
       if ($scope.modalEdit.data.id) {
         update();
-      }
+      } else {
+        create();
+      };
     };
     
     $scope.delete = function () {

@@ -45,6 +45,17 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
 
     return [200, data];
 
-  })
+  });
+
+  $httpBackend.whenPOST('/locations').respond(function (method, url, data, header) {
+    var r = angular.fromJson(data);
+
+    r.id = nextId;
+    nextId++;
+
+    items.unshift(r);
+    return [200, r];
+
+  });  
 
 }]);

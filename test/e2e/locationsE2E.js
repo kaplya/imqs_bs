@@ -1,11 +1,12 @@
 'use strict'
 
-ddescribe('locations', function () {
+describe('locations', function () {
 	var ITEMS = 'tr[ng-repeat="i in itemsList"]',
 		FORM = 'div[modal="modalEdit.shown"]',
 		ROW = 'tbody tr:nth-child(?)',
 		EDIT_BTN = 'button:contains("Edit")',
-		SUBMIT_BTN = 'input[type="submit"]';
+		SUBMIT_BTN = 'input[type="submit"]',
+		NEW_BTN = 'button:contains("New")';
 	
 	beforeEach(function () {
 		browser().navigateTo('/#/locations');
@@ -46,6 +47,21 @@ ddescribe('locations', function () {
   		expect(repeater(ITEMS).row(i)).toEqual(['TEST name', 'TEST city']);
   	}
 
+  });
+
+  it('should show empty new form', function () {
+  	input('modalEdit.data.name').enter('Bar');
+  	element(NEW_BTN).click();
+  	expect(element(FORM).css('display')).toEqual('block');
+  });
+
+  it('should submit new data', function () {
+  	element(NEW_BTN).click();
+  	using(FORM).input('modalEdit.data.name').enter('New name');
+  	using(FORM).input('modalEdit.data.city').enter('New city');
+  	using(FORM).element(SUBMIT_BTN).click();
+  	expect(element(FORM).css('display')).toEqual('none');
+  	expect(repeater(ITEMS).row(0)).toEqual(['New name', 'New city']);
   });
 
 });
