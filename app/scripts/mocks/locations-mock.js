@@ -30,4 +30,21 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
   		return [402, 'not found'];
 
   });
+
+  $httpBackend.whenPUT(/locations\/[1-9]+/).respond(function (method, url, data, headers) {
+    var r = angular.fromJson(data);
+    var id = /\/([0-9]+)/.exec(url)[1];
+    var e = {};
+
+    angular.forEach(items, function (v,i) {
+      if(v.id == id) {
+        this[i] = r;
+        return false;
+      }
+    }, items);
+
+    return [200, data];
+
+  })
+
 }]);

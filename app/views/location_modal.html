@@ -6,11 +6,13 @@
 	</div>
 
 	<div class="modal-body">
-		<label>Name</label>
-		<input ng-model='modalEdit.data.name' type="text" placeholder="What is the name of the store?">
-		<label>City</label>
-		<input ng-model='modalEdit.data.city' type="text" placeholder="Where is it located?">
-		<span class="help-block"></span>
-		<input type="submit" class="btn btn-primary">
+		<form ng-submit='createOrUpdate()'>
+			<label>Name</label>
+			<input ng-model='modalEdit.data.name' type="text" placeholder="What is the name of the store?">
+			<label>City</label>
+			<input ng-model='modalEdit.data.city' type="text" placeholder="Where is it located?">
+			<span class="help-block"></span>
+			<input type="submit" class="btn btn-primary">
+		</form>
 	</div>
 </div>
