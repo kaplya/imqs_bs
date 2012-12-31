@@ -875,7 +875,7 @@ function createHttpBackendMock($delegate, $browser) {
             var response = definition.response(method, url, data, headers);
             xhr.$$respHeaders = response[2];
             callback(response[0], response[1], xhr.getAllResponseHeaders());
-          }, 1500);
+          }); // vva
         } else if (definition.passThrough) {
           $delegate(method, url, data, callback, headers);
         } else throw Error('No response defined !');
