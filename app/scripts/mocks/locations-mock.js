@@ -11,4 +11,23 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
   var nextId = 3;
 
   $httpBackend.whenGET('/locations').respond(items);
+
+  $httpBackend.whenGET(/locations\/[1-9]+/).respond(function (method, url, data, headers) {
+  	var r = angular.fromJson(data);
+  	var id = /\/([0-9]+)/.exec(url)[1];
+
+  	var i;
+  	angular.forEach(items, function (v) {
+  		if(v.id == id) {
+  			i = v;
+  			return false;
+  		}
+  	});
+
+  	if(i)
+  		return [200, i];
+  	else
+  		return [402, 'not found'];
+
+  });
 }]);

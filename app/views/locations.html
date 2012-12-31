@@ -13,9 +13,9 @@
 			<th>Name</th>
 			<th>City</th>
 		</tr>
-		<tr ng-repeat="l in locations">
-			<td>{{l.name}}</td>
-			<td>{{l.city}}</td>
+		<tr ng-repeat="i in itemsList">
+			<td>{{i.name}}</td>
+			<td>{{i.city}}</td>
 			<td>
 				<button class="btn btn-primary" ng-click="edit()">Edit</button>
 				<button class="btn btn-danger" ng-click="delete()">Delete</button>

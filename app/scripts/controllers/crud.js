@@ -3,14 +3,18 @@
 imqsBsApp
 	.controller('CrudCtrl', ['$scope', 'Resource', function ($scope, Resource) {
 
-		$scope.modal = { shown: false, del: false };
+  	$scope.modalEdit = { shown: false };
 
-		Resource.query(function (data) {
-      $scope.locations = data;
+  	Resource.query(function (data) {
+      $scope.itemsList = data;
     });
 
     $scope.edit = function () {
-	  	this.modal.shown = true;
+      $scope.modalEdit.data = {};
+      Resource.get( { id: this.i.id }, function (data) {
+        $scope.modalEdit.data = data;
+      });
+    	this.modalEdit.shown = true;
     };
     
     $scope.new = function () {
