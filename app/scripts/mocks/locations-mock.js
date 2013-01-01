@@ -49,6 +49,15 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
 
   $httpBackend.whenPOST('/locations').respond(function (method, url, data, header) {
     var r = angular.fromJson(data);
+    var e = {};
+
+    if(r.name == 'eRRoR') {
+      e['name'] = ['error test 1', 'error test 2'];
+      e['city'] = ['error test 3'];
+      e['main'] = ['error test 4'];
+    }
+
+    if(!$.isEmptyObject(e)) { return [400, e] }
 
     r.id = nextId;
     nextId++;

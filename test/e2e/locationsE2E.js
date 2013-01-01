@@ -9,7 +9,8 @@ describe('locations', function () {
 		NEW_BTN = 'button:contains("New")',
 		DEL_BTN = 'button:contains("Delete")',
 		YES_BTN = 'button:contains("Yes")',
-		DEL_FORM = 'div[modal="modalDel.shown"]';
+		DEL_FORM = 'div[modal="modalDel.shown"]',
+		ERROR = 'span:contains("?")';
 	
 	beforeEach(function () {
 		browser().navigateTo('/#/locations');
@@ -36,11 +37,9 @@ describe('locations', function () {
     expect(element(FORM).css('display')).toEqual('block');
     expect(input('modalEdit.data.name').val()).toEqual('West Store');
     expect(input('modalEdit.data.city').val()).toEqual('Tokyo');
-
   });
 
   it('should submit edited data', function () {
-
   	for (var i=0; i<=1; i++) {
   		using(ROW.replace('?', i+2)).element(EDIT_BTN).click();
   		using(FORM).input('modalEdit.data.name').enter('TEST name');
@@ -49,7 +48,6 @@ describe('locations', function () {
   		expect(element(FORM).css('display')).toEqual('none');
   		expect(repeater(ITEMS).row(i)).toEqual(['TEST name', 'TEST city']);
   	}
-
   });
 
   it('should show empty new form', function () {
@@ -86,6 +84,22 @@ describe('locations', function () {
   	using(DEL_FORM).element(YES_BTN).click();
   	expect(element(DEL_FORM).css('display')).toEqual('none');
   	expect(repeater(ITEMS).row(0)).toEqual(['West Store', 'Tokyo']);
+  });
+
+  it('should show errors in edit form', function () {
+  	element(NEW_BTN).click();
+  	using(FORM).input('modalEdit.data.name').enter('eRRoR');
+  	using(FORM).element(SUBMIT_BTN).click();
+  	expect(element(FORM).css('display')).toEqual('block');
+  	
+  	var s = ['error test 1', 'error test 2'].join('; ');
+  	expect(using(FORM).element(ERROR.replace('?', s)).count()).toBe(1);
+
+  	s = ['error test 3'].join('; ');
+  	expect(using(FORM).element(ERROR.replace('?', s)).count()).toBe(1);
+
+  	s = ['error test 4'].join('; ');
+  	expect(using(FORM).element(ERROR.replace('?', s)).count()).toBe(1);
   });
 
 });

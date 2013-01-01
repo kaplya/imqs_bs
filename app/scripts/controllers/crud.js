@@ -25,6 +25,7 @@ imqsBsApp
     };
 
     $scope.createOrUpdate = function () {
+      $scope.modalEdit.data.error = undefined;
       var update = function () {
         Resource.update({ id: $scope.modalEdit.data.id }, $scope.modalEdit.data, function (data) {
           $scope.modalEdit.shown = false;
@@ -35,6 +36,8 @@ imqsBsApp
         Resource.create($scope.modalEdit.data, function (data) {
           $scope.modalEdit.shown = false;
           $scope.itemsList.unshift(data);
+        }, function (r) {
+          $scope.modalEdit.data.error = r.data;
         });
       };
 

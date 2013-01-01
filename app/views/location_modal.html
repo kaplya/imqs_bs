@@ -6,13 +6,33 @@
 	</div>
 
 	<div class="modal-body">
-		<form ng-submit='createOrUpdate()'>
-			<label>Name</label>
-			<input ng-model='modalEdit.data.name' type="text" placeholder="What is the name of the store?">
-			<label>City</label>
-			<input ng-model='modalEdit.data.city' type="text" placeholder="Where is it located?">
-			<span class="help-block"></span>
-			<input type="submit" class="btn btn-primary">
+		<form class='form-horizontal' ng-submit='createOrUpdate()'>
+			
+			<div class="control-group">
+				<label class='control-label'>Name</label>
+				<div class="controls">
+					<input ng-model='modalEdit.data.name' type="text" placeholder="What is the name of the store?" error>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label">City</label>
+				<div class="controls">
+					<input ng-model='modalEdit.data.city' type="text" placeholder="Where is it located?" error>
+				</div>
+			</div>
+			
+			<div class="control-group controls" ng-show="modalEdit.data.error.main">
+				<div ng-model="modalEdit.data.main" error></div>
+			</div>
+			
+			<div class="control-group ">
+				<div class="controls">
+					<input type="submit" class="btn btn-primary">
+					<button type='button' class='btn btn-link' ng-click='modalEdit.shown=false'>Cancel</button>
+				</div>
+			</div>
+			
 		</form>
 	</div>
 </div>
