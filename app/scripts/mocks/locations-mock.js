@@ -56,6 +56,18 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
     items.unshift(r);
     return [200, r];
 
-  });  
+  });
+
+  $httpBackend.whenDELETE(/\/locations\/[1-9]+/).respond(function (method, url, data, headers) {
+    var id = /\/([0-9]+)/.exec(url)[1];
+    angular.forEach(items, function (v, i) {
+      if(v.id != id) { return true; }
+      this.splice(i, 1);
+      return true;
+    }, items);
+
+    return [200];
+
+  })  
 
 }]);

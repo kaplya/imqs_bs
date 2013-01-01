@@ -6,7 +6,10 @@ describe('locations', function () {
 		ROW = 'tbody tr:nth-child(?)',
 		EDIT_BTN = 'button:contains("Edit")',
 		SUBMIT_BTN = 'input[type="submit"]',
-		NEW_BTN = 'button:contains("New")';
+		NEW_BTN = 'button:contains("New")',
+		DEL_BTN = 'button:contains("Delete")',
+		YES_BTN = 'button:contains("Yes")',
+		DEL_FORM = 'div[modal="modalDel.shown"]';
 	
 	beforeEach(function () {
 		browser().navigateTo('/#/locations');
@@ -62,6 +65,27 @@ describe('locations', function () {
   	using(FORM).element(SUBMIT_BTN).click();
   	expect(element(FORM).css('display')).toEqual('none');
   	expect(repeater(ITEMS).row(0)).toEqual(['New name', 'New city']);
+  });
+
+  it('should edit submitted data', function () {
+  	element(NEW_BTN).click();
+  	using(FORM).input('modalEdit.data.name').enter('name');
+  	using(FORM).element(SUBMIT_BTN).click();
+  	using(ROW.replace('?', 2)).element(EDIT_BTN).click();
+  	expect(using(FORM).input('modalEdit.data.name').val()).toEqual('name');
+  });
+
+  it('should show delete form', function () {
+  	expect(element(DEL_FORM).css('display')).toEqual('none');
+  	using(ROW.replace('?', 2)).element(DEL_BTN).click();
+  	expect(element(DEL_FORM).css('display')).toEqual('block');
+  });
+
+  it('should delete', function () {
+  	using(ROW.replace('?', 2)).element(DEL_BTN).click();
+  	using(DEL_FORM).element(YES_BTN).click();
+  	expect(element(DEL_FORM).css('display')).toEqual('none');
+  	expect(repeater(ITEMS).row(0)).toEqual(['West Store', 'Tokyo']);
   });
 
 });

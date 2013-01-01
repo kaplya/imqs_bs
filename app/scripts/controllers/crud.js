@@ -3,7 +3,8 @@
 imqsBsApp
 	.controller('CrudCtrl', ['$scope', 'Resource', function ($scope, Resource) {
 
-  	$scope.modalEdit = { shown: false };
+    $scope.modalEdit = { shown: false };
+  	$scope.modalDel = { shown: false };
 
   	Resource.query(function (data) {
       $scope.itemsList = data;
@@ -45,7 +46,22 @@ imqsBsApp
     };
     
     $scope.delete = function () {
-    	this.modal.del = true;
+    	this.modalDel.shown = true;
+      $scope.modalDel.listData = this.i;
     };
+
+    $scope.destroy = function () {
+      var id = $scope.modalDel.listData.id,
+        index;
+      Resource.destroy({ id: id }, function () {
+        $scope.modalDel.shown = false;
+        angular.forEach($scope.itemsList, function (v, i) {
+          if (v.id != id) { return true; }
+          index = i;
+          return false;
+        });
+        $scope.itemsList.splice(index, 1);
+      });
+    }
 
 	}]);
