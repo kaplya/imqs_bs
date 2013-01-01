@@ -69,6 +69,11 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
 
   $httpBackend.whenDELETE(/\/locations\/[1-9]+/).respond(function (method, url, data, headers) {
     var id = /\/([0-9]+)/.exec(url)[1];
+    
+    if(id == 1) {
+      return [400, { main: ['error test 1', 'error test 2'] }];
+    }
+
     angular.forEach(items, function (v, i) {
       if(v.id != id) { return true; }
       this.splice(i, 1);

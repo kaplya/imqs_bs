@@ -102,4 +102,12 @@ describe('locations', function () {
   	expect(using(FORM).element(ERROR.replace('?', s)).count()).toBe(1);
   });
 
+  it('should show error for del form', function () {
+    using(ROW.replace('?', 3)).element(DEL_BTN).click();
+    using(DEL_FORM).element(YES_BTN).click();
+    expect(element(DEL_FORM).css('display')).toEqual('block');
+    var s = ['error test 1', 'error test 2'].join('; ');
+    expect(using(DEL_FORM).element(ERROR.replace('?', s)).count()).toBe(1);
+  });
+
 });

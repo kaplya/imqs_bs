@@ -58,11 +58,13 @@ imqsBsApp
     };
     
     $scope.delete = function () {
-    	this.modalDel.shown = true;
+      $scope.modalDel.error = undefined;
+      this.modalDel.shown = true;
       $scope.modalDel.listData = this.i;
     };
 
     $scope.destroy = function () {
+      $scope.modalDel.error = undefined;
       var id = $scope.modalDel.listData.id,
         index;
       Resource.destroy({ id: id }, function () {
@@ -73,6 +75,8 @@ imqsBsApp
           return false;
         });
         $scope.itemsList.splice(index, 1);
+      }, function (r) {
+        $scope.modalDel.error = r.data;
       });
     }
 
