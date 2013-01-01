@@ -65,9 +65,11 @@ imqsBsApp
 
     $scope.destroy = function () {
       $scope.modalDel.error = undefined;
+      $scope.modalDel.spin = true;
       var id = $scope.modalDel.listData.id,
         index;
       Resource.destroy({ id: id }, function () {
+        $scope.modalDel.spin = false;
         $scope.modalDel.shown = false;
         angular.forEach($scope.itemsList, function (v, i) {
           if (v.id != id) { return true; }
@@ -77,6 +79,7 @@ imqsBsApp
         $scope.itemsList.splice(index, 1);
       }, function (r) {
         $scope.modalDel.error = r.data;
+        $scope.modalDel.spin = false;
       });
     }
 
