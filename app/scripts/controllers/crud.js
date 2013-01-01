@@ -5,16 +5,21 @@ imqsBsApp
 
     $scope.modalEdit = { shown: false };
   	$scope.modalDel = { shown: false };
+    $scope.spin = true;
 
-  	Resource.query(function (data) {
+    Resource.query(function (data) {
       $scope.itemsList = data;
+      $scope.spin = false;
     });
 
     $scope.edit = function () {
       $scope.modalEdit.data = {};
       $scope.modalEdit.listData = this.i;
+      $scope.modalEdit.spin = true;
+
       Resource.get( { id: this.i.id }, function (data) {
         $scope.modalEdit.data = data;
+        $scope.modalEdit.spin = false;
       });
     	this.modalEdit.shown = true;
     };
@@ -26,8 +31,10 @@ imqsBsApp
 
     $scope.createOrUpdate = function () {
       $scope.modalEdit.data.error = undefined;
+      $scope.modalEdit.spin = true;
       var update = function () {
         Resource.update({ id: $scope.modalEdit.data.id }, $scope.modalEdit.data, function (data) {
+          $scope.modalEdit.spin = false;
           $scope.modalEdit.shown = false;
           angular.copy(data, $scope.modalEdit.listData);
         })
@@ -35,9 +42,11 @@ imqsBsApp
       var create = function () {
         Resource.create($scope.modalEdit.data, function (data) {
           $scope.modalEdit.shown = false;
+          $scope.modalEdit.spin = false;
           $scope.itemsList.unshift(data);
         }, function (r) {
           $scope.modalEdit.data.error = r.data;
+          $scope.modalEdit.spin = false;
         });
       };
 
