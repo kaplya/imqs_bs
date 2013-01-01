@@ -37,6 +37,9 @@ imqsBsApp
           $scope.modalEdit.spin = false;
           $scope.modalEdit.shown = false;
           angular.copy(data, $scope.modalEdit.listData);
+        }, function (r) {
+          $scope.modalEdit.data.error = r.data;
+          $scope.modalEdit.spin = false;          
         })
       };
       var create = function () {

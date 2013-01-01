@@ -36,6 +36,12 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
     var id = /\/([0-9]+)/.exec(url)[1];
     var e = {};
 
+    if(r.name == 'eRRoR') {
+      e.name = ['error test'];
+    }
+    
+    if(!$.isEmptyObject(e)) { return [400, e] }
+
     angular.forEach(items, function (v,i) {
       if(v.id == id) {
         this[i] = r;

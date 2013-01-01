@@ -86,7 +86,7 @@ describe('locations', function () {
   	expect(repeater(ITEMS).row(0)).toEqual(['West Store', 'Tokyo']);
   });
 
-  it('should show errors in edit form', function () {
+  it('should show errors in edit form wnen create', function () {
   	element(NEW_BTN).click();
   	using(FORM).input('modalEdit.data.name').enter('eRRoR');
   	using(FORM).element(SUBMIT_BTN).click();
@@ -100,6 +100,14 @@ describe('locations', function () {
 
   	s = ['error test 4'].join('; ');
   	expect(using(FORM).element(ERROR.replace('?', s)).count()).toBe(1);
+  });
+
+  it('should show errors in edit from when update', function () {
+    using(ROW.replace('?', 2)).element(EDIT_BTN).click();
+    using(FORM).input('modalEdit.data.name').enter('eRRoR');
+    using(FORM).element(SUBMIT_BTN).click();
+    expect(element(FORM).css('display')).toEqual('block');
+    expect(using(FORM).element(ERROR.replace('?','error test')).count()).toEqual(1);
   });
 
   it('should show error for del form', function () {
