@@ -10,7 +10,10 @@ imqsBsApp
       body: 'views/journals.html'
     };
     
-    Crud.init($scope, Journal, { itemsList: 'journals' });
+    Crud.init($scope, Journal, { 
+      itemsList: 'journals',
+      itemModal: 'journalModal' 
+    });
 
     // $scope.journals[0].lines = [
     // 	{date: "29.11.2012", item_code: "01", item_name: "Juice", qty: "10"},

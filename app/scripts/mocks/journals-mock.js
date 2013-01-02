@@ -57,10 +57,11 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
     var r = angular.fromJson(data);
     var e = {};
 
-    if(r.name == 'eRRoR') {
-      e['name'] = ['error test 1', 'error test 2'];
-      e['city'] = ['error test 3'];
-      e['main'] = ['error test 4'];
+    if(r.number == 'eRRoR') {
+      e['number'] = ['error test 1', 'error test 2'];
+      e['date'] = ['error test 3'];
+      e['j_type'] = ['error test 4'];
+      e['main'] = ['error test 5'];
     }
 
     if(!$.isEmptyObject(e)) { return [400, e] }

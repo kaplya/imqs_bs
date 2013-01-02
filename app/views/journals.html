@@ -2,11 +2,12 @@
 
 
 <div class="well well-small span8">
-	<button class="btn">New</button>
+	<button class="btn" ng-click='new()'>New</button>
 </div>
 
+<div spin="spin" ng-show="spin" class="well well-large span8"></div>
 
-<div class="span8 well well-small" ng-repeat="j in journals" ng-controller="JournalFormCtrl">
+<div ng-hide='spin' class="span8 well well-small" ng-repeat="j in journals" ng-controller="JournalFormCtrl">
 	<h4>
 		<span class="span1">{{j.number}}</span>
 		<span class="span2">{{j.date}}</span>
@@ -36,27 +37,4 @@
 	</table>
 </div>
 
-<!-- <div class="span8">
-	<table class="table">
-		<tr>
-			<th>Number</th>
-			<th>Date</th>
-			<th>Type</th>
-			<th>Posted</th>
-		</tr>
-		<tr ng-repeat="j in journals">
-			<td>{{j.number}}</td>
-			<td>{{j.date}}</td>
-			<td>{{j.j_type}}</td>
-			<td><span class="label label-success">{{j.posted}}</span></td>
-			<td>
-				<button class="btn btn-primary">Edit</button>
-				<button class="btn btn-danger">Delete</button>
-			</td>
-			<td>
-				<button class="btn btn-warning">Post</button>
-			</td>
-		</tr>
-	</table>
-</div>
- -->
+<div ng-include='"views/journal_modal.html"'></div>
