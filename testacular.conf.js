@@ -19,6 +19,7 @@ files = [
   'app/scripts/app.js',
   'app/scripts/controllers/*.js',
   'app/scripts/directives/*.js',
+  'app/scripts/services/*.js',
   'test/spec/**/*.js'
 ];
 

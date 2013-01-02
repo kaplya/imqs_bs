@@ -9,26 +9,26 @@
 			<div class="control-group">				
 				<label class="control-label">Name</label>
 				<div class="controls">				
-					<input type="text" placeholder="How do you call you item?" ng-model='modalEdit.d.name' error>
+					<input type="text" placeholder="How do you call you item?" ng-model='modalEdit.data.name' error>
 				</div>
 			</div>
 
 			<div class="control-group">
 				<label class="control-label">Code</label>
 				<div class="controls">
-					<input type="text" placeholder="Unique code if it needs." ng-model="modalEdit.d.code" error>
+					<input type="text" placeholder="Unique code if it needs." ng-model="modalEdit.data.code" error>
 				</div>
 			</div>
 
 			<div class="control-group">
 				<label class='control-label'>Brand</label>
 				<div class="controls">
-					<input type="text" placeholder="Item's brand." ng-model="modalEdit.d.brand" error>
+					<input type="text" placeholder="Item's brand." ng-model="modalEdit.data.brand" error>
 				</div>
 			</div>
 			
 			<div class="control-group controls" ng-show="modalEdit.d.error.main">
-				<div ng-model='modalEdit.d.main' error></div>
+				<div ng-model='modalEdit.data.main' error></div>
 			</div>
 			
 			<div class="controls-group">

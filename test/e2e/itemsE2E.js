@@ -30,15 +30,15 @@ describe('items', function() {
     
     using(ROW.replace('?', 2)).element(EDIT_BTN).click();
     expect(element(FORM).css("display")).toEqual("block");
-    expect(input('modalEdit.d.name').val()).toEqual("Tea");
+    expect(input('modalEdit.data.name').val()).toEqual("Tea");
 
     using(ROW.replace('?', 3)).element(EDIT_BTN).click();
     expect(element(FORM).css("display")).toEqual("block");
-    expect(input('modalEdit.d.name').val()).toEqual("Juice");
+    expect(input('modalEdit.data.name').val()).toEqual("Juice");
 
     using(ROW.replace('?', 4)).element(EDIT_BTN).click();
 		expect(element(FORM).css("display")).toEqual("block");
-    expect(input('modalEdit.d.name').val()).toEqual("Beer");
+    expect(input('modalEdit.data.name').val()).toEqual("Beer");
     
   });
 
@@ -46,9 +46,9 @@ describe('items', function() {
 
     for (var i=0; i<=2; i++) {
       using(ROW.replace('?', i+2)).element(EDIT_BTN).click();
-      using(FORM).input('modalEdit.d.code').enter("For submit code");
-      using(FORM).input('modalEdit.d.name').enter("For submit name");
-      using(FORM).input('modalEdit.d.brand').enter("For submit brand");
+      using(FORM).input('modalEdit.data.code').enter("For submit code");
+      using(FORM).input('modalEdit.data.name').enter("For submit name");
+      using(FORM).input('modalEdit.data.brand').enter("For submit brand");
       using(FORM).element(SUBMIT_BTN).click();
       expect(element(FORM).css("display")).toEqual("none");
       expect(repeater(ITEMS).row(i)).toEqual(["For submit code", "For submit name", "For submit brand"]);
@@ -58,19 +58,19 @@ describe('items', function() {
 
   it('should show empty new form', function () {
 
-    input('modalEdit.d.code').enter("Foo");
+    input('modalEdit.data.code').enter("Foo");
     element(NEW_BTN).click();
     expect(element(FORM).css("display")).toEqual("block");
-    expect(input('modalEdit.d.code').val()).toEqual("");
+    expect(input('modalEdit.data.code').val()).toEqual("");
 
   });
 
   it('should submit new data', function () {
 
     element(NEW_BTN).click();
-    using(FORM).input('modalEdit.d.code').enter("For submit code");
-    using(FORM).input('modalEdit.d.name').enter("For submit name");
-    using(FORM).input('modalEdit.d.brand').enter("For submit brand");
+    using(FORM).input('modalEdit.data.code').enter("For submit code");
+    using(FORM).input('modalEdit.data.name').enter("For submit name");
+    using(FORM).input('modalEdit.data.brand').enter("For submit brand");
     using(FORM).element(SUBMIT_BTN).click();
     expect(element(FORM).css("display")).toEqual("none");
     expect(repeater(ITEMS).row(0)).toEqual(["For submit code", "For submit name", "For submit brand"]);
@@ -80,10 +80,10 @@ describe('items', function() {
   it('should edit submitted data', function () {
 
     element(NEW_BTN).click();
-    using(FORM).input('modalEdit.d.name').enter("For submit name");
+    using(FORM).input('modalEdit.data.name').enter("For submit name");
     using(FORM).element(SUBMIT_BTN).click();
     using(ROW.replace('?', 2)).element(EDIT_BTN).click();
-    expect(using(FORM).input('modalEdit.d.name').val()).toEqual("For submit name");
+    expect(using(FORM).input('modalEdit.data.name').val()).toEqual("For submit name");
   
   });
 
@@ -109,7 +109,7 @@ describe('items', function() {
   it('should show errors edit form', function () {
 
     function test() {      
-      input('modalEdit.d.name').enter('eRRoR_832232');
+      input('modalEdit.data.name').enter('eRRoR_832232');
       element(SUBMIT_BTN).click();
       expect(element(FORM).css("display")).toEqual("block");
       var s = ['error test 1', 'error test 2'].join('; ');
