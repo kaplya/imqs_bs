@@ -2,13 +2,14 @@
 
 imqsBsApp.factory('Crud', function() {
   var defaultOpts = {
-  	itemsList: 'itemsList'
+  	itemsList: 'itemsList',
+  	itemModal: 'modalEdit'
   };
   return {
     init: function(scope, resource, opts) {
     	var opts = angular.extend({}, defaultOpts, opts);
 
-	    scope.modalEdit = { shown: false };
+	    scope[opts.itemModal] = { shown: false };
 	  	scope.modalDel = { shown: false };
 	    scope.spin = true;
 
@@ -18,47 +19,47 @@ imqsBsApp.factory('Crud', function() {
 	    });
 
 	    scope.edit = function () {
-	      scope.modalEdit.data = {};
-	      scope.modalEdit.listData = this.i;
-	      scope.modalEdit.spin = true;
+	      scope[opts.itemModal].data = {};
+	      scope[opts.itemModal].listData = this.i;
+	      scope[opts.itemModal].spin = true;
 
 	      resource.get( { id: this.i.id }, function (data) {
-	        scope.modalEdit.data = data;
-	        scope.modalEdit.spin = false;
+	        scope[opts.itemModal].data = data;
+	        scope[opts.itemModal].spin = false;
 	      });
-	    	scope.modalEdit.shown = true;
+	    	scope[opts.itemModal].shown = true;
 	    };
 	    
 	    scope.new = function () {
-	  		scope.modalEdit.data = {};
-	      scope.modalEdit.shown = true;
+	  		scope[opts.itemModal].data = {};
+	      scope[opts.itemModal].shown = true;
 	    };
 
 	    scope.createOrUpdate = function () {
-	      scope.modalEdit.data.error = undefined;
-	      scope.modalEdit.spin = true;
+	      scope[opts.itemModal].data.error = undefined;
+	      scope[opts.itemModal].spin = true;
 	      var update = function () {
-	        resource.update({ id: scope.modalEdit.data.id }, scope.modalEdit.data, function (data) {
-	          scope.modalEdit.spin = false;
-	          scope.modalEdit.shown = false;
-	          angular.copy(data, scope.modalEdit.listData);
+	        resource.update({ id: scope[opts.itemModal].data.id }, scope[opts.itemModal].data, function (data) {
+	          scope[opts.itemModal].spin = false;
+	          scope[opts.itemModal].shown = false;
+	          angular.copy(data, scope[opts.itemModal].listData);
 	        }, function (r) {
-	          scope.modalEdit.data.error = r.data;
-	          scope.modalEdit.spin = false;          
+	          scope[opts.itemModal].data.error = r.data;
+	          scope[opts.itemModal].spin = false;          
 	        })
 	      };
 	      var create = function () {
-	        resource.create(scope.modalEdit.data, function (data) {
-	          scope.modalEdit.shown = false;
-	          scope.modalEdit.spin = false;
+	        resource.create(scope[opts.itemModal].data, function (data) {
+	          scope[opts.itemModal].shown = false;
+	          scope[opts.itemModal].spin = false;
 	          scope[opts.itemsList].unshift(data);
 	        }, function (r) {
-	          scope.modalEdit.data.error = r.data;
-	          scope.modalEdit.spin = false;
+	          scope[opts.itemModal].data.error = r.data;
+	          scope[opts.itemModal].spin = false;
 	        });
 	      };
 
-	      if (scope.modalEdit.data.id) {
+	      if (scope[opts.itemModal].data.id) {
 	        update();
 	      } else {
 	        create();
