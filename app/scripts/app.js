@@ -33,6 +33,18 @@ var imqsBsApp = angular.module('imqsBsApp', ['ngResource', 'ui'])
       $scope.nav = {};
       $scope.nav[(location || 'home')] = "active";
     });
+  }])
+  .config(['$provide', function ($provide) {
+    $provide.decorator('$resource', ['$delegate', function ($delegate) {
+      return (function (url) {
+        var ACTIONS = {
+            'update': {method: 'PUT'},
+            'create': {method: 'POST'},
+            'destroy': {method: 'DELETE'}
+          };
+        return $delegate(url, {}, ACTIONS);
+      });
+    }]);
   }]);
 
   angular.module('ui', []);
