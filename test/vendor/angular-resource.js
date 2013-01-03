@@ -219,10 +219,7 @@ angular.module('ngResource', ['ng']).
       'save':   {method:'POST'},
       'query':  {method:'GET', isArray:true},
       'remove': {method:'DELETE'},
-      'delete': {method:'DELETE'},
-      'create': {method:'POST'},
-      'update': {method:'PUT'},
-      'destroy':{method:'DELETE'}
+      'delete': {method:'DELETE'}
     };
     var noop = angular.noop,
         forEach = angular.forEach,
