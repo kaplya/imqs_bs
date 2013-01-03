@@ -2,7 +2,7 @@
 
 angular.module('ui')
 
-.directive('datepicker', ['$timeout', function($timeout) {
+.directive('datepicker', ['$timeout', 'config', function($timeout, config) {
 	'use strict';
 
 	var DATE_REGEXP_MAP = {
@@ -13,6 +13,8 @@ angular.module('ui')
 		'yyyy' : '(?:(?:[1]{1}\\d{1}\\d{1}\\d{1})|(?:[2]{1}\\d{3}))(?![\\d])'
 	};
 
+	var opts = { format: 'mm/dd/yyyy' };
+	opts = angular.extend({}, opts, config.datepicker);
 	return {
 		restrict: 'A',
 		require: '?ngModel',
@@ -39,7 +41,8 @@ angular.module('ui')
 				return new RegExp('^' + re + '$', ['i']);
 			};
 
-			var dateFormatRegexp = regexpForDateFormat(attrs.dateFormat || 'mm/dd/yyyy'/*, {mask: !!attrs.uiMask}*/);
+			var format = attrs.dateFormat || opts.format;
+			var dateFormatRegexp = regexpForDateFormat(format /*, {mask: !!attrs.uiMask}*/);
 
 			// Handle date validity according to dateFormat
 			controller.$parsers.unshift(function(viewValue) {
@@ -75,7 +78,8 @@ angular.module('ui')
 			element.attr('data-toggle', 'datepicker');
 			//$timeout(function () { // makes the ui lag?
 				element.datepicker({
-					autoclose: true
+					autoclose: true,
+					format: format
 				});
 			//}, 0, false);
 

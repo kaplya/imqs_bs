@@ -78,4 +78,52 @@ describe('datepicker', function () {
 		expect(scope.model.date).toBe(elm.val());
 	});
 
+
 });
+
+describe('datepicker', function () {
+	
+	beforeEach(module('ui'));
+
+	var elm, 
+		sandbox,
+		scope;
+
+	beforeEach(function() {
+		sandbox = $('<div id="sandbox"></div>').appendTo($('body'));
+		elm = '<input type="text" ng-model="model.date" datepicker>';
+		elm = $(elm).appendTo(sandbox);
+	});
+
+	afterEach(function () {
+		$('.datepicker').remove();
+		sandbox.remove();
+		scope.$destroy();
+	});
+
+	it('should get date format from the config', function () {
+		module(function ($provide) {
+			$provide.value('config', { datepicker: { format: 'dd.mm.yyyy' }});
+		});
+
+		inject(function ($rootScope, $compile) {
+			scope = $rootScope.$new();
+			elm = $compile(elm)(scope);
+		});
+
+		elm.trigger('focusin');
+		$("body > .datepicker").find('td.active').trigger('click');
+		elm.trigger('focusout');
+
+		var date = new Date();
+		var format = 'DD.MM.YYYY';
+    date = format.replace("DD", (date.getDate() < 10 ? '0' : '') + date.getDate())
+	    .replace("MM", (date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1))
+	    .replace("YYYY", date.getFullYear());
+
+	  expect(elm.val()).toEqual(date);
+		
+	});
+
+
+})
