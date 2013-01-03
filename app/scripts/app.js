@@ -47,4 +47,7 @@ var imqsBsApp = angular.module('imqsBsApp', ['ngResource', 'ui'])
     }]);
   }]);
 
-  angular.module('ui', []);
+  angular.module('ui', []).
+    value('config', {
+      datepicker: { format: 'dd.mm.yyyy' }
+    });
