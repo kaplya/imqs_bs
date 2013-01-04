@@ -18,7 +18,11 @@ angular.module('ui')
 					} else {
 						errorSpan = angular.element('<span class="help-inline"></span>');
 						errorSpan.text(angular.isArray(newValue) ? newValue.join('; ') : newValue);
-						iElm.after(errorSpan);
+						if(iElm.parent('.input-append').length) {
+							iElm.parent('.input-append').after(errorSpan);
+						} else {
+							iElm.after(errorSpan);
+						}
 						var g = iElm.parents('.control-group');
 						g.addClass('error');
 						ctrl.$setValidity('error', false);

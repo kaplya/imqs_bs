@@ -13,6 +13,16 @@ describe('msg', function () {
 				'<div class="control-group">' +
 						'<input ng-model="foo" error>' +
 				'</div>' +
+			'</form>',
+		inputAppend: '<form name="myForm">' +
+				'<div class="control-group">' +
+						'<div class="controls">"' +
+								'<div class="input-append">' +
+									'<input ng-model="foo" error>' +
+									'<button type="button">TEST</button>' +
+								'</div>' +
+						'</div>' +
+				'</div>' +
 			'</form>'
 	};
 
@@ -96,6 +106,22 @@ describe('msg', function () {
 		expect(elm.find('input').next('span')[0]).toBeUndefined();
 
 	});
+
+	it('should add/remove span next to .input-append', function () {
+		var elm = compile('inputAppend');
+		expect(elm.parent('.input-append').next('span')[0]).toBeUndefined();
+		scope.$apply(function (s) {
+			s.error = { foo: ['bar 1', 'bar 2'] };
+		});
+		expect(elm.find('input').next('span')[0]).toBeUndefined();
+		expect(elm.find('.input-append').next('span')[0]).toBeDefined();
+
+		scope.$apply(function (s) {
+			s.error = '';
+		});
+		expect(elm.find('.input-append').next('span')[0]).toBeUndefined();
+
+	})
 
 
 });
