@@ -21,7 +21,6 @@ imqsBsApp.factory('Crud', function() {
 	    });
 
 	    scope.edit = function () {
-	      
 	      if(angular.isFunction(callbacks.beforeEdit)) {
 	      	if(callbacks.beforeEdit(this) === false) { return };
 	      }
@@ -60,6 +59,9 @@ imqsBsApp.factory('Crud', function() {
 	          scope[opts.itemModal].shown = false;
 	          scope[opts.itemModal].spin = false;
 	          scope[opts.itemsList].unshift(data);
+	          if(angular.isFunction(callbacks.afterCreate)) {
+	          	callbacks.afterCreate(data);
+	          };
 	        }, function (r) {
 	          scope[opts.itemModal].data.error = r.data;
 	          scope[opts.itemModal].spin = false;

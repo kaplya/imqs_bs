@@ -196,15 +196,15 @@ describe('Service: Crud', function () {
   });
   
   describe('callbacks', function () {
-
+      
     describe('before edit', function () {
-
-      beforeEach(function () {
-        $httpBackend.when('GET', '/items/1').respond({ id: 1 });
-      });
       
       afterEach(function () {
         $httpBackend.flush();
+      });
+
+      beforeEach(function () {
+        $httpBackend.when('GET', '/items/1').respond({ id: 1 });
       });
 
       it('should call beforeEdit', function () {
@@ -232,6 +232,27 @@ describe('Service: Crud', function () {
         var s = { i: {id: 1} };
         scope.edit.call(s);
         expect(s).toBe(ss);
+      });
+
+    });
+
+    describe('after create', function () {
+      
+      beforeEach(function () {
+        $httpBackend.when('POST', '/items').respond({ id: 1 });
+      });
+
+      it('should call after create', function () {
+        scope.modalEdit = { data: {}};
+        var t = false, r;
+        callbacks.afterCreate = function (rr) {
+          t = true;
+          r = rr;
+        }
+        scope.createOrUpdate();
+        $httpBackend.flush();
+        expect(t).toBeTruthy();
+        expect(r.id).toBe(1);
       });
 
     });
