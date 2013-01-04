@@ -3,7 +3,8 @@
 imqsBsApp.factory('Crud', function() {
   var defaultOpts = {
   	itemsList: 'itemsList',
-  	itemModal: 'modalEdit'
+  	itemModal: 'modalEdit',
+  	item: 'i'
   };
   return {
     init: function(scope, resource, opts) {
@@ -20,10 +21,10 @@ imqsBsApp.factory('Crud', function() {
 
 	    scope.edit = function () {
 	      scope[opts.itemModal].data = {};
-	      scope[opts.itemModal].listData = this.i;
+	      scope[opts.itemModal].listData = this[opts.item];
 	      scope[opts.itemModal].spin = true;
 
-	      resource.get( { id: this.i.id }, function (data) {
+	      resource.get( { id: this[opts.item].id }, function (data) {
 	        scope[opts.itemModal].data = data;
 	        scope[opts.itemModal].spin = false;
 	      });
@@ -69,7 +70,7 @@ imqsBsApp.factory('Crud', function() {
 	    scope.delete = function () {
 	      scope.modalDel.error = undefined;
 	      scope.modalDel.shown = true;
-	      scope.modalDel.listData = this.i;
+	      scope.modalDel.listData = this[opts.item];
 	    };
 
 	    scope.destroy = function () {
