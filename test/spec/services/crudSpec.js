@@ -6,7 +6,7 @@ describe('Service: Crud', function () {
   beforeEach(module('imqsBsApp'));
 
   // instantiate service
-  var crud, $httpBackend, scope, resource;
+  var crud, $httpBackend, scope, resource, callbacks;
   beforeEach(inject(function(_Crud_, _$httpBackend_, $rootScope, $resource) {
     resource = $resource('/items/:id/:action');
     crud = _Crud_;
@@ -14,7 +14,7 @@ describe('Service: Crud', function () {
     $httpBackend = _$httpBackend_;
     
     $httpBackend.expect('GET', '/items').respond([{foo: 'Bar'}]);
-    crud.init(scope, resource);
+    callbacks = crud.init(scope, resource);
   }));
 
   afterEach(function () {
@@ -193,6 +193,39 @@ describe('Service: Crud', function () {
       expect(scope.modalDel.spin).toBeFalsy();
       expect(scope.modalDel.shown).toBeTruthy();
     });
+  });
+  
+  describe('callbacks', function () {
+
+    describe('before edit', function () {
+
+      beforeEach(function () {
+        $httpBackend.when('GET', '/items/1').respond({ id: 1 });
+      });
+      
+      afterEach(function () {
+        $httpBackend.flush();
+      });
+
+      it('should call beforeEdit', function () {
+        var t = false;
+        callbacks.beforeEdit = function () {
+          t = true;
+        };
+        scope.edit.call({i: {id: 1}});
+        expect(t).toBeTruthy();
+      });
+
+      it('should stop default action if beforeEdit return false', function () {
+        callbacks.beforeEdit = function () {
+          return false;
+        };
+        scope.edit.call({ i: {id: 1} });
+        expect(scope.modalEdit.shown).toBeFalsy();
+      });
+
+    });
+
   });
 
 });

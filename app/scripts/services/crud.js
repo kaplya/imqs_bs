@@ -8,7 +8,8 @@ imqsBsApp.factory('Crud', function() {
   };
   return {
     init: function(scope, resource, opts) {
-    	var opts = angular.extend({}, defaultOpts, opts);
+    	var opts = angular.extend({}, defaultOpts, opts),
+    		callbacks = {};
 
 	    scope[opts.itemModal] = { shown: false };
 	  	scope.modalDel = { shown: false };
@@ -20,6 +21,11 @@ imqsBsApp.factory('Crud', function() {
 	    });
 
 	    scope.edit = function () {
+	      
+	      if(angular.isFunction(callbacks.beforeEdit)) {
+	      	if(callbacks.beforeEdit() === false) { return };
+	      }
+
 	      scope[opts.itemModal].data = {};
 	      scope[opts.itemModal].listData = this[opts.item];
 	      scope[opts.itemModal].spin = true;
@@ -92,6 +98,9 @@ imqsBsApp.factory('Crud', function() {
 	        scope.modalDel.spin = false;
 	      });
 	    }
+
+	    return callbacks;
+
     }
   };
 });
