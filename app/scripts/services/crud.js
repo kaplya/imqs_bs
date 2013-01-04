@@ -23,7 +23,7 @@ imqsBsApp.factory('Crud', function() {
 	    scope.edit = function () {
 	      
 	      if(angular.isFunction(callbacks.beforeEdit)) {
-	      	if(callbacks.beforeEdit() === false) { return };
+	      	if(callbacks.beforeEdit(this) === false) { return };
 	      }
 
 	      scope[opts.itemModal].data = {};

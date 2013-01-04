@@ -224,6 +224,16 @@ describe('Service: Crud', function () {
         expect(scope.modalEdit.shown).toBeFalsy();
       });
 
+      it('should call with scope where method was called', function () {
+        var ss;
+        callbacks.beforeEdit = function (s) {
+          ss = s;
+        };
+        var s = { i: {id: 1} };
+        scope.edit.call(s);
+        expect(s).toBe(ss);
+      });
+
     });
 
   });
