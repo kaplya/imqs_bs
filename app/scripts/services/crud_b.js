@@ -7,7 +7,7 @@ imqsBsApp.factory('CrudB', function() {
   		list: 'list',
   		item: 'item',
   		show: 'show',
-  		edit: 'edit'
+  		edit: 'edit' // conflict with edit method
   	},
   	initRequest: 'list',
   	initRequestParams: {}
