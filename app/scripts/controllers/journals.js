@@ -4,16 +4,26 @@ imqsBsApp
   .factory('Journal', ['$resource', function ($resource) {
     return $resource('/journals/:id/:action');
   }])
-  .controller('JournalsListCtrl', ['$scope', 'Journal', 'Crud', function($scope, Journal, Crud) {
+  .controller('JournalsListCtrl', ['$scope', 'Journal', 'Crud', '$location', function($scope, Journal, Crud, $location) {
     $scope.templates = {
       sb: 'views/journals_sb.html',
       body: 'views/journals.html'
     };
     
-    Crud.init($scope, Journal, { 
+    var callbacks = Crud.init($scope, Journal, { 
       itemsList: 'journals',
-      itemModal: 'journalModal' 
+      itemModal: 'journalModal',
+      item: 'j' 
     });
+
+    callbacks.beforeEdit = function (s) {
+      $location.path('/journals/:id/show'.replace(':id', s.j.id));
+      return false;
+    };
+
+    callbacks.afterCreate = function (d) {
+      $location.path('/journals/:id/show'.replace(':id', d.id));
+    };
 
     // $scope.journals[0].lines = [
     // 	{date: "29.11.2012", item_code: "01", item_name: "Juice", qty: "10"},

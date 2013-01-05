@@ -23,6 +23,10 @@ var imqsBsApp = angular.module('imqsBsApp', ['ngResource', 'ui'])
         templateUrl: 'views/main.html',
         controller: 'ReportCtrl'
       })
+      .when('/journals/:id/show', {
+        templateUrl: 'views/main.html',
+        controller: 'JournalShowCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
