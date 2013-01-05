@@ -25,12 +25,6 @@ imqsBsApp
       $location.path('/journals/:id/show'.replace(':id', d.id));
     };
 
-    // $scope.journals[0].lines = [
-    // 	{date: "29.11.2012", item_code: "01", item_name: "Juice", qty: "10"},
-    // 	{date: "29.11.2012", item_code: "02", item_name: "Potato", qty: "7"},
-    // 	{date: "29.11.2012", item_code: "03", item_name: "Sugar", qty: "5"}
-    // ];
-
   }])
   .controller('JournalFormCtrl', ["$scope", "$timeout", function($scope, $timeout) {
     $scope.linesShown = false;

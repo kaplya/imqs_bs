@@ -1,2 +1,29 @@
-<h1>Journal</h1>{{id}}
 
+<h1>
+	<span class='span7'>{{j.j_type}} Journal {{j.number}}</span>
+	<span class='span3'>
+		<button class="btn btn-primary" ng-click='edit()'>Edit</button>
+		<button class="btn btn-danger">Delete</button>
+		<button class="btn btn-warning">Post</button>
+	</span>
+</h1>
+<h5 class='span10'>{{j.date}}</h5>
+
+<div class='span8'>
+	<table class="table">
+		<tr>
+			<th>Date</th>
+			<th>Item Code</th>
+			<th>Item Name</th>
+			<th>Quantity</th>
+		</tr>
+		<tr ng-repeat="l in j.lines">
+			<td>{{l.date}}</td>
+			<td>{{l.item_code}}</td>
+			<td>{{l.item_name}}</td>
+			<td>{{l.qty}}</td>
+		</tr>
+	</table>
+</div>
+
+<div ng-include='"views/journal_modal.html"'></div>
