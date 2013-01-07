@@ -31,17 +31,25 @@ describe('switch', function () {
 		expect(cases['b']).toBeDefined();
 	});
 
-	it('should append and remove case element', function () {
-		expect(switchElm.children().length).toBe(0);
+	it('should add and remove case element after the main element', function () {
+		expect(switchElm.next().length).toBe(0);
 		scope.$apply('mode="a"');
-		expect(switchElm.children().length).toBe(1);
+		expect(switchElm.next().length).toBe(1);
 		scope.$apply('mode=""');
-		expect(switchElm.children().length).toBe(0);
+		expect(switchElm.next().length).toBe(0);
+	});
+
+	it('should hide/show main element', function () {
+		expect(switchElm.css('display')).toBe('block');
+		scope.$apply('mode="a"');
+		expect(switchElm.css('display')).toBe('none');
+		scope.$apply('mode=""');
+		expect(switchElm.css('display')).toBe('block');
 	});
 
 	it('should create and destroy child scopes', function () {
 		var getChildScope = function () {
-			return switchElm.children('div[switch-when]').scope();
+			return switchElm.next('div[switch-when]').scope();
 		};
 
 		expect(getChildScope()).toBeUndefined();

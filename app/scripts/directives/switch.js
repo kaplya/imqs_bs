@@ -17,7 +17,7 @@ angular.module('ui')
 			restrict: 'EA',
 			compile: function (element, attr) {
 				var watchExpr = attr.switch,
-					cases = element.parents('body').data('switch') || {};
+					cases = angular.element('body').data('switch') || {};
 				return function (scope, element) {
 					var selectedTransclude,
 						selectedElement,
@@ -32,8 +32,11 @@ angular.module('ui')
 							selectedScope = scope.$new();
 							selectedTransclude(selectedScope, function (caseElement) {
 								selectedElement = caseElement;
-								element.append(caseElement);
+								element.after(caseElement);
+								element.css('display', 'none');
 							});
+						} else {
+							element.css('display', '');
 						}
 					});
 				};
