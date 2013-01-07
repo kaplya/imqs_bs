@@ -1,11 +1,11 @@
 'use strict';
 
-ddescribe('Service: Crud B', function () {
+describe('Service: Crud B', function () {
 
   beforeEach(module('imqsBsApp'));
 
   var crud, $httpBackend, scope, resource, callbacks;
-  beforeEach(inject(function(_CrudB_, _$httpBackend_, $rootScope, $resource) {
+  beforeEach(inject(function(_CrudB_,  _$httpBackend_, $rootScope, $resource) {
     resource = $resource('/items/:id/:action');
     crud = _CrudB_;
     scope = $rootScope;
@@ -14,273 +14,443 @@ ddescribe('Service: Crud B', function () {
 
   afterEach(function () {
     $httpBackend.verifyNoOutstandingExpectation();
-    $httpBackend.verifyNoOutstandingRequest();
+    // $httpBackend.verifyNoOutstandingRequest();
   });
 
-  describe('default otions', function () {
+  describe('init list', function () {
     
     beforeEach(function () {
-      $httpBackend.expect('GET', '/items').respond([{foo: 'Bar'}]);
-      callbacks = crud(scope, resource);
+      $httpBackend.expect('GET', '/items').respond([{ id: 1 }]);
+      crud(scope, resource);
     });
 
-    it('should query data', function () {
-        expect(scope.list).toBeUndefined();
-        $httpBackend.flush();
-        expect(scope.list.length).toBe(1);
-    });
-
-    it('should manage loading items spin', function () {
-      expect(scope.spin).toBeTruthy();
+    it('should load list', function () {
+      expect(scope.modelsList).toBeUndefined();
       $httpBackend.flush();
-      expect(scope.spin).toBeFalsy();
+      expect(scope.modelsList[0].id).toEqual(1);
     });
 
-    describe('edit item', function () {
-
-      it('should get data and show form when open edit modal form', function () {
-        expect(scope.edit.shown).toBeFalsy();
-        $httpBackend.expect('GET', '/items/1').respond({ id: 1 });
-        
-        scope.edit.call({ item: { id: 1 } });
-        expect(scope.edit.data).toEqual({});    
-
-        $httpBackend.flush();
-        expect(scope.edit.shown).toBeTruthy();
-        expect(scope.edit.data.id).toBe(1);
-      });
-
-      it('should manage spin when open form', function () {
-        $httpBackend.expect('GET', '/items/1').respond({ id: 1 });
-        scope.edit.call({ item: { id: 1 } });
-        expect(scope.edit.spin).toBeTruthy();
-        $httpBackend.flush();
-        expect(scope.edit.spin).toBeFalsy();
-      });
-    
-      it('should submit edited data and close form', function () {
-
-        expect(scope.edit.shown).toBeFalsy();
-
-        $httpBackend.expect('PUT', '/items/1').respond({ id: 1, foo: 'Bar' });
-        scope.edit.data = { id: 1, error: 'test' };
-        scope.edit.listData = {};
-        scope.createOrUpdate();
-        expect(scope.edit.data.error).toBeUndefined();
-        $httpBackend.flush();
-        expect(scope.edit.shown).toBeFalsy();
-        expect(scope.edit.listData.foo).toEqual('Bar');
-      });
-
-      it('should manage spin while submitting', function () {
-        $httpBackend.expect('PUT', '/items/1').respond({ id: 1, foo: 'Bar' });
-        scope.edit.data = { id: 1, error: 'test' };
-        scope.createOrUpdate();
-        expect(scope.edit.spin).toBeTruthy();
-        $httpBackend.flush();
-        expect(scope.edit.spin).toBeFalsy();
-      });
-
-      it('should fill errors', function () {
-        $httpBackend.when('PUT', '/items/1').respond(400, { foo: 'Bar' });
-        scope.edit.data = { id: 1 };
-        scope.createOrUpdate();
-        $httpBackend.flush();
-        expect(scope.edit.data.error.foo).toEqual('Bar');
-      });
-
-      it('in case of errors should stop spinning and keep form opend', function () {
-        $httpBackend.when('PUT', '/items/1').respond(400, { foo: 'Bar' });
-        scope.edit.shown = true;
-        scope.edit.data = { id: 1 };
-        scope.createOrUpdate();
-        expect(scope.edit.spin).toBeTruthy();
-        $httpBackend.flush();
-        expect(scope.edit.spin).toBeFalsy();
-        expect(scope.edit.shown).toBeTruthy();
-      });
-
+    it('should manage isBusy attr', function () {
+      expect(scope.isBusy).toBeTruthy();
+      $httpBackend.flush();
+      expect(scope.isBusy).toBeFalsy();
     });
 
-    describe('new item', function () {
-
-      it('should clear data and show new form', function () {
-        $httpBackend.flush();
-        scope.edit.data = { foo: 'Bar' };
-        scope.new();
-        expect(scope.edit.data).toEqual({});
-        expect(scope.edit.shown).toBeTruthy();
-      });
-
-      it('should submit new data and hide form', function () {
-        $httpBackend.expect('POST', '/items').respond();
-        scope.edit.data = { foo: 'Bar' };
-        scope.list = [];
-        scope.createOrUpdate();
-        $httpBackend.flush();
-        expect(scope.list[1].foo).toBe('Bar');
-      });
-
-      it('should manage spin while submitting new data', function () {
-        $httpBackend.expect('POST', '/items').respond();
-        scope.edit.data = { foo: 'Bar' };
-        scope.list = [];
-        scope.createOrUpdate();
-        expect(scope.edit.spin).toBeTruthy();
-        $httpBackend.flush();
-        expect(scope.edit.spin).toBeFalsy();
-      });
-
-      it('should show error', function () {
-        $httpBackend.when('POST', '/items').respond(400, { foo: 'Bar' });
-        scope.edit.data = {};
-        scope.createOrUpdate();
-        $httpBackend.flush();
-        expect(scope.edit.data.error.foo).toEqual('Bar');
-      });
-
-      it('should keep form opend and stop spinning if errors occur', function () {
-        $httpBackend.when('POST', '/items').respond(400, { foo: 'Bar' });
-        scope.edit.shown = true;
-        scope.edit.data = {};
-        scope.createOrUpdate();
-        expect(scope.edit.spin).toBeTruthy();
-        $httpBackend.flush();
-        expect(scope.edit.spin).toBeFalsy();
-        expect(scope.edit.shown).toBeTruthy();
-      });
-
-    });
-
-    describe('delete item', function () {
-
-      it('should clear errors and show del form', function () {
-        $httpBackend.flush();
-        scope.modalDel = { error: {foo: 'Bar'} };
-        expect(scope.modalDel.shown).toBeFalsy();
-        scope.delete.call( { item: { id: 1 } } );
-        expect(scope.modalDel.listData.id).toBe(1);
-        expect(scope.modalDel.error).toBeUndefined();
-        expect(scope.modalDel.shown).toBeTruthy();
-      });
-
-      it('should delete item and hide form', function () {
-        $httpBackend.flush();
-        scope.modalDel.listData = { id: 1 };
-        expect(scope.list.length).toBe(1);
-        
-        $httpBackend.expect('DELETE', '/items/1').respond();
-        scope.modalDel.shown = true;
-        scope.destroy();
-        $httpBackend.flush();
-        expect(scope.modalDel.shown).toBeFalsy();
-        expect(scope.list.length).toBe(0);
-      });
-      
-      it('should manage errors', function () {
-        $httpBackend.when('DELETE', '/items/1').respond(400, { foo: 'Bar' });
-        scope.modalDel.listData = { id: 1 };
-        scope.destroy();
-        $httpBackend.flush();
-        expect(scope.modalDel.error.foo).toEqual('Bar');
-      });
-
-      it('should keep form opened and stop spinning if errors occur', function () {
-        $httpBackend.when('DELETE', '/items/1').respond(400, { foo: 'Bar' });
-        scope.modalDel.shown = true;
-        scope.modalDel.listData = { id: 1 };
-        scope.destroy();
-        expect(scope.modalDel.spin).toBeTruthy();
-        $httpBackend.flush();
-        expect(scope.modalDel.spin).toBeFalsy();
-        expect(scope.modalDel.shown).toBeTruthy();
-      });
-    });
-    
-    describe('callbacks', function () {
-        
-      describe('before edit', function () {
-        
-        afterEach(function () {
-          $httpBackend.flush();
-        });
-
-        beforeEach(function () {
-          $httpBackend.when('GET', '/items/1').respond({ id: 1 });
-        });
-
-        it('should call beforeEdit', function () {
-          var t = false;
-          callbacks.beforeEdit = function () {
-            t = true;
-          };
-          scope.edit.call({item: {id: 1}});
-          expect(t).toBeTruthy();
-        });
-
-        it('should stop default action if beforeEdit return false', function () {
-          callbacks.beforeEdit = function () {
-            return false;
-          };
-          scope.edit.call({ item: {id: 1} });
-          expect(scope.edit.shown).toBeFalsy();
-        });
-
-        it('should call with scope where method was called', function () {
-          var ss;
-          callbacks.beforeEdit = function (s) {
-            ss = s;
-          };
-          var s = { item: {id: 1} };
-          scope.edit.call(s);
-          expect(s).toBe(ss);
-        });
-
-      });
-
-      describe('after create', function () {
-        
-        beforeEach(function () {
-          $httpBackend.when('POST', '/items').respond({ id: 1 });
-        });
-
-        it('should call after create', function () {
-          scope.edit = { data: {}};
-          var t = false, r;
-          callbacks.afterCreate = function (rr) {
-            t = true;
-            r = rr;
-          }
-          scope.createOrUpdate();
-          $httpBackend.flush();
-          expect(t).toBeTruthy();
-          expect(r.id).toBe(1);
-        });
-
-      });
-    });
   });
 
-  describe('init request', function () {
+  describe('init item', function () {
     
-    it('should load item by id', function () {
+    beforeEach(function () {
       $httpBackend.expect('GET', '/items/1').respond({ id: 1 });
-      var callbacks = crud(scope, resource, { 
+      crud(scope, resource, {
         initRequest: 'item',
         initRequestParams: { id: 1 }
       });
-      $httpBackend.flush();
-      expect(scope.item.id).toBe(1);
     });
 
-    it('should load list with params', function () {
-      $httpBackend.expect('GET', '/items?filter=1').respond([{ id: 1 }]);
-      var callbacks = crud(scope, resource, { 
-        initRequest: 'list',
-        initRequestParams: { filter: 1 }
-      });
+    it('should load item', function () {
+      expect(scope.model).toBeUndefined();
       $httpBackend.flush();
-      expect(scope.list[0].id).toBe(1);
+      expect(scope.model.id).toBe(1);
+    });
+
+    it('should manage isBusy attr', function () {
+      expect(scope.isBusy).toBeTruthy();
+      $httpBackend.flush();
+      expect(scope.isBusy).toBeFalsy();
+    });    
+
+  });
+
+  describe('new', function () {
+    
+    var fScope;
+    beforeEach(function () {
+      $httpBackend.when('GET', '/items').respond([{ id: 1 }]);
+      crud(scope, resource);
+      fScope = scope.$new();
+      scope.FormCtrl(fScope);
+    });
+
+    it('should open form', function () {
+      expect(fScope.isShown).toBeFalsy();
+      scope.new();
+      expect(fScope.isShown).toBeTruthy();      
+    });
+
+    it('should init model', function () {
+      fScope.model = { foo: 'Bar' };
+      scope.new();
+      expect(fScope.model).toEqual({});
+    });
+
+    it('should empty errors', function () {
+      fScope.errors = { foo: 'Bar' };
+      scope.new();
+      expect(fScope.errors).toBeUndefined();
+    });
+
+  });
+
+  describe('create', function () {
+    
+    var fScope, callbacks;
+    beforeEach(function () {
+      $httpBackend.when('GET', '/items').respond([{ id: 1 }]);
+      callbacks = crud(scope, resource);
+      fScope = scope.$new();
+      scope.FormCtrl(fScope);
+      fScope.isShown = true;
+      fScope.model = { foo: 'Bar' };
+    });
+
+    it('should clean errors', function () {
+      $httpBackend.when('POST', '/items').respond();
+      fScope.errors = {};
+      fScope.createOrUpdate();
+      expect(fScope.errors).toBeUndefined();
+    });
+
+    it('should manage isBusy', function () {
+      $httpBackend.when('POST', '/items').respond();
+      fScope.createOrUpdate();
+      expect(fScope.isBusy).toBeTruthy();
+      $httpBackend.flush();
+      expect(fScope.isBusy).toBeFalsy();
+    });
+
+    it('should post data', function () {
+      $httpBackend.expect('POST', '/items', fScope.model).respond();
+      fScope.createOrUpdate();
+    });
+
+    it('should unshift data to modelsList', function () {
+      var v = { id: 2 };
+      $httpBackend.when('POST', '/items').respond(200, v);
+      fScope.createOrUpdate();
+      $httpBackend.flush();
+      expect(scope.modelsList[0].id).toBe(2);
+    });
+
+    it('should close form', function () {
+      $httpBackend.when('POST', '/items').respond();
+      fScope.createOrUpdate();
+      $httpBackend.flush();
+      expect(fScope.isShown).toBeFalsy();
+    });
+
+    it('should fill errors', function () {
+      var e = { foo: 'Bar' };
+      $httpBackend.when('POST', '/items').respond(400, e);
+      fScope.createOrUpdate();
+      $httpBackend.flush();
+      expect(fScope.errors).toBe(e);
+    });
+
+    it('should manage isBusy if errors', function () {
+      $httpBackend.when('POST', '/items').respond(400);
+      fScope.createOrUpdate();
+      expect(fScope.isBusy).toBeTruthy();
+      $httpBackend.flush();
+      expect(fScope.isBusy).toBeFalsy();
+    });
+
+    it('should not close form if error', function () {
+      $httpBackend.when('POST', '/items').respond(400);
+      fScope.createOrUpdate();
+      $httpBackend.flush();
+      expect(fScope.isShown).toBeTruthy();
+    });
+
+    it('should call afterCreate callback', function () {
+      $httpBackend.when('POST', '/items').respond();
+      var r = false;
+      callbacks.afterCreate = function () {
+        r = true;
+      };
+      fScope.createOrUpdate();
+      $httpBackend.flush();
+      expect(r).toBeTruthy();
+    });
+
+    it('should call afterCreate with created model', function () {
+      var m = { foo: 'Bar' };
+      $httpBackend.when('POST', '/items').respond(200, m);
+      var mm;
+      callbacks.afterCreate = function (d) {
+        mm = d;
+      };
+      fScope.createOrUpdate();
+      $httpBackend.flush();
+      expect(m.foo).toBe(mm.foo);
+    });
+
+  });
+
+  describe('edit', function () {
+    
+    var fScope, callbacks;
+    beforeEach(function () {
+      $httpBackend.when('GET', '/items').respond([{ id: 1 }]);
+      $httpBackend.when('GET', '/items/1').respond({ id: 1 });
+      callbacks = crud(scope, resource);
+      fScope = scope.$new();
+      scope.FormCtrl(fScope);
+    });
+
+    it('should open form', function () {
+      expect(fScope.isShown).toBeFalsy();
+      scope.edit.call( { model: {id: 1} } );
+      expect(fScope.isShown).toBeTruthy();
+    });
+
+    it('should empty errors', function () {
+      fScope.errors = { foo: 'Bar' };
+      scope.edit.call( { model: {id: 1} } );
+      expect(fScope.errors).toBeUndefined();
+    });
+
+    it('should put reference into model from modelList', function () {
+      var l = [{ id: 1 }];
+      scope.modelList = l;
+      scope.edit.call({ model: l[0] });
+      expect(scope.model).toBe(l[0]);
+    });
+
+    it('should load data', function () {
+      $httpBackend.expect('GET', '/items/2').respond({ id: 2, foo: 'Bar 2' });
+      
+      scope.edit.call({ model: { id: 2, foo: 'Bar 1' } });
+      expect(fScope.model.foo).toEqual('Bar 1');
+      
+      $httpBackend.flush();
+      expect(fScope.model.foo).toEqual('Bar 2');
+    });
+
+    it('should manage isBusy attr', function () {
+      expect(fScope.isBusy).toBeFalsy();
+      scope.edit.call({ model: { id: 1 } });
+      expect(fScope.isBusy).toBeTruthy();
+      $httpBackend.flush();
+      expect(fScope.isBusy).toBeFalsy();
+    });
+
+    it('should call beforeEdit callback', function () {
+      var t = false;
+      var s = { model: { id: 1 } };
+      callbacks.beforeEdit = function () {
+        t = true;
+      };
+      scope.edit.call(s);
+      expect(t).toBeTruthy();
+    });
+
+    it('should call beforeEdit with local scope', function () {
+      var s = { model: { id: 1 } },
+        ls;
+      callbacks.beforeEdit = function (s) {
+        ls = s;
+      };
+      scope.edit.call(s);
+      expect(ls).toBe(s);
+    });
+
+    it('should do nothing is beforeEdit return false', function () {
+      var s = { model: { id: 3 } };
+      callbacks.beforeEdit = function () {
+        return false;
+      };
+      scope.edit.call(s);
+      expect(fScope.isBusy).toBeFalsy();
+      expect(fScope.isShown).toBeFalsy();
+    });
+
+  });
+
+  describe('update', function () {
+    var fScope;
+
+    beforeEach(function () {
+      $httpBackend.when('GET','/items').respond([{ id: 1 }]);
+      crud(scope, resource);
+      fScope = scope.$new();
+      scope.FormCtrl(fScope);
+      fScope.isShown = true;
+      scope.model = { id: 1, foo: 'Bar' };
+      fScope.model = { id: 1, foo: 'Bar' };
+    });
+
+    it('should clean errors', function () {
+      $httpBackend.when('PUT', '/items/1').respond();
+      fScope.errors = {};
+      fScope.createOrUpdate();
+      expect(fScope.errors).toBeUndefined();
+    });
+
+    it('should manage isBusy', function () {
+      $httpBackend.when('PUT', '/items/1').respond();
+      fScope.createOrUpdate();
+      expect(fScope.isBusy).toBeTruthy();
+      $httpBackend.flush();
+      expect(fScope.isBusy).toBeFalsy();
+    });
+
+    it('should put data', function () {
+      $httpBackend.expect('PUT', '/items/1', fScope.model).respond();
+      fScope.createOrUpdate();
+    });
+
+    it('should update initial data', function () {
+      var r = { id: 1, foo: 'Bar 2'};
+      $httpBackend.when('PUT', '/items/1').respond(200, r);
+      fScope.createOrUpdate();
+      $httpBackend.flush();
+      expect(scope.model.foo).toBe('Bar 2');
+    });
+
+    it('should close form', function () {
+      $httpBackend.when('PUT', '/items/1').respond();
+      fScope.createOrUpdate();
+      $httpBackend.flush();
+      expect(fScope.isShown).toBeFalsy();
+    });
+
+    it('should fill errors', function () {
+      var e = { foo: 'Bar' };
+      $httpBackend.when('PUT', '/items/1').respond(400, e);
+      fScope.createOrUpdate();
+      $httpBackend.flush();
+      expect(fScope.errors).toBe(e);
+    });
+
+    it('should manage isBusy if errors', function () {
+      $httpBackend.when('PUT', '/items/1').respond(400);
+      fScope.createOrUpdate();
+      expect(fScope.isBusy).toBeTruthy();
+      $httpBackend.flush();
+      expect(fScope.isBusy).toBeFalsy();
+    });
+
+    it('should not close form if error', function () {
+      $httpBackend.when('PUT', '/items/1').respond(400);
+      fScope.createOrUpdate();
+      expect(fScope.isShown).toBeTruthy();
+      $httpBackend.flush();
+      expect(fScope.isShown).toBeTruthy();
+    });
+ 
+  });
+
+  describe('delete', function () {
+    
+    var fScope;
+    beforeEach(function () {
+      $httpBackend.when('GET', '/items').respond([{ id: 1 }]);
+      crud(scope, resource);
+      fScope = scope.$new();
+      scope.DelFormCtrl(fScope);
+    });
+
+    it('should open form', function () {
+      fScope.isShown = false;
+      scope.delete();
+      expect(fScope.isShown).toBeTruthy();
+    });
+
+    it('should empty errors', function () {
+      fScope.errors = { foo: 'Bar' };
+      scope.delete();
+      expect(fScope.errors).toBeUndefined();
+    });
+
+    it('should put reference of deleting item into form scope', function () {
+      var i = { model: { foo: 'Bar' } };
+      scope.delete.call(i);
+      expect(fScope.model).toBe(i.model);
+    });
+
+  });
+
+  describe('destroy', function () {
+    var fScope,
+      callbacks;
+    beforeEach(function () {
+      $httpBackend.when('GET', '/items').respond([{ id: 1}, { id: 2}]);
+      callbacks = crud(scope, resource);
+      $httpBackend.flush();
+      fScope = scope.$new();
+      scope.FormCtrl(fScope);
+      fScope.isShown = true;
+      fScope.model = scope.modelsList[0];
+      // scope.model = scope.modelsList[0];
+    });
+
+    it('should empty errors', function () {
+      fScope.errors = 'test';
+      $httpBackend.when('DELETE').respond();
+      fScope.destroy();
+      expect(fScope.errors).toBeUndefined();
+    });
+
+    it('should manage isBusy', function () {
+      $httpBackend.when('DELETE').respond();
+      fScope.destroy();
+      expect(fScope.isBusy).toBeTruthy();
+      $httpBackend.flush();
+      expect(fScope.isBusy).toBeFalsy();
+    });
+
+    it('should destroy data', function () {
+      fScope.model = { id: 5 };
+      $httpBackend.expect('DELETE', '/items/5').respond();
+      fScope.destroy();      
+    });
+
+    it('should close form', function () {
+      $httpBackend.when('DELETE').respond();
+      fScope.destroy();
+      $httpBackend.flush();
+      expect(fScope.isShown).toBeFalsy();      
+    });
+
+    it('should remove model from the list', function () {
+      $httpBackend.when('DELETE').respond();
+      fScope.destroy();
+      $httpBackend.flush();
+      expect(scope.modelsList[0].id).toBe(2);
+    });
+
+    it('should fill errors', function () {
+      var e = { foo: 'Bar' };
+      $httpBackend.when('DELETE').respond(400, e);
+      fScope.destroy();
+      $httpBackend.flush();
+      expect(fScope.errors).toBe(e);
+    });
+
+    it('should manage isBusy if errors', function () {
+      $httpBackend.when('DELETE').respond(400);
+      fScope.destroy();
+      $httpBackend.flush();
+      expect(fScope.isBusy).toBeFalsy();
+    });
+
+    it('should not close the form if errors', function () {
+      $httpBackend.when('DELETE').respond(400);
+      fScope.destroy();
+      $httpBackend.flush();
+      expect(fScope.isShown).toBeTruthy();
+    });
+
+    it('should call afterDestroy callback', function () {
+      $httpBackend.when('DELETE').respond(200);
+      var t = false;
+      callbacks.afterDestroy = function () {
+        t = true;
+      };
+      fScope.destroy();
+      $httpBackend.flush();
+      expect(t).toBeTruthy();
     });
 
   });
