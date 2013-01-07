@@ -1,4 +1,4 @@
-<div modal="modalDel.shown" class="fade" spin="modalDel.spin">
+<div modal="isShown" class="fade" spin="modalDel.spin" ng-controller='DelFormCtrl'>
 	<div class="modal-header">
 		<h4>
 			Item Deletion
@@ -7,9 +7,9 @@
 	<div class="modal-body">
 		<p>Are you really want to delete the Item?</p>
 		<div class="control-group controls">
-			<div ng-model="modalDel.main" error></div>
+			<div ng-model="main" error='errors'></div>
 		</div>
 		<button class="btn btn-danger" ng-click="destroy()">Yes</button>
-		<button class="btn" ng-click="modalDel.shown=false">No</button>
+		<button class="btn" ng-click="isShown=false">No</button>
 	</div>
 </div>

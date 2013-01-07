@@ -4,7 +4,7 @@ imqsBsApp
 	.factory('Line', ['$resource', function ($resource) {
 		return $resource('/lines/:id');
 	}])
-	.controller('JournalShowCtrl', ['$scope', '$route', 'Journal', 'CrudB', function($scope, $route, Journal, Crud) {
+	.controller('JournalShowCtrl', ['$scope', '$route', 'Journal', 'CrudB', '$location', function($scope, $route, Journal, Crud, $location) {
 	  
 		$scope.templates = {
 		  // sb: 'views/journal_show.html',
@@ -13,13 +13,17 @@ imqsBsApp
 
 	  var id = $route.current.params.id;
 
-	  Crud($scope, Journal, {
+	  var callbacks = Crud($scope, Journal, {
 	  	models: {
 	  		item: 'journal'
 	  	},
 	  	initRequest: 'item',
 	  	initRequestParams: { id: id }
 	  });
+
+	  callbacks.afterDestroy = function () {
+	  	$location.path('/journals');
+	  };
 
 	  $scope.linesCtrl = ['$scope', 'Line', function ($scope, Line) {
 		  Crud($scope, Line, {
@@ -29,6 +33,7 @@ imqsBsApp
 		  	},
 		  	initRequestParams: { journal_id: id }
 		  });
+		  $scope.lines = $scope.modelsList;
 	  }];
 
 	}]);

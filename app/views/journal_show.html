@@ -1,13 +1,14 @@
-
-<h1>
-	<span class='span7'>{{journal.j_type}} Journal {{journal.number}}</span>
+<div class="well well-large span7" spin='isBusy' ng-show='isBusy'></div>
+	
+<h1 ng-hide='isBusy'>
+	<span class='span7'>{{model.j_type}} Journal {{model.number}}</span>
 	<span class='span3'>
 		<button class="btn btn-primary" ng-click='edit()'>Edit</button>
-		<button class="btn btn-danger">Delete</button>
+		<button class="btn btn-danger" ng-click='delete()'>Delete</button>
 		<button class="btn btn-warning">Post</button>
 	</span>
 </h1>
-<h5 class='span10'>{{journal.date}}</h5>
+<h5 class='span10'>{{model.date}}</h5>
 
 <div class='span8' ng-controller='linesCtrl'>
 	<table class="table">
@@ -17,7 +18,7 @@
 			<th>Item Name</th>
 			<th>Quantity</th>
 		</tr>
-		<tr ng-repeat="l in lines">
+		<tr ng-repeat="l in modelsList">
 			<td>{{l.date}}</td>
 			<td>{{l.item_code}}</td>
 			<td>{{l.item_name}}</td>
@@ -27,3 +28,4 @@
 </div>
 
 <div ng-include='"views/journal_modal.html"'></div>
+<div ng-include='"views/del_modal.html"'></div>

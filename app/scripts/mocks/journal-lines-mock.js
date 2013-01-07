@@ -2,7 +2,7 @@
 
 imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
   
-  var PATH = '/lines?journal_id=2';
+  var PATH = '\/lines';
 
   var items = [
      {id: 1, journal_id: 2, date: "29.11.2012", item_code: "01", item_name: "Juice", qty: "10"},
@@ -14,7 +14,7 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
 
   var nextId = 4;
 
-  $httpBackend.whenGET(PATH).respond(items);
+  $httpBackend.whenGET(new RegExp(PATH + '\?')).respond(items);
 
 /*  $httpBackend.whenGET(/journals\/[1-9]+/).respond(function (method, url, data, headers) {
   	var r = angular.fromJson(data);

@@ -1,6 +1,6 @@
-<div modal="journalModal.shown" class="fade" spin="journalModal.spin">
+<div modal="isShown" spin="isBusy" ng-controller='NewOrEditFormCtrl' class="fade">
 	<div class="modal-header">
-		<button class="close" ng-click="journalModal.shown=false">x</button>
+		<button class="close" ng-click="isShown=false">x</button>
 		<h3>Journal</h3>
 	</div>
 	
@@ -10,7 +10,7 @@
 			<div class="control-group">
 				<label class="control-label">Number</label>
 				<div class="controls">
-					<input type="text" ng-model="journalModal.data.number" placeholder="Number of the journal" error>
+					<input type="text" ng-model="model.number" placeholder="Number of the journal" error>
 				</div>
 			</div>
 			
@@ -18,7 +18,7 @@
 				<label class="control-label">Date</label>
 				<div class="controls">
 					<div class="input-append">
-						<input type="text" ng-model="journalModal.data.date" placeholder="Date of the journal creation" error datepicker>
+						<input type="text" ng-model="model.date" placeholder="Date of the journal creation" error datepicker>
 						<button type='button' class='btn' data-toggle='datepicker'>
 							<i class='icon-calendar'></i>
 						</button>
@@ -29,19 +29,19 @@
 			<div class="control-group">
 				<label class="control-label">Type</label>
 				<div class="controls">
-					<select type="text" ng-model="journalModal.data.j_type" ng-options='t for t in ["Supply", "Movement"]' error>
+					<select type="text" ng-model="model.j_type" ng-options='t for t in ["Supply", "Movement"]' error>
 					</select>
 				</div>
 			</div>
 			
-			<div class="control-group controls" ng-show="journalModal.data.error.main">
-				<div ng-model="journalModal.data.main" error></div>
+			<div class="control-group controls" ng-show="model.error.main">
+				<div ng-model="model.main" error></div>
 			</div>
 			
 			<div class="control-group ">
 				<div class="controls">
 					<input type="submit" class="btn btn-primary">
-					<button type='button' class='btn btn-link' ng-click='journalModal.shown=false'>Cancel</button>
+					<button type='button' class='btn btn-link' ng-click='isShown=false'>Cancel</button>
 				</div>
 			</div>
 			
