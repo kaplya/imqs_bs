@@ -10,6 +10,11 @@
 </h1>
 <h5 class='span10'>{{model.date}}</h5>
 
+
+<a href ng-click='mode="a"'>a</a>
+<a href ng-click='mode="b"'>b</a>
+<a href ng-click='mode=""'>empty</a>
+
 <div class='span8' ng-controller='linesCtrl'>
 	<table class="table">
 		<tr>
@@ -18,14 +23,32 @@
 			<th>Item Name</th>
 			<th>Quantity</th>
 		</tr>
-		<tr ng-repeat="l in modelsList">
+		<tr>
+			<td colspan=5>
+				<form class="form-inline">
+					<input ng-model='date' placeholder='Date' class='input-small'>
+					<input ng-model='item_code' placeholder='Item code' class='input-small'>
+					<input ng-model='item_name' placeholder='Item name'>
+					<input ng-model='qty' placeholder='Quantity' class='input-small'>
+					<input type='submit' class='btn btn-primary'>
+					<button type='button' class='btn btn-link'>Cancel</button>
+				</form>
+			</td>
+		</tr>
+		<tr ng-repeat="l in modelsList" switch='mode'>
 			<td>{{l.date}}</td>
 			<td>{{l.item_code}}</td>
 			<td>{{l.item_name}}</td>
 			<td>{{l.qty}}</td>
+			<td>
+				<a href>Edit</a>
+			</td>
 		</tr>
 	</table>
 </div>
 
 <div ng-include='"views/journal_modal.html"'></div>
 <div ng-include='"views/del_modal.html"'></div>
+	
+
+

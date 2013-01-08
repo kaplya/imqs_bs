@@ -26,14 +26,12 @@ imqsBsApp
 	  };
 
 	  $scope.linesCtrl = ['$scope', 'Line', function ($scope, Line) {
-		  Crud($scope, Line, {
-		  	models: {
-		  		list: 'lines',
-		  		item: 'l'
-		  	},
-		  	initRequestParams: { journal_id: id }
-		  });
-		  $scope.lines = $scope.modelsList;
+		  Crud($scope, Line,
+		  	{
+		  		initRequestParams: { journal_id: id }
+		  	}
+		  );
+		  // $scope.mode = 'b';
 	  }];
 
 	}]);
