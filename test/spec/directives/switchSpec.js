@@ -5,24 +5,28 @@ describe('switch', function () {
 	beforeEach(module('ui'));
 
 	var scope,
+		body,
 		switchWnenElm,
-		switchElm,
-		body;
+		switchElm;
 
-	beforeEach(inject(function ($compile, $rootScope) {
+
+	beforeEach(inject(function (_$compile_, $rootScope) {
+		var $compile = _$compile_;
 		scope = $rootScope.$new();
 		body = $('body');
 		
 		var switchWnenTmpl = '' + 
 			'<div switch-when="a">A</div>' +
-			'<div switch-when="b">B</div>',
-			switchTmpl = '<div switch="mode"></div>';
+			'<div switch-when="b">B</div>' +
+			'<div switch-when="c" switch-controller="Ctrl">C</div>';
+		var switchTmpl = '<div switch="mode"></div>';
 	
-		switchWnenTmpl = $(switchWnenTmpl).appendTo(body);
-		switchTmpl = $(switchTmpl).appendTo(body);
+		var switchWnenTmpl = $(switchWnenTmpl).appendTo(body);
+		var switchTmpl = $(switchTmpl).appendTo(body);
 
 		switchWnenElm = $compile(switchWnenTmpl)(scope);
 		switchElm = $compile(switchTmpl)(scope);
+
 	}));
 
 	it('should add elms to body', function () {
@@ -62,6 +66,19 @@ describe('switch', function () {
 		scope.$apply('mode="b"');
 		var child2 = getChildScope();
 		expect(child1).not.toBe(child2);
+	});
+
+	it('should apply controller on the new scope', function () {
+		var b = false;
+		scope.foo = 'Bar';
+		var ss;
+		scope.Ctrl = ['$scope', function ($scope) {
+			b = true;
+			ss = $scope;
+		}];
+		scope.$apply('mode="c"');
+		expect(b).toBeTruthy();
+		expect(scope.foo).toBe(ss.foo);
 	});
 
 });
