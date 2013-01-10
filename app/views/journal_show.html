@@ -29,13 +29,20 @@
 				</form>
 			</td>
 		</tr>
+		<tr switch='mode'>
+			<td colspan=5>
+				<div class="btn-broup">
+					<button class="btn btn-link" ng-click="new()">Add new line</button>
+				</div>				
+			</td>
+		</tr>
 		<tr ng-repeat="model in modelsList" switch='mode' ng-controller='ShowFormCtrl'>
 			<td>{{model.date}}</td>
 			<td>{{model.item_code}}</td>
 			<td>{{model.item_name}}</td>
 			<td>{{model.qty}}</td>
 			<td>
-				<a href ng-click='newOrEdit()'>Edit</a>
+				<a href ng-click='edit()'>Edit</a>
 			</td>
 		</tr>
 	</table>

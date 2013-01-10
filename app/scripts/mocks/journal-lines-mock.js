@@ -64,7 +64,7 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
   });
 
 
-  $httpBackend.whenPUT(/lines\/[1-9]+/).respond(function (method, url, data, headers) {
+  $httpBackend.whenPUT(/lines\/[0-9]+/).respond(function (method, url, data, headers) {
     console.log(url);
     var r = angular.fromJson(data);
     var id = /\/([0-9]+)/.exec(url)[1];
@@ -82,24 +82,22 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
         return false;
       }
     }, items);
-
     return [200, data];
 
   });
-
-/*  
-  $httpBackend.whenPOST('/journals').respond(function (method, url, data, header) {
+ 
+  $httpBackend.whenPOST('/lines').respond(function (method, url, data, header) {
     var r = angular.fromJson(data);
     var e = {};
 
-    if(r.number == 'eRRoR') {
-      e['number'] = ['error test 1', 'error test 2'];
-      e['date'] = ['error test 3'];
-      e['j_type'] = ['error test 4'];
-      e['main'] = ['error test 5'];
+    if(r.qty == 'eRRoR') {
+      // e['number'] = ['error test 1', 'error test 2'];
+      // e['date'] = ['error test 3'];
+      // e['j_type'] = ['error test 4'];
+      // e['main'] = ['error test 5'];
     }
 
-    if(!$.isEmptyObject(e)) { return [400, e] }
+    // if(!$.isEmptyObject(e)) { return [400, e] }
 
     r.id = nextId;
     nextId++;
@@ -108,7 +106,7 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
     return [200, r];
 
   });
-
+/*
   $httpBackend.whenDELETE(/\/journals\/[1-9]+/).respond(function (method, url, data, headers) {
     var id = /\/([0-9]+)/.exec(url)[1];
     
