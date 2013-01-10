@@ -127,7 +127,7 @@ describe('Service: Crud C', function () {
       expect(fScope.$parent.mode).toBe(null);
     });
 
-    ddescribe('create', function () {
+    describe('create', function () {
       
       var fScope, callbacks;
       beforeEach(function () {
