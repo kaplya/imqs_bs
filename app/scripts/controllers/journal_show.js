@@ -25,7 +25,7 @@ imqsBsApp
 	  	$location.path('/journals');
 	  };
 
-	  $scope.linesCtrl = ['$scope', 'Line', function ($scope, Line) {
+	  $scope.LinesCtrl = ['$scope', 'Line', 'CrudC', function ($scope, Line, Crud) {
 		  Crud($scope, Line,
 		  	{
 		  		initRequestParams: { journal_id: id }

@@ -2,7 +2,7 @@
 
 imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
   
-  var PATH = '\/lines';
+  var PATH = 'ines';
 
   var items = [
      {id: 1, journal_id: 2, date: "29.11.2012", item_code: "01", item_name: "Juice", qty: "10"},
@@ -14,28 +14,58 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
 
   var nextId = 4;
 
-  $httpBackend.whenGET(new RegExp(PATH + '\?')).respond(items);
+  // $httpBackend.whenGET(new RegExp(PATH + '\?')).respond(items);
+  
+  function getQueryParams(qs) {
+    qs = qs.split("+").join(" ");
 
-/*  $httpBackend.whenGET(/journals\/[1-9]+/).respond(function (method, url, data, headers) {
-  	var r = angular.fromJson(data);
-  	var id = /\/([0-9]+)/.exec(url)[1];
+    var params = {}, tokens,
+        re = /[?&]([^=]+)=([^&]*)/g;
 
-  	var i;
-  	angular.forEach(items, function (v) {
-  		if(v.id == id) {
-  			i = v;
-  			return false;
-  		}
-  	});
+    while (tokens = re.exec(qs)) {
+        params[decodeURIComponent(tokens[1])]
+            = decodeURIComponent(tokens[2]);
+    }
 
-  	if(i)
-  		return [200, i];
-  	else
-  		return [402, 'not found'];
+    return params;
+  }
 
-  });*/
+  $httpBackend.whenGET(/^\/lines\?/).respond(function (method, url, data) {
+    console.log(url);
+    var p = getQueryParams(url);
 
-/*  $httpBackend.whenPUT(/journals\/[1-9]+/).respond(function (method, url, data, headers) {
+    var _items = [];
+    if(p.journal_id) {
+      angular.forEach(items, function (v, i) {
+        if (v.journal_id == p.journal_id) {
+          _items.push(v);
+        }
+      });
+    } else {
+      _items = items;
+    }
+
+    return [200, _items];
+  });
+
+  $httpBackend.whenGET(/\/lines\/[0-9]+/).respond(function (method, url, data) {
+    console.log(url);
+    var id = /\/([0-9]+)/.exec(url)[1];
+    var i;
+    angular.forEach(items, function (v) {
+      if(v.id == id) {
+        i = v;
+        return false;
+      }
+    });
+    
+    return [200, i];
+
+  });
+
+
+  $httpBackend.whenPUT(/lines\/[1-9]+/).respond(function (method, url, data, headers) {
+    console.log(url);
     var r = angular.fromJson(data);
     var id = /\/([0-9]+)/.exec(url)[1];
     var e = {};
@@ -57,6 +87,7 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
 
   });
 
+/*  
   $httpBackend.whenPOST('/journals').respond(function (method, url, data, header) {
     var r = angular.fromJson(data);
     var e = {};
