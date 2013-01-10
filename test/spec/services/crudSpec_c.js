@@ -37,6 +37,12 @@ describe('Service: Crud C', function () {
       expect(scope.isBusy).toBeFalsy();
     });
 
+    it('should open new form', function () {
+      scope.new();
+      expect(scope.mode).toBe('NewOrEdit');
+      expect(scope.isShown).toBeTruthy();
+    });
+
   });
 
   describe('init item', function () {
@@ -73,7 +79,6 @@ describe('Service: Crud C', function () {
       scope.model = { id: 1 };
       fScope = scope.$new();
     });
-
     
     it('should open form', function () {
       expect(fScope.isShown).toBeFalsy();
@@ -119,9 +124,10 @@ describe('Service: Crud C', function () {
       $controller('FormCtrl', { $scope: fScope });
       fScope.cancel();
       expect(fScope.isShown).toBeFalsy();
+      expect(fScope.$parent.mode).toBe(null);
     });
 
-    describe('create', function () {
+    ddescribe('create', function () {
       
       var fScope, callbacks;
       beforeEach(function () {
@@ -166,6 +172,7 @@ describe('Service: Crud C', function () {
         fScope.createOrUpdate();
         $httpBackend.flush();
         expect(fScope.isShown).toBeFalsy();
+        expect(fScope.$parent.mode).toBeNull();
       });
 
       it('should fill errors', function () {
@@ -311,7 +318,7 @@ describe('Service: Crud C', function () {
     });
 
     it('should set mode to NewOrEdit', function () {
-      fScope.newOrEdit();
+      fScope.edit();
       expect(fScope.mode).toBe('NewOrEdit');
     });
 

@@ -16,7 +16,7 @@ imqsBsApp.factory('CrudC', function() {
   function updateModel(dst) {   
     angular.forEach(arguments, function(obj) {
       if (obj !== dst) {
-        angular.forEach(dst, function (value, key) {
+        angular.forEach(obj, function (value, key) {
           if (key == '$$hashKey') { return true };
           dst[key] = obj[key];
         });
@@ -45,11 +45,17 @@ imqsBsApp.factory('CrudC', function() {
       });     
     };
 
+    scope.new = function () {
+      scope.model = null;
+      scope.mode = 'NewOrEdit';
+      scope.isShown = true;
+    };
+
     function formCtrl($scope) {
 			var fScope = $scope;
       fScope.errors = undefined;
       fScope.isShown = true;
-      fScope.isBusy = true;      
+      fScope.isBusy = true;
 
       if (fScope.model) {
         resource.get( { id: fScope.model.id }, function (data) {
@@ -59,7 +65,6 @@ imqsBsApp.factory('CrudC', function() {
       } else {
         fScope.model = {};
       }
-
 
       fScope.createOrUpdate = function () {    
         fScope.errors = undefined;
@@ -76,9 +81,11 @@ imqsBsApp.factory('CrudC', function() {
           })
         };
         var create = function () {
+          angular.extend(fScope.model, opts.initRequestParams);
           resource.create(fScope.model, function (data) {
             fScope.isBusy = false;
             fScope.isShown = false;
+            fScope.$parent.mode = null;
             if(angular.isArray(scope.modelsList)) {
               scope.modelsList.unshift(data);
             }
@@ -139,8 +146,9 @@ imqsBsApp.factory('CrudC', function() {
 
     scope.ShowFormCtrl = ['$scope', function ($scope) {      
       var fScope = $scope;
+      fScope.mode = null;
 
-      fScope.newOrEdit = function () {
+      fScope.edit = function () {
         // if(angular.isFunction(callbacks.beforeEdit)) {
         //   if(callbacks.beforeEdit(this) === false) { return };
         // }
