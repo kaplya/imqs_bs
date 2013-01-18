@@ -198,28 +198,19 @@ describe('Service: Crud C', function () {
         expect(fScope.isShown).toBeTruthy();
       });
 
-    //   it('should call afterCreate callback', function () {
-    //     $httpBackend.when('POST', '/items').respond();
-    //     var r = false;
-    //     callbacks.afterCreate = function () {
-    //       r = true;
-    //     };
-    //     fScope.createOrUpdate();
-    //     $httpBackend.flush();
-    //     expect(r).toBeTruthy();
-    //   });
-
-    //   it('should call afterCreate with created model', function () {
-    //     var m = { foo: 'Bar' };
-    //     $httpBackend.when('POST', '/items').respond(200, m);
-    //     var mm;
-    //     callbacks.afterCreate = function (d) {
-    //       mm = d;
-    //     };
-    //     fScope.createOrUpdate();
-    //     $httpBackend.flush();
-    //     expect(m.foo).toBe(mm.foo);
-    //   });
+      it('should call afterCreate callback', function () {
+        $httpBackend.when('POST', '/items').respond({ id: 100 });
+        var r = false,
+          id;
+        scope.$on('afterSuccessCreation', function (e, args) {
+          r = true;
+          id = args.id;
+        });
+        fScope.createOrUpdate();
+        $httpBackend.flush();
+        expect(r).toBeTruthy();
+        expect(id).toBe(100);
+      });
 
     });
 
@@ -317,15 +308,14 @@ describe('Service: Crud C', function () {
       $controller('ShowFormCtrl', { $scope: fScope });
     });
 
-    it('should set mode to NewOrEdit', function () {
+    it('should set mode to NewOrEdit on edit()', function () {
       fScope.edit();
       expect(fScope.mode).toBe('NewOrEdit');
     });
 
-    it('should open form', function () {
-      fScope.isShown = false;
+    it('should set mode to Del on delete()', function () {
       fScope.delete();
-      expect(fScope.isShown).toBeTruthy();
+      expect(fScope.mode).toBe('Del');
     });
 
     it('should empty errors', function () {
@@ -334,27 +324,29 @@ describe('Service: Crud C', function () {
       expect(fScope.errors).toBeUndefined();
     });
 
-    // iit('should call beforeEdit callback', function () {
-    //   var t = false;
-    //   callbacks.beforeEdit = function () {
-    //     t = true;
-    //   };
-    //   scope.edit();
-    //   expect(t).toBeTruthy();
-    // });
+    it('should call beforeEdit callback', function () {
+      var t = false;
+      scope.$on('beforeEdit', function () {
+        t = true;
+      });
+      fScope.edit();
+      expect(t).toBeTruthy();
+    });
 
   });
 
-  xdescribe('DelFormCtrl', function () {
-    
-    it('should close the form if cancel', function () {
-      fScope.cancel();
-      expect(fScope.isShown).toBeFalsy();
+  describe('DelFormCtrl', function () {
+    var fScope;
+    beforeEach(function () {
+      $httpBackend.when('GET', '/items').respond([{ id: 1 }]);
+      crud(scope, resource);
+      fScope = scope.$new();
+      $controller('DelFormCtrl', { $scope: fScope });
     });
 
-    it('should empty mode on source scope', function () {
+    it('should set mode null if cancel', function () {
       fScope.cancel();
-      expect(fScope.sScope.mode).toBeNull();
+      expect(scope.mode).toBeNull();
     });
 
     describe('destroy', function () {
@@ -364,13 +356,10 @@ describe('Service: Crud C', function () {
     
       beforeEach(function () {
         $httpBackend.when('GET', '/items').respond([{ id: 1}, { id: 2}]);
-        callbacks = crud(scope, resource);
+        crud(scope, resource);
         $httpBackend.flush();
         fScope = scope.$new();
-        $controller('FormCtrl', { $scope: fScope });
-        fScope.isShown = true;
-        fScope.model = scope.modelsList[0];
-        // scope.model = scope.modelsList[0];
+        $controller('DelFormCtrl', { $scope: fScope });
       });
 
       it('should empty errors', function () {
@@ -380,7 +369,7 @@ describe('Service: Crud C', function () {
         expect(fScope.errors).toBeUndefined();
       });
 
-      it('should manage isBusy', function () {
+      xit('should manage isBusy', function () {
         $httpBackend.when('DELETE').respond();
         fScope.destroy();
         expect(fScope.isBusy).toBeTruthy();
@@ -394,21 +383,21 @@ describe('Service: Crud C', function () {
         fScope.destroy();      
       });
 
-      it('should close form', function () {
+      xit('should change mode to null', function () {
         $httpBackend.when('DELETE').respond();
         fScope.destroy();
         $httpBackend.flush();
-        expect(fScope.isShown).toBeFalsy();      
+        expect(scope.mode).toBeNull();      
       });
 
-      it('should remove model from the list', function () {
+      xit('should remove model from the list', function () {
         $httpBackend.when('DELETE').respond();
         fScope.destroy();
         $httpBackend.flush();
         expect(scope.modelsList[0].id).toBe(2);
       });
 
-      it('should fill errors', function () {
+      xit('should fill errors', function () {
         var e = { foo: 'Bar' };
         $httpBackend.when('DELETE').respond(400, e);
         fScope.destroy();
@@ -416,14 +405,14 @@ describe('Service: Crud C', function () {
         expect(fScope.errors).toBe(e);
       });
 
-      it('should manage isBusy if errors', function () {
+      xit('should manage isBusy if errors', function () {
         $httpBackend.when('DELETE').respond(400);
         fScope.destroy();
         $httpBackend.flush();
         expect(fScope.isBusy).toBeFalsy();
       });
 
-      it('should not close the form if errors', function () {
+      xit('should not close the form if errors', function () {
         $httpBackend.when('DELETE').respond(400);
         fScope.destroy();
         $httpBackend.flush();
@@ -433,9 +422,9 @@ describe('Service: Crud C', function () {
       it('should call afterDestroy callback', function () {
         $httpBackend.when('DELETE').respond(200);
         var t = false;
-        callbacks.afterDestroy = function () {
+        scope.$on('afterSuccessDestroy', function () {
           t = true;
-        };
+        });
         fScope.destroy();
         $httpBackend.flush();
         expect(t).toBeTruthy();

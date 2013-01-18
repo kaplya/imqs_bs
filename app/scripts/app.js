@@ -55,3 +55,13 @@ var imqsBsApp = angular.module('imqsBsApp', ['ngResource', 'ui'])
     .value('config', {
       datepicker: { format: 'dd.mm.yyyy' }
     });
+
+(function($){
+  $.event.special.destroyed = {
+    remove: function(o) {
+      if (o.handler) {
+        o.handler()
+      }
+    }
+  }
+})(angular.element)

@@ -3,14 +3,15 @@
 imqsBsApp.factory('CrudC', function() {
 
   var defaultOpts = {
-  	models: {
-  		list: 'list',
-  		item: 'item',
-  		show: 'show',
-  		edit: 'edit' // conflict with edit method
-  	},
+    modelName: 'model',
+    modelsListName: 'modelsList',
   	initRequest: 'list',
-  	initRequestParams: {}
+  	initRequestParams: {},
+    modes: {
+      new: 'NewOrEdit',
+      edit: 'NewOrEdit',
+      delete: 'Del'
+    }
   };
 
   function updateModel(dst) {   
@@ -28,26 +29,26 @@ imqsBsApp.factory('CrudC', function() {
   return function(scope, resource, opts) {
 
 		scope.isBusy = true;
-    var opts = angular.extend({}, defaultOpts, opts),
-      callbacks = {};
+    var opts = angular.extend({}, defaultOpts, opts);
     
-    opts.models = angular.extend({}, defaultOpts.models, opts.models);
+    // opts.models = angular.extend({}, defaultOpts.models, opts.models);
+    opts.modes = angular.extend({}, defaultOpts.modes, opts.modes);
 
     if(opts.initRequest == 'list') {
       resource.query(opts.initRequestParams, function (data) {
-        scope.modelsList = data;
+        scope[opts.modelsListName] = data;
         scope.isBusy = false;
       });
     } else if (opts.initRequest == 'item') {
       resource.get(opts.initRequestParams, function (data) {
-        scope.model = data;
+        scope[opts.modelName] = data;
         scope.isBusy = false;
       });     
     };
 
     scope.new = function () {
-      scope.model = null;
-      scope.mode = 'NewOrEdit';
+      scope[opts.modelName] = null;
+      scope.mode = opts.modes.new;
       scope.isShown = true;
     };
 
@@ -57,23 +58,23 @@ imqsBsApp.factory('CrudC', function() {
       fScope.isShown = true;
       fScope.isBusy = true;
 
-      if (fScope.model) {
-        resource.get( { id: fScope.model.id }, function (data) {
-          fScope.model = data;
+      if (fScope[opts.modelName]) {
+        resource.get( { id: fScope[opts.modelName].id }, function (data) {
+          fScope[opts.modelName] = data;
           fScope.isBusy = false;
         });
       } else {
-        fScope.model = {};
+        fScope[opts.modelName] = {};
       }
 
       fScope.createOrUpdate = function () {    
         fScope.errors = undefined;
         fScope.isBusy = true;
         var update = function () {
-          resource.update({ id: fScope.model.id }, fScope.model, function (data) {
+          resource.update({ id: fScope[opts.modelName].id }, fScope[opts.modelName], function (data) {
             fScope.isBusy = false;
             fScope.isShown = false;
-            updateModel(fScope.$parent.model, data);
+            updateModel(fScope.$parent[opts.modelName], data);
             fScope.$parent.mode = null;
           }, function (r) {
             fScope.errors = r.data;
@@ -81,44 +82,41 @@ imqsBsApp.factory('CrudC', function() {
           })
         };
         var create = function () {
-          angular.extend(fScope.model, opts.initRequestParams);
-          resource.create(fScope.model, function (data) {
+          angular.extend(fScope[opts.modelName], opts.initRequestParams);
+          resource.create(fScope[opts.modelName], function (data) {
             fScope.isBusy = false;
             fScope.isShown = false;
             fScope.$parent.mode = null;
-            if(angular.isArray(scope.modelsList)) {
-              scope.modelsList.unshift(data);
+            if(angular.isArray(scope[opts.modelsListName])) {
+              scope[opts.modelsListName].unshift(data);
             }
-            if(angular.isFunction(callbacks.afterCreate)) {
-              callbacks.afterCreate(data);
-            };
+            fScope.$emit('afterSuccessCreation', { id: data.id });
           }, function (r) {
             fScope.errors = r.data;
             fScope.isBusy = false;
           });
         };
 
-        if (fScope.model.id) { update() } 
+        if (fScope[opts.modelName].id) { update() } 
         else { create() };
       };
 
       fScope.destroy = function () {
         fScope.errors = undefined;
         fScope.isBusy = true;
-        resource.destroy({ id: fScope.model.id }, function () {
+        resource.destroy({ id: fScope[opts.modelName].id }, function () {
           fScope.isBusy = false;
           fScope.isShown = false;
-          if(angular.isArray(scope.modelsList)) {
+          //fScope.$parent.mode = null;
+          if(angular.isArray(scope[opts.modelsListName])) {
             var index;
-            angular.forEach(scope.modelsList, function (v, i) {
-              if (v.id != fScope.model.id) { return true; }
+            angular.forEach(scope[opts.modelsListName], function (v, i) {
+              if (v.id != fScope[opts.modelName].id) { return true; }
               index = i; return false;
             });
-            scope.modelsList.splice(index, 1);
+            scope[opts.modelsListName].splice(index, 1);
           };
-          if(angular.isFunction(callbacks.afterDestroy)) {
-            callbacks.afterDestroy();
-          }
+          fScope.$emit('afterSuccessDestroy', { modelName: opts.modelName });
         }, function (r) {
           fScope.errors = r.data;
           fScope.isBusy = false;
@@ -149,14 +147,14 @@ imqsBsApp.factory('CrudC', function() {
       fScope.mode = null;
 
       fScope.edit = function () {
-        // if(angular.isFunction(callbacks.beforeEdit)) {
-        //   if(callbacks.beforeEdit(this) === false) { return };
-        // }
-        fScope.mode = 'NewOrEdit';
+        if(fScope.$emit('beforeEdit').defaultPrevented) { 
+          return 
+        };
+        fScope.mode = opts.modes.edit;
       };
 
       fScope.delete = function () {
-        fScope.isShown = true;
+        fScope.mode = opts.modes.delete;
         fScope.errors = undefined;
       };
     }];
