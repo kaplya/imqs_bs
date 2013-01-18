@@ -1,14 +1,14 @@
 <div class="well well-large span7" spin='isBusy' ng-show='isBusy'></div>
 	
-<h1 ng-hide='isBusy'>
-	<span class='span7'>{{model.j_type}} Journal {{model.number}}</span>
+<h1 ng-hide='isBusy' reveal on='mode' ng-controller='ShowFormCtrl'>
+	<span class='span7'>{{j.j_type}} Journal {{j.number}}</span>
 	<span class='span3'>
 		<button class="btn btn-primary" ng-click='edit()'>Edit</button>
 		<button class="btn btn-danger" ng-click='delete()'>Delete</button>
 		<button class="btn btn-warning">Post</button>
 	</span>
 </h1>
-<h5 class='span10'>{{model.date}}</h5>
+<h5 class='span10'>{{j.date}}</h5>
 <div class='span8' ng-controller='LinesCtrl'>
 	<table class="table">
 		<tr>
@@ -17,39 +17,43 @@
 			<th>Item Name</th>
 			<th>Quantity</th>
 		</tr>
-		<tr switch-when='NewOrEdit' switch-controller='FormCtrl'>
-			<td colspan=5>
+		<tr part='NewOrEditLine' is='row' part-controller='FormCtrl'>
+			<td colspan=6>
 				<form class="form-inline" ng-submit='createOrUpdate()'>
-					<input ng-model='model.date' placeholder='Date' class='input-small'>
-					<input ng-model='model.item_code' placeholder='Item code' class='input-small'>
-					<input ng-model='model.item_name' placeholder='Item name'>
-					<input ng-model='model.qty' placeholder='Quantity' class='input-small'>
+					<input ng-model='l.date' placeholder='Date' class='input-small'>
+					<input ng-model='l.item_code' placeholder='Item code' class='input-small'>
+					<input ng-model='l.item_name' placeholder='Item name'>
+					<input ng-model='l.qty' placeholder='Quantity' class='input-small'>
 					<input type='submit' class='btn btn-primary'>
 					<button type='button' class='btn btn-link' ng-click='cancel()'>Cancel</button>
 				</form>
 			</td>
 		</tr>
-		<tr switch='mode'>
-			<td colspan=5>
+		<tr reveal on='mode'>
+			<td colspan=4>
 				<div class="btn-broup">
 					<button class="btn btn-link" ng-click="new()">Add new line</button>
 				</div>				
 			</td>
 		</tr>
-		<tr ng-repeat="model in modelsList" switch='mode' ng-controller='ShowFormCtrl'>
-			<td>{{model.date}}</td>
-			<td>{{model.item_code}}</td>
-			<td>{{model.item_name}}</td>
-			<td>{{model.qty}}</td>
+		<tr reveal on='mode' ng-repeat="l in lines" ng-controller='ShowFormCtrl'>
+			<td>{{l.date}}</td>
+			<td>{{l.item_code}}</td>
+			<td>{{l.item_name}}</td>
+			<td>{{l.qty}}</td>
 			<td>
 				<a href ng-click='edit()'>Edit</a>
+			</td>
+			<td>
+				<a href ng-click='delete()'>Delete</a>
 			</td>
 		</tr>
 	</table>
 </div>
 
-<div ng-include='"views/journal_modal.html"'></div>
 <div ng-include='"views/del_modal.html"'></div>
+<div ng-include='"views/journal_modal.html"'></div>
+<!-- <div ng-include='"views/test_modal.html"'></div> -->
 	
 
 

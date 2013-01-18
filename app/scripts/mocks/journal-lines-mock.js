@@ -106,13 +106,13 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
     return [200, r];
 
   });
-/*
-  $httpBackend.whenDELETE(/\/journals\/[1-9]+/).respond(function (method, url, data, headers) {
+
+  $httpBackend.whenDELETE(/\/lines\/[0-9]+/).respond(function (method, url, data, headers) {
     var id = /\/([0-9]+)/.exec(url)[1];
     
-    if(id == 1) {
-      return [400, { main: ['error test 1', 'error test 2'] }];
-    }
+    // if(id == 1) {
+    //   return [400, { main: ['error test 1', 'error test 2'] }];
+    // }
 
     angular.forEach(items, function (v, i) {
       if(v.id != id) { return true; }
@@ -122,6 +122,6 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
 
     return [200];
 
-  })  */
+  })
 
 }]);

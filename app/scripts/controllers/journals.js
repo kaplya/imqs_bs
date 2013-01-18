@@ -4,22 +4,22 @@ imqsBsApp
   .factory('Journal', ['$resource', function ($resource) {
     return $resource('/journals/:id/:action');
   }])
-  .controller('JournalsListCtrl', ['$scope', 'Journal', 'CrudB', '$location', function($scope, Journal, Crud, $location) {
+  .controller('JournalsListCtrl', ['$scope', 'Journal', 'CrudC', '$location', function($scope, Journal, Crud, $location) {
     $scope.templates = {
       sb: 'views/journals_sb.html',
       body: 'views/journals.html'
     };
     
-    var callbacks = Crud($scope, Journal);
+    Crud($scope, Journal, { modelName: 'j', modelsListName: 'journals'});
 
-    callbacks.afterCreate = function (d) {
-      $location.path('/journals/:id/show'.replace(':id', d.id));
-    };
+    $scope.$on('beforeEdit', function (e) {
+      e.preventDefault();
+      $location.path('/journals/:id/show'.replace(':id', e.targetScope.j.id));
+    });
 
-    callbacks.beforeEdit = function (s) {
-      $location.path('/journals/:id/show'.replace(':id', s.model.id));
-      return false;
-    };
+    $scope.$on('afterSuccessCreation', function (e, args) {
+      $location.path('/journals/:id/show'.replace(':id', args.id));
+    });
 
   }])
   .controller('JournalFormCtrl', ["$scope", "$timeout", function($scope, $timeout) {
