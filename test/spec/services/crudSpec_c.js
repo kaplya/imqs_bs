@@ -4,7 +4,7 @@ describe('Service: Crud', function () {
 
   beforeEach(module('imqsBsApp'));
 
-  var crud, $httpBackend, $controller, scope, resource, callbacks;
+  var crud, $httpBackend, $controller, scope, resource;
   beforeEach(inject(function(_CrudC_,  _$httpBackend_, $rootScope, $resource, _$controller_) {
     resource = $resource('/items/:id/:action');
     crud = _CrudC_;
@@ -131,10 +131,10 @@ describe('Service: Crud', function () {
 
     describe('create', function () {
       
-      var fScope, callbacks;
+      var fScope;
       beforeEach(function () {
         $httpBackend.when('GET', '/items').respond([{ id: 1 }]);
-        callbacks = crud(scope, resource);
+        crud(scope, resource);
         fScope = scope.$new();
         $controller('InitCtrl', { $scope: scope });
         $controller('NewOrEditFormCtrl', { $scope: fScope });
@@ -201,7 +201,7 @@ describe('Service: Crud', function () {
         expect(fScope.isShown).toBeTruthy();
       });
 
-      it('should call afterCreate callback', function () {
+      it('should call afterCreate event', function () {
         $httpBackend.when('POST', '/items').respond({ id: 100 });
         var r = false,
           id;
@@ -303,10 +303,10 @@ describe('Service: Crud', function () {
 
   describe('ShowFormCtrl', function () {
     
-    var fScope, callbacks;
+    var fScope;
     beforeEach(function () {
       $httpBackend.when('GET', '/items').respond([{ id: 1 }]);
-      callbacks = crud(scope, resource);
+      crud(scope, resource);
       fScope = scope.$new();
       $controller('ShowFormCtrl', { $scope: fScope });
     });
@@ -327,7 +327,7 @@ describe('Service: Crud', function () {
       expect(fScope.errors).toBeUndefined();
     });
 
-    it('should call beforeEdit callback', function () {
+    it('should call beforeEdit event', function () {
       var t = false;
       scope.$on('beforeEdit', function () {
         t = true;
@@ -354,8 +354,7 @@ describe('Service: Crud', function () {
 
     describe('destroy', function () {
     
-      var fScope,
-        callbacks;
+      var fScope;
     
       beforeEach(function () {
         $httpBackend.when('GET', '/items').respond([{ id: 1}, { id: 2}]);
@@ -422,7 +421,7 @@ describe('Service: Crud', function () {
         expect(fScope.isShown).toBeTruthy();
       });
 
-      it('should call afterDestroy callback', function () {
+      it('should call afterDestroy event', function () {
         $httpBackend.when('DELETE').respond(200);
         var t = false;
         scope.$on('afterSuccessDestroy', function () {
