@@ -49,8 +49,8 @@ imqsBsApp.factory('CrudC', function() {
         resource.create(fScope[opts.modelName], function (data) {
           fScope.isBusy = false;
           fScope.$parent.mode = null;
-          if(angular.isArray(scope[opts.modelsListName])) {
-            scope[opts.modelsListName].unshift(data);
+          if(angular.isArray(fScope[opts.modelsListName])) {
+            fScope[opts.modelsListName].unshift(data);
           }
           fScope.$emit('afterSuccessCreation', { id: data.id });
         }, function (r) {
@@ -69,13 +69,13 @@ imqsBsApp.factory('CrudC', function() {
       resource.destroy({ id: fScope[opts.modelName].id }, function () {
         fScope.isBusy = false;
         //fScope.$parent.mode = null;
-        if(angular.isArray(scope[opts.modelsListName])) {
+        if(angular.isArray(fScope[opts.modelsListName])) {
           var index;
-          angular.forEach(scope[opts.modelsListName], function (v, i) {
+          angular.forEach(fScope[opts.modelsListName], function (v, i) {
             if (v.id != fScope[opts.modelName].id) { return true; }
             index = i; return false;
           });
-          scope[opts.modelsListName].splice(index, 1);
+          fScope[opts.modelsListName].splice(index, 1);
         };
         fScope.$emit('afterSuccessDestroy', { modelName: opts.modelName });
       }, function (r) {
@@ -106,6 +106,7 @@ imqsBsApp.factory('CrudC', function() {
     };
 
     scope.InitCtrl =['$scope', function ($scope) {
+      $scope.mode = null;
       $scope.isBusy = true;
       if(opts.initRequest == 'list') {
         resource.query(opts.initRequestParams, function (data) {
@@ -116,7 +117,9 @@ imqsBsApp.factory('CrudC', function() {
         resource.get(opts.initRequestParams, function (data) {
           $scope[opts.modelName] = data;
           $scope.isBusy = false;
-        });     
+        });
+        $scope.edit = function () { edit ($scope) };
+        $scope.delete = function () { delete_($scope) };
       };
 
       $scope.new = function () { new_($scope) };
@@ -151,7 +154,6 @@ imqsBsApp.factory('CrudC', function() {
       $scope.destroy = function () { destroy($scope) };
       $scope.cancel = function () { cancel($scope) };
     }];
-
   
   };  
 });

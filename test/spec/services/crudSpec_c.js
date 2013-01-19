@@ -130,6 +130,7 @@ describe('Service: Crud', function () {
         fScope = scope.$new();
         $controller('InitCtrl', { $scope: scope });
         $controller('NewOrEditFormCtrl', { $scope: fScope });
+        scope.new();
         fScope.model = { foo: 'Bar' };
       });
 
