@@ -82,31 +82,31 @@ describe('Service: Crud C', function () {
     
     it('should open form', function () {
       expect(fScope.isShown).toBeFalsy();
-      $controller('FormCtrl', { $scope: fScope });
+      $controller('NewOrEditFormCtrl', { $scope: fScope });
       expect(fScope.isShown).toBeTruthy();
     });
 
     it('should not load data if model is not present', function () {
       scope.model = undefined;
-      $controller('FormCtrl', { $scope: fScope });
+      $controller('NewOrEditFormCtrl', { $scope: fScope });
     });
 
     it('should init model if null or undefined', function () {
       scope.model = null;
-      $controller('FormCtrl', { $scope: fScope });
+      $controller('NewOrEditFormCtrl', { $scope: fScope });
       expect(fScope.model).toEqual({});
     });
 
     it('should empty errors', function () {
       fScope.errors = { foo: 'Bar' };
-      $controller('FormCtrl', { $scope: fScope });
+      $controller('NewOrEditFormCtrl', { $scope: fScope });
       expect(fScope.errors).toBeUndefined();
     });
     
     it('should load data', function () {
       $httpBackend.expect('GET', '/items/2').respond({ id: 2, foo: 'Bar 2' });
       scope.model = { id: 2, foo: 'Bar 1'};
-      $controller('FormCtrl', { $scope: fScope });
+      $controller('NewOrEditFormCtrl', { $scope: fScope });
       expect(fScope.model.foo).toEqual('Bar 1');
       
       $httpBackend.flush();
@@ -114,14 +114,14 @@ describe('Service: Crud C', function () {
     });
 
     it('should manage isBusy attr', function () {
-      $controller('FormCtrl', { $scope: fScope });
+      $controller('NewOrEditFormCtrl', { $scope: fScope });
       expect(fScope.isBusy).toBeTruthy();
       $httpBackend.flush();
       expect(fScope.isBusy).toBeFalsy();
     });
 
     it('should close the form', function () {
-      $controller('FormCtrl', { $scope: fScope });
+      $controller('NewOrEditFormCtrl', { $scope: fScope });
       fScope.cancel();
       expect(fScope.isShown).toBeFalsy();
       expect(fScope.$parent.mode).toBe(null);
@@ -134,7 +134,7 @@ describe('Service: Crud C', function () {
         $httpBackend.when('GET', '/items').respond([{ id: 1 }]);
         callbacks = crud(scope, resource);
         fScope = scope.$new();
-        $controller('FormCtrl', { $scope: fScope });
+        $controller('NewOrEditFormCtrl', { $scope: fScope });
         fScope.isShown = true;
         fScope.model = { foo: 'Bar' };
       });
@@ -221,7 +221,7 @@ describe('Service: Crud C', function () {
         $httpBackend.when('GET','/items').respond([{ id: 1 }]);
         crud(scope, resource);
         fScope = scope.$new();
-        $controller('FormCtrl', { $scope: fScope });
+        $controller('NewOrEditFormCtrl', { $scope: fScope });
         fScope.isShown = true;
         scope.model = { id: 1, foo: 'Bar' };
         fScope.model = { id: 1, foo: 'Bar' };

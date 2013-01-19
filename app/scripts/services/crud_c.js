@@ -130,10 +130,6 @@ imqsBsApp.factory('CrudC', function() {
 
 		};
 
-    scope.FormCtrl = ['$scope', function ($scope) {
-      formCtrl($scope);
-    }];    
-
     scope.NewOrEditFormCtrl = ['$scope', function ($scope) {
       formCtrl($scope);
     }];
