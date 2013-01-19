@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Service: Crud C', function () {
+describe('Service: Crud', function () {
 
   beforeEach(module('imqsBsApp'));
 
@@ -23,6 +23,7 @@ describe('Service: Crud C', function () {
     beforeEach(function () {
       $httpBackend.expect('GET', '/items').respond([{ id: 1 }]);
       crud(scope, resource);
+      $controller('InitCtrl', { $scope: scope });
     });
 
     it('should load list', function () {
@@ -53,6 +54,7 @@ describe('Service: Crud C', function () {
         initRequest: 'item',
         initRequestParams: { id: 1 }
       });
+      $controller('InitCtrl', { $scope: scope });
     });
 
     it('should load item', function () {
@@ -134,6 +136,7 @@ describe('Service: Crud C', function () {
         $httpBackend.when('GET', '/items').respond([{ id: 1 }]);
         callbacks = crud(scope, resource);
         fScope = scope.$new();
+        $controller('InitCtrl', { $scope: scope });
         $controller('NewOrEditFormCtrl', { $scope: fScope });
         fScope.isShown = true;
         fScope.model = { foo: 'Bar' };
@@ -357,7 +360,7 @@ describe('Service: Crud C', function () {
       beforeEach(function () {
         $httpBackend.when('GET', '/items').respond([{ id: 1}, { id: 2}]);
         crud(scope, resource);
-        $httpBackend.flush();
+        // $httpBackend.flush();
         fScope = scope.$new();
         $controller('DelFormCtrl', { $scope: fScope });
       });

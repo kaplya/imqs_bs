@@ -28,29 +28,11 @@ imqsBsApp.factory('CrudC', function() {
 
   return function(scope, resource, opts) {
 
-		scope.isBusy = true;
+		
     var opts = angular.extend({}, defaultOpts, opts);
     
     // opts.models = angular.extend({}, defaultOpts.models, opts.models);
     opts.modes = angular.extend({}, defaultOpts.modes, opts.modes);
-
-    if(opts.initRequest == 'list') {
-      resource.query(opts.initRequestParams, function (data) {
-        scope[opts.modelsListName] = data;
-        scope.isBusy = false;
-      });
-    } else if (opts.initRequest == 'item') {
-      resource.get(opts.initRequestParams, function (data) {
-        scope[opts.modelName] = data;
-        scope.isBusy = false;
-      });     
-    };
-
-    scope.new = function () {
-      scope[opts.modelName] = null;
-      scope.mode = opts.modes.new;
-      scope.isShown = true;
-    };
 
     function formCtrl($scope) {
 			var fScope = $scope;
@@ -130,12 +112,25 @@ imqsBsApp.factory('CrudC', function() {
 
 		};
 
-    scope.NewOrEditFormCtrl = ['$scope', function ($scope) {
-      formCtrl($scope);
-    }];
+    scope.InitCtrl =['$scope', function (scope) {
+      scope.isBusy = true;
+      if(opts.initRequest == 'list') {
+        resource.query(opts.initRequestParams, function (data) {
+          scope[opts.modelsListName] = data;
+          scope.isBusy = false;
+        });
+      } else if (opts.initRequest == 'item') {
+        resource.get(opts.initRequestParams, function (data) {
+          scope[opts.modelName] = data;
+          scope.isBusy = false;
+        });     
+      };
 
-    scope.DelFormCtrl = ['$scope', function ($scope) {
-      formCtrl($scope);
+      scope.new = function () {
+        scope[opts.modelName] = null;
+        scope.mode = opts.modes.new;
+        scope.isShown = true;
+      };
     }];
 
     scope.ShowFormCtrl = ['$scope', function ($scope) {      
@@ -154,6 +149,15 @@ imqsBsApp.factory('CrudC', function() {
         fScope.errors = undefined;
       };
     }];
+
+    scope.NewOrEditFormCtrl = ['$scope', function ($scope) {
+      formCtrl($scope);
+    }];
+
+    scope.DelFormCtrl = ['$scope', function ($scope) {
+      formCtrl($scope);
+    }];
+
   
   };  
 });
