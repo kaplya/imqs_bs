@@ -6,7 +6,7 @@ angular.module('ui')
 			link: function(scope, iElm, iAttr, ctrl) {
 				var errorSpan;
 				var errorAttr = iAttr.ngModel.split('.');
-				errorAttr.splice(-1, 0, iAttr.error || 'error');
+				errorAttr.splice(-2, 1, iAttr.error || 'errors');
 				errorAttr = errorAttr.join('.');
 				scope.$watch(errorAttr, function (newValue, oldValue) {
 					if(newValue == "" || newValue == undefined || newValue == null) {

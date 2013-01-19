@@ -1,6 +1,6 @@
 'use strict';
 
-describe('msg', function () {
+ddescribe('msg', function () {
 	
 	var scope,
 		sandbox,
@@ -8,17 +8,17 @@ describe('msg', function () {
 		$compile;
 	
 	templates = {
-		default: "<form name='myForm'><input ng-model='foo' error></form>",
+		default: "<form name='myForm'><input ng-model='model.foo' error></form>",
 		group: '<form name="myForm">' +
 				'<div class="control-group">' +
-						'<input ng-model="foo" error>' +
+						'<input ng-model="model.foo" error>' +
 				'</div>' +
 			'</form>',
 		inputAppend: '<form name="myForm">' +
 				'<div class="control-group">' +
 						'<div class="controls">"' +
 								'<div class="input-append">' +
-									'<input ng-model="foo" error>' +
+									'<input ng-model="model.foo" error>' +
 									'<button type="button">TEST</button>' +
 								'</div>' +
 						'</div>' +
@@ -41,7 +41,7 @@ describe('msg', function () {
 
 	function compile(template) {
 		template = template ? templates[template] || template : templates['default'];
-		$(template).appendTo(sandbox);
+		template = $(template).appendTo(sandbox);
 		return $compile(template)(scope);
 	};
 
@@ -63,12 +63,12 @@ describe('msg', function () {
 		expect(scope.myForm.$invalid).toBeFalsy();
 		
 		scope.$apply(function (s) {
-			s.error = { foo: 'bar' };
+			s.errors = { foo: 'bar' };
 		});
 		expect(scope.myForm.$invalid).toBeTruthy();
 
 		scope.$apply(function (s) {
-			s.error = { foo: '' };
+			s.errors = { foo: '' };
 		});
 		expect(scope.myForm.$invalid).toBeFalsy();
 
@@ -79,12 +79,12 @@ describe('msg', function () {
 		expect(elm.find('div').hasClass('error')).toBeFalsy();
 		
 		scope.$apply(function (s) {
-			s.error = { foo: 'bar' };
+			s.errors = { foo: 'bar' };
 		});
 		expect(elm.find('div').hasClass('error')).toBeTruthy();
 		
 		scope.$apply(function (s) {
-			s.error = { foo: '' };
+			s.errors = { foo: '' };
 		});
 		expect(elm.find('div').hasClass('error')).toBeFalsy();
 
@@ -95,13 +95,13 @@ describe('msg', function () {
 		
 		expect(elm.find('input').next('span')[0]).toBeUndefined();
 		scope.$apply(function (s) {
-			s.error = { foo: ['bar 1', 'bar 2'] };
+			s.errors = { foo: ['bar 1', 'bar 2'] };
 		});
 		expect(elm.find('input').next('span')[0]).toBeDefined();
 		expect(elm.find('input').next('span').text()).toEqual('bar 1; bar 2');
 
 		scope.$apply(function (s) {
-			s.error = { foo: '' };
+			s.errors = { foo: '' };
 		});
 		expect(elm.find('input').next('span')[0]).toBeUndefined();
 
@@ -111,13 +111,13 @@ describe('msg', function () {
 		var elm = compile('inputAppend');
 		expect(elm.parent('.input-append').next('span')[0]).toBeUndefined();
 		scope.$apply(function (s) {
-			s.error = { foo: ['bar 1', 'bar 2'] };
+			s.errors = { foo: ['bar 1', 'bar 2'] };
 		});
 		expect(elm.find('input').next('span')[0]).toBeUndefined();
 		expect(elm.find('.input-append').next('span')[0]).toBeDefined();
 
 		scope.$apply(function (s) {
-			s.error = '';
+			s.errors = '';
 		});
 		expect(elm.find('.input-append').next('span')[0]).toBeUndefined();
 
