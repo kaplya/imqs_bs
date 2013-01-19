@@ -41,7 +41,6 @@ describe('Service: Crud', function () {
     it('should open new form', function () {
       scope.new();
       expect(scope.mode).toBe('NewOrEdit');
-      expect(scope.isShown).toBeTruthy();
     });
 
   });
@@ -82,12 +81,6 @@ describe('Service: Crud', function () {
       fScope = scope.$new();
     });
     
-    it('should open form', function () {
-      expect(fScope.isShown).toBeFalsy();
-      $controller('NewOrEditFormCtrl', { $scope: fScope });
-      expect(fScope.isShown).toBeTruthy();
-    });
-
     it('should not load data if model is not present', function () {
       scope.model = undefined;
       $controller('NewOrEditFormCtrl', { $scope: fScope });
@@ -125,8 +118,7 @@ describe('Service: Crud', function () {
     it('should close the form', function () {
       $controller('NewOrEditFormCtrl', { $scope: fScope });
       fScope.cancel();
-      expect(fScope.isShown).toBeFalsy();
-      expect(fScope.$parent.mode).toBe(null);
+      expect(fScope.$parent.mode).toBeNull();
     });
 
     describe('create', function () {
@@ -138,7 +130,6 @@ describe('Service: Crud', function () {
         fScope = scope.$new();
         $controller('InitCtrl', { $scope: scope });
         $controller('NewOrEditFormCtrl', { $scope: fScope });
-        fScope.isShown = true;
         fScope.model = { foo: 'Bar' };
       });
 
@@ -174,7 +165,6 @@ describe('Service: Crud', function () {
         $httpBackend.when('POST', '/items').respond();
         fScope.createOrUpdate();
         $httpBackend.flush();
-        expect(fScope.isShown).toBeFalsy();
         expect(fScope.$parent.mode).toBeNull();
       });
 
@@ -198,7 +188,7 @@ describe('Service: Crud', function () {
         $httpBackend.when('POST', '/items').respond(400);
         fScope.createOrUpdate();
         $httpBackend.flush();
-        expect(fScope.isShown).toBeTruthy();
+        expect(scope.mode).not.toBeNull();
       });
 
       it('should call afterCreate event', function () {
@@ -225,7 +215,6 @@ describe('Service: Crud', function () {
         crud(scope, resource);
         fScope = scope.$new();
         $controller('NewOrEditFormCtrl', { $scope: fScope });
-        fScope.isShown = true;
         scope.model = { id: 1, foo: 'Bar' };
         fScope.model = { id: 1, foo: 'Bar' };
       });
@@ -262,7 +251,6 @@ describe('Service: Crud', function () {
         $httpBackend.when('PUT', '/items/1').respond();
         fScope.createOrUpdate();
         $httpBackend.flush();
-        expect(fScope.isShown).toBeFalsy();
       });
 
       it('should set mode to empty', function () {
@@ -292,9 +280,9 @@ describe('Service: Crud', function () {
       it('should not close form if error', function () {
         $httpBackend.when('PUT', '/items/1').respond(400);
         fScope.createOrUpdate();
-        expect(fScope.isShown).toBeTruthy();
+        expect(scope.mode).not.toBeNull();
         $httpBackend.flush();
-        expect(fScope.isShown).toBeTruthy();
+        expect(scope.mode).not.toBeNull();
       });
    
     });
@@ -357,9 +345,8 @@ describe('Service: Crud', function () {
       var fScope;
     
       beforeEach(function () {
-        $httpBackend.when('GET', '/items').respond([{ id: 1}, { id: 2}]);
         crud(scope, resource);
-        // $httpBackend.flush();
+        scope.model = { id: 1 };
         fScope = scope.$new();
         $controller('DelFormCtrl', { $scope: fScope });
       });
@@ -418,7 +405,7 @@ describe('Service: Crud', function () {
         $httpBackend.when('DELETE').respond(400);
         fScope.destroy();
         $httpBackend.flush();
-        expect(fScope.isShown).toBeTruthy();
+        // expect(fScope.isShown).toBeTruthy();
       });
 
       it('should call afterDestroy event', function () {

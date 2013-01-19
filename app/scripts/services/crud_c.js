@@ -27,135 +27,129 @@ imqsBsApp.factory('CrudC', function() {
   };
 
   return function(scope, resource, opts) {
-
 		
     var opts = angular.extend({}, defaultOpts, opts);
-    
-    // opts.models = angular.extend({}, defaultOpts.models, opts.models);
     opts.modes = angular.extend({}, defaultOpts.modes, opts.modes);
-
-    function formCtrl($scope) {
-			var fScope = $scope;
+    
+    function createOrUpdate(fScope) {    
       fScope.errors = undefined;
-      fScope.isShown = true;
       fScope.isBusy = true;
-
-      if (fScope[opts.modelName]) {
-        resource.get( { id: fScope[opts.modelName].id }, function (data) {
-          fScope[opts.modelName] = data;
+      var update = function () {
+        resource.update({ id: fScope[opts.modelName].id }, fScope[opts.modelName], function (data) {
           fScope.isBusy = false;
-        });
-      } else {
-        fScope[opts.modelName] = {};
-      }
-
-      fScope.createOrUpdate = function () {    
-        fScope.errors = undefined;
-        fScope.isBusy = true;
-        var update = function () {
-          resource.update({ id: fScope[opts.modelName].id }, fScope[opts.modelName], function (data) {
-            fScope.isBusy = false;
-            fScope.isShown = false;
-            updateModel(fScope.$parent[opts.modelName], data);
-            fScope.$parent.mode = null;
-          }, function (r) {
-            fScope.errors = r.data;
-            fScope.isBusy = false;
-          })
-        };
-        var create = function () {
-          angular.extend(fScope[opts.modelName], opts.initRequestParams);
-          resource.create(fScope[opts.modelName], function (data) {
-            fScope.isBusy = false;
-            fScope.isShown = false;
-            fScope.$parent.mode = null;
-            if(angular.isArray(scope[opts.modelsListName])) {
-              scope[opts.modelsListName].unshift(data);
-            }
-            fScope.$emit('afterSuccessCreation', { id: data.id });
-          }, function (r) {
-            fScope.errors = r.data;
-            fScope.isBusy = false;
-          });
-        };
-
-        if (fScope[opts.modelName].id) { update() } 
-        else { create() };
+          updateModel(fScope.$parent[opts.modelName], data);
+          fScope.$parent.mode = null;
+        }, function (r) {
+          fScope.errors = r.data;
+          fScope.isBusy = false;
+        })
       };
-
-      fScope.destroy = function () {
-        fScope.errors = undefined;
-        fScope.isBusy = true;
-        resource.destroy({ id: fScope[opts.modelName].id }, function () {
+      var create = function () {
+        angular.extend(fScope[opts.modelName], opts.initRequestParams);
+        resource.create(fScope[opts.modelName], function (data) {
           fScope.isBusy = false;
-          fScope.isShown = false;
-          //fScope.$parent.mode = null;
+          fScope.$parent.mode = null;
           if(angular.isArray(scope[opts.modelsListName])) {
-            var index;
-            angular.forEach(scope[opts.modelsListName], function (v, i) {
-              if (v.id != fScope[opts.modelName].id) { return true; }
-              index = i; return false;
-            });
-            scope[opts.modelsListName].splice(index, 1);
-          };
-          fScope.$emit('afterSuccessDestroy', { modelName: opts.modelName });
+            scope[opts.modelsListName].unshift(data);
+          }
+          fScope.$emit('afterSuccessCreation', { id: data.id });
         }, function (r) {
           fScope.errors = r.data;
           fScope.isBusy = false;
         });
       };
 
-      fScope.cancel = function () {
-        fScope.$parent.mode = null;
-        fScope.isShown = false;
+      if (fScope[opts.modelName].id) { update() } 
+      else { create() };
+    };
+
+    function destroy(fScope) {
+      fScope.errors = undefined;
+      fScope.isBusy = true;
+      resource.destroy({ id: fScope[opts.modelName].id }, function () {
+        fScope.isBusy = false;
+        //fScope.$parent.mode = null;
+        if(angular.isArray(scope[opts.modelsListName])) {
+          var index;
+          angular.forEach(scope[opts.modelsListName], function (v, i) {
+            if (v.id != fScope[opts.modelName].id) { return true; }
+            index = i; return false;
+          });
+          scope[opts.modelsListName].splice(index, 1);
+        };
+        fScope.$emit('afterSuccessDestroy', { modelName: opts.modelName });
+      }, function (r) {
+        fScope.errors = r.data;
+        fScope.isBusy = false;
+      });
+    };
+
+    function cancel(fScope) {
+      fScope.$parent.mode = null;
+    };    
+
+    function new_(fScope) {
+      fScope[opts.modelName] = null;
+      fScope.mode = opts.modes.new;
+    };
+
+    function edit(fScope) {
+      if(fScope.$emit('beforeEdit').defaultPrevented) { 
+        return 
       };
+      fScope.mode = opts.modes.edit;
+    };
 
-		};
+    function delete_(fScope) {
+      fScope.mode = opts.modes.delete;
+      fScope.errors = undefined;
+    };
 
-    scope.InitCtrl =['$scope', function (scope) {
-      scope.isBusy = true;
+    scope.InitCtrl =['$scope', function ($scope) {
+      $scope.isBusy = true;
       if(opts.initRequest == 'list') {
         resource.query(opts.initRequestParams, function (data) {
-          scope[opts.modelsListName] = data;
-          scope.isBusy = false;
+          $scope[opts.modelsListName] = data;
+          $scope.isBusy = false;
         });
       } else if (opts.initRequest == 'item') {
         resource.get(opts.initRequestParams, function (data) {
-          scope[opts.modelName] = data;
-          scope.isBusy = false;
+          $scope[opts.modelName] = data;
+          $scope.isBusy = false;
         });     
       };
 
-      scope.new = function () {
-        scope[opts.modelName] = null;
-        scope.mode = opts.modes.new;
-        scope.isShown = true;
-      };
+      $scope.new = function () { new_($scope) };
     }];
 
     scope.ShowFormCtrl = ['$scope', function ($scope) {      
-      var fScope = $scope;
-      fScope.mode = null;
+      $scope.mode = null;
 
-      fScope.edit = function () {
-        if(fScope.$emit('beforeEdit').defaultPrevented) { 
-          return 
-        };
-        fScope.mode = opts.modes.edit;
-      };
-
-      fScope.delete = function () {
-        fScope.mode = opts.modes.delete;
-        fScope.errors = undefined;
-      };
+      $scope.edit = function () { edit ($scope) };
+      $scope.delete = function () { delete_($scope) };
     }];
 
     scope.NewOrEditFormCtrl = ['$scope', function ($scope) {
-      formCtrl($scope);
+      $scope.errors = undefined;
+
+      if ($scope[opts.modelName]) {
+        $scope.isBusy = true;
+        resource.get( { id: $scope[opts.modelName].id }, function (data) {
+          $scope[opts.modelName] = data;
+          $scope.isBusy = false;
+        });
+      } else {
+        $scope[opts.modelName] = {};
+      }
+
+      $scope.createOrUpdate = function () { createOrUpdate($scope) };
+      $scope.destroy = function () { destroy($scope) };
+      $scope.cancel = function () { cancel($scope) };
     }];
 
     scope.DelFormCtrl = ['$scope', function ($scope) {
-      formCtrl($scope);
+      $scope.destroy = function () { destroy($scope) };
+      $scope.cancel = function () { cancel($scope) };
     }];
 
   
