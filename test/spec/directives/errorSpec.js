@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe('msg', function () {
+describe('msg', function () {
 	
 	var scope,
 		sandbox,
