@@ -70,8 +70,13 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
     var id = /\/([0-9]+)/.exec(url)[1];
     var e = {};
 
-    if(r.name == 'eRRoR') {
-      e.name = ['error test'];
+    if(r.date == 'eRRoR') {
+      e.date      = ['date error test 1'];
+      e.item_code = ['item_code error test 2'];
+      e.item_name = ['item_name error test 3'];
+      e.qty       = ['qty error test 4'];
+      e.main       = ['error test 5', 'error test 6'];
+
     }
     
     if(!$.isEmptyObject(e)) { return [400, e] }

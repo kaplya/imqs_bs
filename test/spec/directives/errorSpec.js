@@ -23,6 +23,11 @@ describe('msg', function () {
 								'</div>' +
 						'</div>' +
 				'</div>' +
+			'</form>',
+		formInline: '<form class="form-inline">' +
+				'<div class="control-group">' +
+					'<input ng-model=model.foo error>' +
+				'</div>' +
 			'</form>'
 	};
 
@@ -120,8 +125,17 @@ describe('msg', function () {
 			s.errors = '';
 		});
 		expect(elm.find('.input-append').next('span')[0]).toBeUndefined();
+	});
 
-	})
-
+	it('should add span with help-block class if is form inline', function () {
+		var elm = compile('formInline');
+		expect(elm.find('input').next('span')[0]).toBeUndefined();
+		scope.$apply(function (s) {
+			s.errors = { foo: ['bar 1', 'bar 2'] };
+		});
+		expect(elm.find('input').next('span')).toBeDefined();
+		expect(elm.find('input').next('span').hasClass('help-inline')).toBeFalsy();
+		expect(elm.find('input').next('span').hasClass('help-block')).toBeTruthy();
+	});
 
 });

@@ -16,7 +16,14 @@ angular.module('ui')
 						ctrl.$setValidity('error', true);
 						errorSpan.remove();
 					} else {
-						errorSpan = angular.element('<span class="help-inline"></span>');
+						errorSpan = angular.element('<span></span>');
+						
+						if(iElm.parents('.form-inline')) {
+							errorSpan.addClass('help-block');
+						} else {
+							errorSpan.addClass('help-inline');
+						};
+						
 						errorSpan.text(angular.isArray(newValue) ? newValue.join('; ') : newValue);
 						if(iElm.parent('.input-append').length) {
 							iElm.parent('.input-append').after(errorSpan);

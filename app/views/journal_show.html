@@ -23,12 +23,32 @@
 			<tr part='NewOrEditLine' is='row' part-controller='NewOrEditFormCtrl'>
 				<td colspan=6>
 					<form class="form-inline" ng-submit='createOrUpdate()'>
-						<input ng-model='l.date' placeholder='Date' class='input-small'>
-						<input ng-model='l.item_code' placeholder='Item code' class='input-small'>
-						<input ng-model='l.item_name' placeholder='Item name'>
-						<input ng-model='l.qty' placeholder='Quantity' class='input-small'>
-						<input type='submit' class='btn btn-primary'>
+						<div class='control-group'>
+							<input type='text' ng-model='l.date' placeholder='Date' class='input-small' error>
+						</div>
+						
+						<div class='control-group'>
+							<input type='text' ng-model='l.item_code' placeholder='Item code' class='input-mini' error>
+						</div>
+						
+						<div class='control-group'>
+							<input type='text' ng-model='l.item_name' placeholder='Item name' error>		
+						</div>
+						
+						<div class='control-group'>
+							<input type='text' ng-model='l.qty' placeholder='Quantity' class='input-small' error>
+						</div>
+						
+						<div class='control-group'>
+							<input type='submit' class='btn btn-primary'>
+						</div>
+						
 						<button type='button' class='btn btn-link' ng-click='cancel()'>Cancel</button>
+						
+						<div class='control-group' ng-show='errors.main'>
+							<div ng-model='l.main' error></div>	
+						</div>
+						
 					</form>
 				</td>
 			</tr>
