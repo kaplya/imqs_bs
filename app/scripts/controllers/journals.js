@@ -21,17 +21,20 @@ imqsBsApp
       $location.path('/journals/:id/show'.replace(':id', args.id));
     });
 
-  }])
-  .controller('JournalFormCtrl', ["$scope", "$timeout", function($scope, $timeout) {
-    $scope.linesShown = false;
-    $scope.showLines = function () {
-      if (!$scope.linesShown) {
-        $scope.linesShown = undefined;
-        $timeout(function () {
-          $scope.linesShown = true;      
-        }, 1000);
-      } else {
-        $scope.linesShown = false;
-      }
-    };
+    $scope.ShowFormCtrlExt = ["$scope", "Line", '$controller', function ($scope, Line, $controller) {
+      $controller('ShowFormCtrl', { $scope: $scope });
+      $scope.linesShown = false;
+      $scope.showLines = function () {
+        if (!$scope.linesShown) {
+          $scope.linesShown = undefined;
+          Line.query({ journal_id: $scope.j.id }, function (data) {
+            $scope.j.lines = data;
+            $scope.linesShown = true;
+          });
+        } else {
+          $scope.linesShown = false;
+        }
+      };
+    }];
+
   }]);

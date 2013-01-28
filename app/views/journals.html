@@ -9,7 +9,7 @@
 
 	<div spin="isBusy" ng-show="isBusy" class="well well-large span8"></div>
 
-	<div ng-repeat="j in journals" ng-controller="ShowFormCtrl" ng-hide='isBusy' class="span8 well well-small">
+	<div ng-repeat="j in journals" ng-controller="ShowFormCtrlExt" ng-hide='isBusy' class="span8 well well-small">
 		<h4>
 			<span class="span1">{{j.number}}</span>
 			<span class="span2">{{j.date}}</span>
