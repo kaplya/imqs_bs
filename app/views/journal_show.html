@@ -1,8 +1,7 @@
-<div ng-controller='InitCtrl'>
+<div ng-controller='InitCtrl' reveal on='mode'>
 
 <!-- 	<div class="well well-large span7" spin='isBusy' ng-show='isBusy'></div> -->
-		
-	<h1 ng-hide='isBusy' reveal on='mode'>
+	<h1 ng-hide='isBusy'>
 		<span class='span7'>{{j.j_type}} Journal {{j.number}}</span>
 		<span class='span3'>
 			<button class="btn btn-primary" ng-click='edit()'>Edit</button>
@@ -10,10 +9,14 @@
 			<button class="btn btn-warning">Post</button>
 		</span>
 	</h1>
+
+	<div spin="isBusy" ng-show="isBusy" class="well well-large span8"></div>
+
 	<h5 class='span10'>{{j.date}}</h5>
 		
 	<div class='span8' ng-controller='LinesCtrl'>
-		<table class="table" ng-controller='InitCtrl'>
+		<div spin="isBusy" ng-show="isBusy" class="well well-large span8"></div>
+		<table class="table" ng-hide='isBusy'>
 			<tr>
 				<th>Date</th>
 				<th>Item Code</th>

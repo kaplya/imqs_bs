@@ -1,50 +1,53 @@
-<div part='NewOrEdit' is='modal' part-controller='NewOrEditFormCtrl' class="modal">
-	<div class="modal-header">
-		<button class="close" ng-click="cancel()">&times;</button>
-		<h3>Journal</h3>
-	</div>
-	
-	<div class="modal-body">
-		<form class="form-horizontal" ng-submit="createOrUpdate()">
-			
-			<div class="control-group">
-				<label class="control-label">Number</label>
-				<div class="controls">
-					<input type="text" ng-model="j.number" placeholder="Number of the journal" error>
-				</div>
-			</div>
-			
-			<div class="control-group">
-				<label class="control-label">Date</label>
-				<div class="controls">
-					<div class="input-append">
-						<input type="text" ng-model="j.date" placeholder="Date of the journal creation" error datepicker>
-						<button type='button' class='btn' data-toggle='datepicker'>
-							<i class='icon-calendar'></i>
-						</button>
+<div part='NewOrEdit' is='modal' part-controller='NewOrEditFormCtrl'>
+
+	<div class='modal' spin='isBusy'>
+		<div class="modal-header">
+			<button class="close" ng-click="cancel()">&times;</button>
+			<h3>Journal</h3>
+		</div>
+		
+		<div class="modal-body">
+			<form class="form-horizontal" ng-submit="createOrUpdate()">
+				
+				<div class="control-group">
+					<label class="control-label">Number</label>
+					<div class="controls">
+						<input type="text" ng-model="j.number" placeholder="Number of the journal" error>
 					</div>
 				</div>
-			</div>
-			
-			<div class="control-group">
-				<label class="control-label">Type</label>
-				<div class="controls">
-					<select type="text" ng-model="j.j_type" ng-options='t for t in ["Supply", "Movement"]' error>
-					</select>
+				
+				<div class="control-group">
+					<label class="control-label">Date</label>
+					<div class="controls">
+						<div class="input-append">
+							<input type="text" ng-model="j.date" placeholder="Date of the journal creation" error datepicker>
+							<button type='button' class='btn' data-toggle='datepicker'>
+								<i class='icon-calendar'></i>
+							</button>
+						</div>
+					</div>
 				</div>
-			</div>
-			
-			<div class="control-group controls">
-				<div ng-model="j.main" error></div>
-			</div>
-			
-			<div class="control-group ">
-				<div class="controls">
-					<input type="submit" class="btn btn-primary">
-					<button type='button' class='btn btn-link' ng-click='cancel()'>Cancel</button>
+				
+				<div class="control-group">
+					<label class="control-label">Type</label>
+					<div class="controls">
+						<select type="text" ng-model="j.j_type" ng-options='t for t in ["Supply", "Movement"]' error>
+						</select>
+					</div>
 				</div>
-			</div>
-			
-		</form>
+				
+				<div class="control-group controls">
+					<div ng-model="j.main" error></div>
+				</div>
+				
+				<div class="control-group ">
+					<div class="controls">
+						<input type="submit" class="btn btn-primary">
+						<button type='button' class='btn btn-link' ng-click='cancel()'>Cancel</button>
+					</div>
+				</div>
+				
+			</form>
+		</div>
 	</div>
 </div>

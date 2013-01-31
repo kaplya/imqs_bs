@@ -24,7 +24,7 @@ imqsBsApp
 	  	$location.path('/journals');
 	  });
 
-	  $scope.LinesCtrl = ['$scope', 'Line', 'CrudC', function ($scope, Line, Crud) {
+	  $scope.LinesCtrl = ['$scope', 'Line', 'CrudC', '$controller', function ($scope, Line, Crud, $controller) {
 		  Crud($scope, Line,
 		  	{
 		  		modelName: 'l',
@@ -36,6 +36,7 @@ imqsBsApp
 		  		}
 		  	}
 		  );
+		  $controller('InitCtrl', { $scope: $scope });
 	  }];
 
 	}]);
