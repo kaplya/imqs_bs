@@ -24,7 +24,7 @@
 				<th>Quantity</th>
 			</tr>
 			<tr part='NewOrEditLine' is='row' part-controller='NewOrEditFormCtrl'>
-				<td colspan=6>
+				<td colspan=6 spin='isBusy'>
 					<form class="form-inline" ng-submit='createOrUpdate()'>
 						<div class='control-group'>
 							<input type='text' ng-model='l.date' placeholder='Date' class='input-small' error>
