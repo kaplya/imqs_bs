@@ -1,30 +1,32 @@
 <h1>
 	Items
 </h1>
-<div class="span10">
-	<div class="well well-small span8">
-		<button href class="btn" ng-click="new()">New</button>
+<div ng-controller='InitCtrl'>
+	<div spin="isBusy" ng-show="isBusy" class="well span8"></div>
+	<div class="span10">
+		<div class="well well-small span8" ng-hide='isBusy'>
+			<button class="btn" ng-click="new()" reveal='mode'>New</button>
+		</div>
 	</div>
-</div>
 
-<div class="span6">
-	<div spin="spin" ng-show="spin" class="well"></div>
-	<table class="table" ng-hide="spin">	
-		<tr>
-			<th>Code</th>
-			<th>Name</th>
-			<th>Brand</th>
-		</tr>
-		<tr ng-repeat="i in items">
-			<td>{{i.code}}</td>
-			<td>{{i.name}}</td>
-			<td>{{i.brand}}</td>
-			<td>
-				<button href class="btn btn-danger" ng-click="delete()">Delete</button>
-				<button href class="btn btn-primary" ng-click="edit()">Edit</button>
-			</td>
-		</tr>
-	</table>
+	<div class="span6" ng-hide='isBusy'>
+		<table class="table">	
+			<tr>
+				<th>Code</th>
+				<th>Name</th>
+				<th>Brand</th>
+			</tr>
+			<tr ng-repeat="i in items" ng-controller="ShowFormCtrl">
+				<td>{{i.code}}</td>
+				<td>{{i.name}}</td>
+				<td>{{i.brand}}</td>
+				<td>
+					<button href class="btn btn-danger" ng-click="delete()">Delete</button>
+					<button href class="btn btn-primary" ng-click="edit()" reveal='mode'>Edit</button>
+				</td>
+			</tr>
+		</table>
+	</div>
 </div>
 
 <div ng-include="'views/item_modal.html'"></div>

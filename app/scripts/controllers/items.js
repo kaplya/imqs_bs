@@ -10,6 +10,6 @@ imqsBsApp
       body: "views/items.html"
     };
 
-    Crud.init($scope, Item, { itemsList: 'items' });
+    Crud($scope, Item, { modelName: 'i', modelsListName: 'items'});
 
   }]);

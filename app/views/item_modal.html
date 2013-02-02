@@ -1,44 +1,46 @@
-<div modal="modalEdit.shown" class="fade" spin="modalEdit.spin">
-	<div class="modal-header">
-		<button type="button" class="close" ng-click="modalEdit.shown=false">x</button>
-		<h3>Item</h3>
-	</div>
-	<div class="modal-body">
-		<form class="form-horizontal" ng-submit="createOrUpdate()" >
-	<!-- 		<legend></legend> -->
-			<div class="control-group">				
-				<label class="control-label">Name</label>
-				<div class="controls">				
-					<input type="text" placeholder="How do you call you item?" ng-model='modalEdit.data.name' error>
+<div part='NewOrEdit' is='modal' part-controller='NewOrEditFormCtrl'>
+	<div class='modal' spin='isBusy'>
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="cancel()">&times;</button>
+			<h3>Item</h3>
+		</div>
+		<div class="modal-body">
+			<form class="form-horizontal" ng-submit="createOrUpdate()" >
+		<!-- 		<legend></legend> -->
+				<div class="control-group">				
+					<label class="control-label">Name</label>
+					<div class="controls">				
+						<input type="text" placeholder="How do you call you item?" ng-model='i.name' error>
+					</div>
 				</div>
-			</div>
 
-			<div class="control-group">
-				<label class="control-label">Code</label>
-				<div class="controls">
-					<input type="text" placeholder="Unique code if it needs." ng-model="modalEdit.data.code" error>
+				<div class="control-group">
+					<label class="control-label">Code</label>
+					<div class="controls">
+						<input type="text" placeholder="Unique code if it needs." ng-model="i.code" error>
+					</div>
 				</div>
-			</div>
 
-			<div class="control-group">
-				<label class='control-label'>Brand</label>
-				<div class="controls">
-					<input type="text" placeholder="Item's brand." ng-model="modalEdit.data.brand" error>
+				<div class="control-group">
+					<label class='control-label'>Brand</label>
+					<div class="controls">
+						<input type="text" placeholder="Item's brand." ng-model="i.brand" error>
+					</div>
 				</div>
-			</div>
-			
-			<div class="control-group controls" ng-show="modalEdit.d.error.main">
-				<div ng-model='modalEdit.data.main' error></div>
-			</div>
-			
-			<div class="controls-group">
-				<div class="controls">
-					<input type="submit" class="btn btn-primary">
-					<button type="button" class="btn btn-link" ng-click="modalEdit.shown=false">Cancel</button>
+				
+				<div class="control-group controls" ng-show="modalEdit.d.error.main">
+					<div ng-model='i.main' error></div>
 				</div>
-			</div>
+				
+				<div class="controls-group">
+					<div class="controls">
+						<input type="submit" class="btn btn-primary">
+						<button type="button" class="btn btn-link" ng-click="cancel()">Cancel</button>
+					</div>
+				</div>
+				
+			</form>
 			
-		</form>
-		
+		</div>
 	</div>
 </div>

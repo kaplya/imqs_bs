@@ -39,7 +39,7 @@ imqsBsAppDev.run(["$httpBackend", function($httpBackend) {
   	var id = /\/([0-9]+)/.exec(url)[1];
     var e = {};
 
-    if(r.name == 'eRRoR_832232') {
+    if(r.name == 'eRRoR') {
       e['name'] = ['error test 1', 'error test 2'];
       e['code'] = ['error test 3'];
       e['brand'] = ['error test 4'];
