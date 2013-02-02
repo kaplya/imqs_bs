@@ -4,7 +4,7 @@ imqsBsApp
   .factory('Journal', ['$resource', function ($resource) {
     return $resource('/journals/:id/:action');
   }])
-  .controller('JournalsListCtrl', ['$scope', 'Journal', 'CrudC', '$location', function($scope, Journal, Crud, $location) {
+  .controller('JournalsListCtrl', ['$scope', 'Journal', 'Crud', '$location', function($scope, Journal, Crud, $location) {
     $scope.templates = {
       sb: 'views/journals_sb.html',
       body: 'views/journals.html'

@@ -1,6 +1,6 @@
 'use strict';
 
-imqsBsApp.factory('CrudC', function() {
+imqsBsApp.factory('Crud', function() {
 
   var defaultOpts = {
     modelName: 'model',

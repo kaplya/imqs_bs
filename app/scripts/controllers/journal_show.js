@@ -4,7 +4,7 @@ imqsBsApp
 	.factory('Line', ['$resource', function ($resource) {
 		return $resource('/lines/:id');
 	}])
-	.controller('JournalShowCtrl', ['$scope', '$route', 'Journal', 'CrudC', '$location', function($scope, $route, Journal, Crud, $location) {
+	.controller('JournalShowCtrl', ['$scope', '$route', 'Journal', 'Crud', '$location', function($scope, $route, Journal, Crud, $location) {
 	  
 		$scope.templates = {
 		  // sb: 'views/journal_show.html',
@@ -24,7 +24,7 @@ imqsBsApp
 	  	$location.path('/journals');
 	  });
 
-	  $scope.LinesCtrl = ['$scope', 'Line', 'CrudC', '$controller', function ($scope, Line, Crud, $controller) {
+	  $scope.LinesCtrl = ['$scope', 'Line', 'Crud', '$controller', function ($scope, Line, Crud, $controller) {
 		  Crud($scope, Line,
 		  	{
 		  		modelName: 'l',
