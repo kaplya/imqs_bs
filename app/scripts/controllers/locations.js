@@ -10,6 +10,6 @@ imqsBsApp
     };
     // $scope.templates.sb = "'views/locations_sb.html'";
 
-    Crud.init($scope, Location);
+    Crud($scope, Location, { modelName: 'l', modelsListName: 'locations'});
 
   }]);
