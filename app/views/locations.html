@@ -33,6 +33,20 @@
 					</form>
 				</td>
 			</tr>
+			<tr part='Del' is='row' part-controller='DelFormCtrl'>
+				<td colspan=4>
+					<div class='alert alert-block'>
+						<button type='button' class='close' ng-click='cancel()'>&times;</button>
+						<h4>Location deletion</h4>
+						Do you readlly want to delete {{l.name}}?
+						<div class="control-group controls">
+							<div ng-model="model.main" error='errors'></div>
+						</div>
+						<button class="btn btn-danger" ng-click="destroy()">Yes</button>
+						<button class="btn" ng-click="cancel()">No</button>
+					</div>
+				</td>
+			</tr>
 			<tr ng-repeat="l in locations" ng-controller='ShowFormCtrl' reveal on='mode'>
 				<td>{{l.name}}</td>
 				<td>{{l.city}}</td>
@@ -45,4 +59,3 @@
 
 	</div>
 </div>
-<div ng-include="'views/del_modal.html'"></div>
