@@ -1,10 +1,10 @@
 
 <h1>Locations</h1>
-<div>
+<div  ng-controller='InitCtrl'>
 	<div spin="isBusy" ng-show="isBusy" class="well"></div>
 
-	<div class="row span8">
-		<table class="table" ng-controller='InitCtrl'>
+	<div class="span8" ng-hide='isBusy'>
+		<table class="table">
 			<tr>
 				<th>Name</th>
 				<th>City</th>
@@ -17,7 +17,7 @@
 				</td>
 			</tr>
 			<tr part='NewOrEdit' is='row' part-controller='NewOrEditFormCtrl'>
-				<td colspan=4>
+				<td colspan=4 spin='isBusy'>
 					<form class='form-inline' ng-submit='createOrUpdate()'>
 						<div class="control-group">
 							<input type='text' ng-model='l.name' placeholder='Name' error>
@@ -34,7 +34,7 @@
 				</td>
 			</tr>
 			<tr part='Del' is='row' part-controller='DelFormCtrl'>
-				<td colspan=4>
+				<td colspan=4 spin='isBusy'>
 					<div class='alert alert-block'>
 						<button type='button' class='close' ng-click='cancel()'>&times;</button>
 						<h4>Location deletion</h4>
