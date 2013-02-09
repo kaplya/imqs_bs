@@ -1,108 +1,159 @@
 'use strict';
 
 imqsBsApp.factory('Crud', function() {
+
   var defaultOpts = {
-  	itemsList: 'itemsList',
-  	itemModal: 'modalEdit',
-  	item: 'i'
-  };
-  return {
-    init: function(scope, resource, opts) {
-    	var opts = angular.extend({}, defaultOpts, opts),
-    		callbacks = {};
-
-	    scope[opts.itemModal] = { shown: false };
-	  	scope.modalDel = { shown: false };
-	    scope.spin = true;
-
-	    resource.query(function (data) {
-	      scope[opts.itemsList] = data;
-	      scope.spin = false;
-	    });
-
-	    scope.edit = function () {
-	      if(angular.isFunction(callbacks.beforeEdit)) {
-	      	if(callbacks.beforeEdit(this) === false) { return };
-	      }
-
-	      scope[opts.itemModal].data = {};
-	      scope[opts.itemModal].listData = this[opts.item];
-	      scope[opts.itemModal].spin = true;
-
-	      resource.get( { id: this[opts.item].id }, function (data) {
-	        scope[opts.itemModal].data = data;
-	        scope[opts.itemModal].spin = false;
-	      });
-	    	scope[opts.itemModal].shown = true;
-	    };
-	    
-	    scope.new = function () {
-	  		scope[opts.itemModal].data = {};
-	      scope[opts.itemModal].shown = true;
-	    };
-
-	    scope.createOrUpdate = function () {
-	      scope[opts.itemModal].data.error = undefined;
-	      scope[opts.itemModal].spin = true;
-	      var update = function () {
-	        resource.update({ id: scope[opts.itemModal].data.id }, scope[opts.itemModal].data, function (data) {
-	          scope[opts.itemModal].spin = false;
-	          scope[opts.itemModal].shown = false;
-	          angular.copy(data, scope[opts.itemModal].listData);
-	        }, function (r) {
-	          scope[opts.itemModal].data.error = r.data;
-	          scope[opts.itemModal].spin = false;          
-	        })
-	      };
-	      var create = function () {
-	        resource.create(scope[opts.itemModal].data, function (data) {
-	          scope[opts.itemModal].shown = false;
-	          scope[opts.itemModal].spin = false;
-	          scope[opts.itemsList].unshift(data);
-	          if(angular.isFunction(callbacks.afterCreate)) {
-	          	callbacks.afterCreate(data);
-	          };
-	        }, function (r) {
-	          scope[opts.itemModal].data.error = r.data;
-	          scope[opts.itemModal].spin = false;
-	        });
-	      };
-
-	      if (scope[opts.itemModal].data.id) {
-	        update();
-	      } else {
-	        create();
-	      };
-	    };
-	    
-	    scope.delete = function () {
-	      scope.modalDel.error = undefined;
-	      scope.modalDel.shown = true;
-	      scope.modalDel.listData = this[opts.item];
-	    };
-
-	    scope.destroy = function () {
-	      scope.modalDel.error = undefined;
-	      scope.modalDel.spin = true;
-	      var id = scope.modalDel.listData.id,
-	        index;
-	      resource.destroy({ id: id }, function () {
-	        scope.modalDel.spin = false;
-	        scope.modalDel.shown = false;
-	        angular.forEach(scope[opts.itemsList], function (v, i) {
-	          if (v.id != id) { return true; }
-	          index = i;
-	          return false;
-	        });
-	        scope[opts.itemsList].splice(index, 1);
-	      }, function (r) {
-	        scope.modalDel.error = r.data;
-	        scope.modalDel.spin = false;
-	      });
-	    }
-
-	    return callbacks;
-
+    modelName: 'model',
+    modelsListName: 'modelsList',
+  	initRequest: 'list',
+  	initRequestParams: {},
+    modes: {
+      new: 'NewOrEdit',
+      edit: 'NewOrEdit',
+      delete: 'Del'
     }
   };
+
+  function updateModel(dst) {   
+    angular.forEach(arguments, function(obj) {
+      if (obj !== dst) {
+        angular.forEach(obj, function (value, key) {
+          if (key == '$$hashKey') { return true };
+          dst[key] = obj[key];
+        });
+      }
+    });
+    return dst;
+  };
+
+  return function(scope, resource, opts) {
+		
+    var opts = angular.extend({}, defaultOpts, opts);
+    opts.modes = angular.extend({}, defaultOpts.modes, opts.modes);
+    
+    function createOrUpdate(fScope) {    
+      fScope.errors = undefined;
+      fScope.isBusy = true;
+      var update = function () {
+        resource.update({ id: fScope[opts.modelName].id }, fScope[opts.modelName], function (data) {
+          fScope.isBusy = false;
+          updateModel(fScope.$parent[opts.modelName], data);
+          fScope.$parent.mode = null;
+        }, function (r) {
+          fScope.errors = r.data;
+          fScope.isBusy = false;
+        })
+      };
+      var create = function () {
+        angular.extend(fScope[opts.modelName], opts.initRequestParams);
+        resource.create(fScope[opts.modelName], function (data) {
+          fScope.isBusy = false;
+          fScope.$parent.mode = null;
+          if(angular.isArray(fScope[opts.modelsListName])) {
+            fScope[opts.modelsListName].unshift(data);
+          }
+          fScope.$emit('afterSuccessCreation', { id: data.id });
+        }, function (r) {
+          fScope.errors = r.data;
+          fScope.isBusy = false;
+        });
+      };
+
+      if (fScope[opts.modelName].id) { update() } 
+      else { create() };
+    };
+
+    function destroy(fScope) {
+      fScope.errors = undefined;
+      fScope.isBusy = true;
+      resource.destroy({ id: fScope[opts.modelName].id }, function () {
+        fScope.isBusy = false;
+        //fScope.$parent.mode = null;
+        if(angular.isArray(fScope[opts.modelsListName])) {
+          var index;
+          angular.forEach(fScope[opts.modelsListName], function (v, i) {
+            if (v.id != fScope[opts.modelName].id) { return true; }
+            index = i; return false;
+          });
+          fScope[opts.modelsListName].splice(index, 1);
+        };
+        fScope.$emit('afterSuccessDestroy', { modelName: opts.modelName });
+      }, function (r) {
+        fScope.errors = r.data;
+        fScope.isBusy = false;
+      });
+    };
+
+    function cancel(fScope) {
+      fScope.$parent.mode = null;
+    };    
+
+    function new_(fScope) {
+      fScope[opts.modelName] = null;
+      fScope.mode = opts.modes.new;
+    };
+
+    function edit(fScope) {
+      if(fScope.$emit('beforeEdit').defaultPrevented) { 
+        return 
+      };
+      fScope.mode = opts.modes.edit;
+    };
+
+    function delete_(fScope) {
+      fScope.mode = opts.modes.delete;
+      fScope.errors = undefined;
+    };
+
+    scope.InitCtrl =['$scope', function ($scope) {
+      $scope.mode = null;
+      $scope.isBusy = true;
+      if(opts.initRequest == 'list') {
+        resource.query(opts.initRequestParams, function (data) {
+          $scope[opts.modelsListName] = data;
+          $scope.isBusy = false;
+        });
+      } else if (opts.initRequest == 'item') {
+        resource.get(opts.initRequestParams, function (data) {
+          $scope[opts.modelName] = data;
+          $scope.isBusy = false;
+        });
+        $scope.edit = function () { edit ($scope) };
+        $scope.delete = function () { delete_($scope) };
+      };
+
+      $scope.new = function () { new_($scope) };
+    }];
+
+    scope.ShowFormCtrl = ['$scope', function ($scope) {      
+      $scope.mode = null;
+
+      $scope.edit = function () { edit ($scope) };
+      $scope.delete = function () { delete_($scope) };
+    }];
+
+    scope.NewOrEditFormCtrl = ['$scope', function ($scope) {
+      $scope.errors = undefined;
+
+      if ($scope[opts.modelName]) {
+        $scope.isBusy = true;
+        resource.get( { id: $scope[opts.modelName].id }, function (data) {
+          $scope[opts.modelName] = data;
+          $scope.isBusy = false;
+        });
+      } else {
+        $scope[opts.modelName] = {};
+      }
+
+      $scope.createOrUpdate = function () { createOrUpdate($scope) };
+      $scope.destroy = function () { destroy($scope) };
+      $scope.cancel = function () { cancel($scope) };
+    }];
+
+    scope.DelFormCtrl = ['$scope', function ($scope) {
+      $scope.destroy = function () { destroy($scope) };
+      $scope.cancel = function () { cancel($scope) };
+    }];
+  
+  };  
 });
