@@ -870,12 +870,24 @@ function createHttpBackendMock($delegate, $browser) {
     while ((definition = definitions[++i])) {
       if (definition.match(method, url, data, headers || {})) {
         if (definition.response) {
-          // if $browser specified, we do auto flush all requests
-          ($browser ? $browser.defer : responsesPush)(function() {
+          var r = function() {
             var response = definition.response(method, url, data, headers);
             xhr.$$respHeaders = response[2];
             callback(response[0], response[1], xhr.getAllResponseHeaders());
-          }, 1000); // vva
+          }
+          if($browser) {
+            $browser.defer(r, 1000);
+          } else {
+            responsesPush(r);
+          }
+
+          // if $browser specified, we do auto flush all requests          
+/*          ($browser ? $browser.defer : responsesPush)(function() {
+            var response = definition.response(method, url, data, headers);
+            xhr.$$respHeaders = response[2];
+            callback(response[0], response[1], xhr.getAllResponseHeaders());
+          }); // vva*/
+
         } else if (definition.passThrough) {
           $delegate(method, url, data, callback, headers);
         } else throw Error('No response defined !');
