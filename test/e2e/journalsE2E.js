@@ -3,7 +3,7 @@
 describe('journals', function () {
 	var ITEMS = '[ng-repeat$="journals"]',
 		NEW_BTN = 'button:contains("New")',
-		FORM = '[modal*="journalModal"]',
+		FORM = 'div[part="NewOrEdit"]',
 		CANCEL_BTN = 'button:contains("Cancel")',
 		SUBMIT_BTN = 'input[type="submit"]';
 
@@ -22,26 +22,25 @@ describe('journals', function () {
 	describe('(new and create)', function () {
 
 		it('should open and close form', function () {
-			expect(element(FORM).css('display')).toEqual('none');
 			element(NEW_BTN).click();
 			expect(element(FORM).css('display')).toEqual('block');
 			using(FORM).element(CANCEL_BTN).click();
-			expect(element(FORM).css('display')).toEqual('none');
+			expect(element(FORM).count()).toBe(0);
 		});
 
 		it('should show empty form', function () {
 			element(NEW_BTN).click();
-			using(FORM).input('journalModal.data.number').enter('Foo');
+			using(FORM).input('j.number').enter('Foo');
 			using(FORM).element(CANCEL_BTN).click();
 			element(NEW_BTN).click();
-			expect(using(FORM).input('journalModal.data.number').val()).toEqual('');
+			expect(using(FORM).input('j.number').val()).toEqual('');
 		});
 
 		it('should show submitted data in the list', function () {
 			element(NEW_BTN).click();
-			using(FORM).input('journalModal.data.number').enter('Foo');
-			using(FORM).input('journalModal.data.date').enter('01.01.2013');
-			using(FORM).select('journalModal.data.j_type').option('Supply');
+			using(FORM).input('j.number').enter('Foo');
+			using(FORM).input('j.date').enter('01.01.2013');
+			using(FORM).select('j.j_type').option('Supply');
 			using(FORM).element(SUBMIT_BTN).click();
 			browser().navigateTo('#/journals');
 			expect(repeater(ITEMS).count()).toBe(3);
