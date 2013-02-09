@@ -1,6 +1,6 @@
 'use strict'
 
-ddescribe('locations', function () {
+describe('locations', function () {
 	var ITEMS = 'tr[ng-repeat="l in locations"]',
 		FORM = 'tr[part="NewOrEdit"]',
 		ROW = 'tbody tr:nth-child(?)',
@@ -10,7 +10,7 @@ ddescribe('locations', function () {
 		NEW_BTN = 'button:contains("Add new line")',
 		DEL_BTN = 'button:contains("Delete")',
 		YES_BTN = 'button:contains("Yes")',
-		DEL_FORM = 'div[modal="modalDel.shown"]',
+		DEL_FORM = 'tr[part="Del"]',
 		ERROR = 'span:contains("?")';
 	
 	beforeEach(function () {
@@ -71,16 +71,14 @@ ddescribe('locations', function () {
   	expect(using(FORM).input('l.name').val()).toEqual('name');
   });
 
-  xit('should show delete form', function () {
-  	expect(element(DEL_FORM).css('display')).toEqual('none');
-  	using(ROW.replace('?', 2)).element(DEL_BTN).click();
-  	expect(element(DEL_FORM).css('display')).toEqual('block');
+  it('should show delete form', function () {
+  	using(ROW.replace('?', 3)).element(DEL_BTN).click();
+  	expect(element(DEL_FORM).css('display')).toEqual('table-row');
   });
 
-  xit('should delete', function () {
-  	using(ROW.replace('?', 2)).element(DEL_BTN).click();
+  it('should delete', function () {
+  	using(ROW.replace('?', 3)).element(DEL_BTN).click();
   	using(DEL_FORM).element(YES_BTN).click();
-  	expect(element(DEL_FORM).css('display')).toEqual('none');
   	expect(repeater(ITEMS).row(0)).toEqual(['West Store', 'Tokyo']);
   });
 
@@ -105,10 +103,10 @@ ddescribe('locations', function () {
     expect(using(FORM).element(ERROR.replace('?','error test')).count()).toEqual(1);
   });
 
-  xit('should show error for del form', function () {
-    using(ROW.replace('?', 3)).element(DEL_BTN).click();
+  it('should show error for del form', function () {
+    using(ROW.replace('?', 4)).element(DEL_BTN).click();
     using(DEL_FORM).element(YES_BTN).click();
-    expect(element(DEL_FORM).css('display')).toEqual('block');
+    expect(element(DEL_FORM).css('display')).toEqual('table-row');
     var s = ['error test 1', 'error test 2'].join('; ');
     expect(using(DEL_FORM).element(ERROR.replace('?', s)).count()).toBe(1);
   });
