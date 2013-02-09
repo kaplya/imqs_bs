@@ -22,6 +22,7 @@ describe('Controller: ItemsCtrl', function() {
 
     scope = $rootScope.$new();
     ItemsCtrl = $controller('ItemsCtrl', { $scope: scope });
+    $controller('InitCtrl', { $scope: scope });
 
   }));
 
