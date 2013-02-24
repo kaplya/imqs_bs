@@ -4,8 +4,8 @@ var imqsBsApp = angular.module('imqsBsApp', ['ngResource', 'ui'])
   .config(['$routeProvider', function($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        templateUrl: 'views/promo.html',
+        controller: 'PromoCtrl'
       })
       .when('/items', {
         templateUrl: 'views/main.html',
@@ -64,4 +64,4 @@ var imqsBsApp = angular.module('imqsBsApp', ['ngResource', 'ui'])
       }
     }
   }
-})(angular.element)
+})(angular.element);

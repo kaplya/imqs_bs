@@ -1,0 +1,162 @@
+<div class='container'>
+
+	<div class='jumbotron'>
+		<h1>AngularApp</h1>
+		<p class='lead'>Cool ideas about development with angular</p>
+		<a class="btn btn-large btn-success" href="#/locations">Discover</a>
+	</div>
+	<hr>
+	<div class='row-fluid'>
+		<div class='span4'>
+			<h2>About</h2>
+			<p>
+				The goals of the app is to find the way of a web app develompment. Usually for every CRUD app needs to find solution for common tasks kind of show, edit, create and delete data, show spin and error messages. The project is focused on front-end develompent. The back-end of the app is mocked-up. In the app is presented ideas how the task may be done with cutting age technologies.
+			</p>
+		</div>
+		<div class='span4'>
+			<h2>Technologies</h2>
+			<p>
+				The heard of the app is the terrible awsome angularjs. Design is build appon Bootstrap from twitter. Got a lot of ideas from AngularStrap, AngularUI, UI Bootstrap. 
+			</p>
+		</div>
+		<div class='span4'>
+			<h2>How to use</h2>
+			<p>
+				Here is no documentation yet. By the way here are few key components. There are crud controller and part/reveal directives. If you want to know more about the app, I will be happy to answer questions via GitHub.
+			</p>
+		</div>
+	</div>
+	<hr>
+	
+	<div class="row-fluid">
+		<div class="span12">
+			<h2>Idea behind the app</h2>
+			<p>Let's look the exapmle</p>
+
+		</div>
+	</div>
+
+	<div class="row-fluid">
+		<div class="span8" ng-controller='InitCtrl'>
+			<div class='well'>				
+				<div spin="isBusy" ng-show="isBusy" class="well"></div>
+				<div ng-hide='isBusy'>
+					<table class="table">
+						<tr>
+							<th>Name</th>
+							<th>City</th>
+						</tr>
+						<tr reveal on='mode'>
+							<td colspan=2>
+								<div class="btn-broup">
+									<button class="btn btn-link" ng-click="new()">Add new line</button>
+								</div>				
+							</td>
+						</tr>
+						<tr part='NewOrEdit' is='row' part-controller='NewOrEditFormCtrl'>
+							<td colspan=3 spin='isBusy'>
+								<form class='form-inline' ng-submit='createOrUpdate()'>
+									<div class="control-group">
+										<input type='text' ng-model='l.name' placeholder='Name' error>
+									</div>
+									<div class="control-group">
+										<input type='text' ng-model='l.city' placeholder='City'error>
+									</div>
+									<div class='control-group' ng-show='errors.main'>
+										<div ng-model='l.main' error></div>	
+									</div>
+									<button type='submit' class='btn btn-primary'>Submit</button>
+									<button type='button' class='btn btn-link' ng-click='cancel()'>Cancel</button>
+								</form>
+							</td>
+						</tr>
+						<tr part='Del' is='row' part-controller='DelFormCtrl'>
+							<td colspan=3 spin='isBusy'>
+								<div class='alert alert-block'>
+									<button type='button' class='close' ng-click='cancel()'>&times;</button>
+									<h4>Location deletion</h4>
+									Do you readlly want to delete {{l.name}}?
+									<div class="control-group controls">
+										<div ng-model="model.main" error='errors'></div>
+									</div>
+									<button class="btn btn-danger" ng-click="destroy()">Yes</button>
+									<button class="btn" ng-click="cancel()">No</button>
+								</div>
+							</td>
+						</tr>
+						<tr ng-repeat="l in locations" ng-controller='ShowFormCtrl' reveal on='mode'>
+							<td>{{l.name}}</td>
+							<td>{{l.city}}</td>
+							<td>
+								<button class="btn btn-primary" ng-click="edit()">Edit</button>
+								<button class="btn btn-danger" ng-click="delete()">Delete</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>			
+
+		</div>
+		<div class="span4">
+			<p>This is a CRUD UI exapmple. Here are error shown bla bla bla</p>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+		<div class="span12">
+			<pre class='prettyprint'>
+app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Resource, Crud) {
+    Crud($scope, Resource);
+}]);</pre>
+
+			<pre class='prettyprint'>
+&lt;table ng-controller='InitCtrl'&gt;
+	&lt;tr ng-repeat='model in modelsList'&gt;
+		&lt;td&gt;{{model.name}}&lt;/td&gt;
+		&lt;td&gt;{{model.city}}&lt;/td&gt;
+	&lt;/tr&gt;
+&lt;/table&gt;</pre>
+			<pre class="prettyprint">
+&lt;div spin="isBusy" ng-show="isBusy" class="well"&gt;LOADING...&lt;/div&gt;
+&lt;table ng-hide='isBusy' ng-controller='InitCtrl'&gt;
+	&lt;tr ng-repeat='model in modelsList'&gt;
+		&lt;td&gt;{{model.name}}&lt;/td&gt;
+		&lt;td&gt;{{model.city}}&lt;/td&gt;
+	&lt;/tr&gt;
+&lt;/table&gt;</pre>
+		</div>
+	</div>
+
+	<div class='row-fluid'>
+		<div class='span12'>
+			<h3>CRUD service</h3>
+			<pre>Crud($scope, Location, { modelName: 'l', modelsListName: 'locations'});</pre>
+			<h4>Controllers</h4>
+			<table class='table table-bordered'>
+				<tr>
+					<th>Name</th>
+					<th>Descritption</th>
+				</tr>
+				<tr>
+					<td>InitCtrl</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>ShowFormCtrl</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>NewOrEditFormCtrl</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>DelFormCtrl</td>
+					<td></td>
+				</tr>
+			</table>
+			<h3>Part and reveal directives</h3>
+			<p>bla bla bla</p>
+		</div>
+	</div>
+	
+</div>
