@@ -37,66 +37,7 @@
 	</div>
 
 	<div class="row-fluid">
-		<div class="span8" ng-controller='InitCtrl'>
-			<div class='well'>				
-				<div spin="isBusy" ng-show="isBusy" class="well"></div>
-				<div ng-hide='isBusy'>
-					<table class="table">
-						<tr>
-							<th>Name</th>
-							<th>City</th>
-						</tr>
-						<tr reveal on='mode'>
-							<td colspan=2>
-								<div class="btn-broup">
-									<button class="btn btn-link" ng-click="new()">Add new line</button>
-								</div>				
-							</td>
-						</tr>
-						<tr part='NewOrEdit' is='row' part-controller='NewOrEditFormCtrl'>
-							<td colspan=3 spin='isBusy'>
-								<form class='form-inline' ng-submit='createOrUpdate()'>
-									<div class="control-group">
-										<input type='text' ng-model='l.name' placeholder='Name' error>
-									</div>
-									<div class="control-group">
-										<input type='text' ng-model='l.city' placeholder='City'error>
-									</div>
-									<div class='control-group' ng-show='errors.main'>
-										<div ng-model='l.main' error></div>	
-									</div>
-									<button type='submit' class='btn btn-primary'>Submit</button>
-									<button type='button' class='btn btn-link' ng-click='cancel()'>Cancel</button>
-								</form>
-							</td>
-						</tr>
-						<tr part='Del' is='row' part-controller='DelFormCtrl'>
-							<td colspan=3 spin='isBusy'>
-								<div class='alert alert-block'>
-									<button type='button' class='close' ng-click='cancel()'>&times;</button>
-									<h4>Location deletion</h4>
-									Do you readlly want to delete {{l.name}}?
-									<div class="control-group controls">
-										<div ng-model="model.main" error='errors'></div>
-									</div>
-									<button class="btn btn-danger" ng-click="destroy()">Yes</button>
-									<button class="btn" ng-click="cancel()">No</button>
-								</div>
-							</td>
-						</tr>
-						<tr ng-repeat="l in locations" ng-controller='ShowFormCtrl' reveal on='mode'>
-							<td>{{l.name}}</td>
-							<td>{{l.city}}</td>
-							<td>
-								<button class="btn btn-primary" ng-click="edit()">Edit</button>
-								<button class="btn btn-danger" ng-click="delete()">Delete</button>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>			
-
-		</div>
+		<div class="span8" ng-include='"views/promo_example.html"'></div>
 		<div class="span4">
 			<p>This is a CRUD UI exapmple. Here are error shown bla bla bla</p>
 		</div>
@@ -104,11 +45,13 @@
 
 	<div class="row-fluid">
 		<div class="span12">
+			<h5>Init scope</h5>
 			<pre class='prettyprint'>
 app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Resource, Crud) {
     Crud($scope, Resource);
 }]);</pre>
 
+			<h5>Show rows</h5>
 			<pre class='prettyprint'>
 &lt;table ng-controller='InitCtrl'&gt;
 	&lt;tr ng-repeat='model in modelsList'&gt;
@@ -116,12 +59,38 @@ app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Re
 		&lt;td&gt;{{model.city}}&lt;/td&gt;
 	&lt;/tr&gt;
 &lt;/table&gt;</pre>
+
+			<h5>Busy spin</h5>
 			<pre class="prettyprint">
-&lt;div spin="isBusy" ng-show="isBusy" class="well"&gt;LOADING...&lt;/div&gt;
+&lt;div ng-show="isBusy" class="well"&gt;LOADING...&lt;/div&gt;
 &lt;table ng-hide='isBusy' ng-controller='InitCtrl'&gt;
 	&lt;tr ng-repeat='model in modelsList'&gt;
 		&lt;td&gt;{{model.name}}&lt;/td&gt;
 		&lt;td&gt;{{model.city}}&lt;/td&gt;
+	&lt;/tr&gt;
+&lt;/table&gt;</pre>
+			
+			<h5>New and edit row</h5>
+			<pre class='prettyprint'>
+&lt;table ng-controller='InitCtrl'&gt;
+	&lt;!-- It needs part attribute and from controller --&gt;
+	&lt;tr part='NewOrEdit' is='row' part-controller='NewOrEditFormCtrl'&gt;
+		&lt;td colspan=3&gt;
+			&lt;form ng-submit='createOrUpdate()'&gt;
+				&lt;input ng-model='model.name'/&gt;
+				&lt;!-- other attributes here --&gt;
+			&lt;/form&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	
+	&lt;!-- It needs show controller and reveal attribute --&gt;
+	&lt;tr ng-repeat='model in modelsList' ng-controller='ShowFormCtrl' reveal on='mode'&gt;
+		&lt;td&gt;{{model.name}}&lt;/td&gt;
+		&lt;td&gt;{{model.city}}&lt;/td&gt;
+		&lt;td&gt;
+			&lt;!-- Edit button is here --&gt;
+			&lt;button ng-click='edit()'&gt;Edit&lt;/button&gt;
+		&lt;/td&gt;
 	&lt;/tr&gt;
 &lt;/table&gt;</pre>
 		</div>

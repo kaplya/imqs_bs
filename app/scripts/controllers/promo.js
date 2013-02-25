@@ -6,6 +6,6 @@ imqsBsApp
   }])
   .controller('PromoCtrl', ["$scope", 'Location', 'Crud', function($scope, Location, Crud) {
 
-    Crud($scope, Location, { modelName: 'l', modelsListName: 'locations'});
+    Crud($scope, Location);
 
   }]);
