@@ -50,6 +50,30 @@
 app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Resource, Crud) {
     Crud($scope, Resource);
 }]);</pre>
+			<h5>Controllers</h5>
+			<table class='table table-bordered'>
+				<tr>
+					<th>Name</th>
+					<th>Descritption</th>
+				</tr>
+				<tr>
+					<td>InitCtrl</td>
+					<td>It queries data from the server and puts it to <code>model</code> or <code>modelsList</code>. Also gives you <code>edit</code> and <code>delete</code> metods. Furthermore it manages <code>mode</code> and <code>isBuse</code> attributes.</td>
+				</tr>
+				<tr>
+					<td>ShowFormCtrl</td>
+					<td>Don't do more. Manage <code>mode</code> and gives two methods: <code>edit</code> and <code>delete</code>.</td>
+				</tr>
+				<tr>
+					<td>NewOrEditFormCtrl</td>
+					<td>If in current scope <code>model</code> is presented it fetchs data from the server, otherway it doesn't. Also it gives <code>createOrUpdate</code>, <code>destroy</code> and <code>cancel</code> methods.
+					</td>
+				</tr>
+				<tr>
+					<td>DelFormCtrl</td>
+					<td>Just gives two methods <code>destroy</code> and <code>cancel</code>.</td>
+				</tr>
+			</table>
 
 			<h5>Show rows</h5>
 			<pre class='prettyprint'>
@@ -62,7 +86,8 @@ app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Re
 
 			<h5>Busy spin</h5>
 			<pre class="prettyprint">
-&lt;div ng-show="isBusy" class="well"&gt;LOADING...&lt;/div&gt;
+&lt;!-- Directive 'spin' and 'isBusy' attribute are prsented here --&gt;
+&lt;div ng-show='isBusy' class='well' spin='isBusy'&gt;&lt;/div&gt;
 &lt;table ng-hide='isBusy' ng-controller='InitCtrl'&gt;
 	&lt;tr ng-repeat='model in modelsList'&gt;
 		&lt;td&gt;{{model.name}}&lt;/td&gt;
@@ -70,12 +95,12 @@ app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Re
 	&lt;/tr&gt;
 &lt;/table&gt;</pre>
 			
-			<h5>New and edit row</h5>
+			<h5>Edit row</h5>
 			<pre class='prettyprint'>
 &lt;table ng-controller='InitCtrl'&gt;
-	&lt;!-- It needs part attribute and from controller --&gt;
+	&lt;!-- It needs part attribute and form controller --&gt;
 	&lt;tr part='NewOrEdit' is='row' part-controller='NewOrEditFormCtrl'&gt;
-		&lt;td colspan=3&gt;
+		&lt;td colspan=3 spin='isBusy'&gt;
 			&lt;form ng-submit='createOrUpdate()'&gt;
 				&lt;input ng-model='model.name'/&gt;
 				&lt;!-- other attributes here --&gt;
@@ -93,38 +118,24 @@ app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Re
 		&lt;/td&gt;
 	&lt;/tr&gt;
 &lt;/table&gt;</pre>
+			
+			<h5>New row</h5>
+			<pre class='prettyprint'>			
+&lt;tr reveal on='mode'&gt;
+	&lt;td colspan=2&gt;
+		&lt;div class="btn-broup"&gt;
+			&lt;button class="btn btn-link" ng-click="new()"&gt;Add new line&lt;/button&gt;
+		&lt;/div&gt;				
+	&lt;/td&gt;
+&lt;/tr&gt;</pre>
 		</div>
 	</div>
 
+
 	<div class='row-fluid'>
 		<div class='span12'>
-			<h3>CRUD service</h3>
+			<h3>CRUD service configuration</h3>
 			<pre>Crud($scope, Location, { modelName: 'l', modelsListName: 'locations'});</pre>
-			<h4>Controllers</h4>
-			<table class='table table-bordered'>
-				<tr>
-					<th>Name</th>
-					<th>Descritption</th>
-				</tr>
-				<tr>
-					<td>InitCtrl</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>ShowFormCtrl</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>NewOrEditFormCtrl</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>DelFormCtrl</td>
-					<td></td>
-				</tr>
-			</table>
-			<h3>Part and reveal directives</h3>
-			<p>bla bla bla</p>
 		</div>
 	</div>
 	
