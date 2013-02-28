@@ -46,11 +46,15 @@
 	<div class="row-fluid">
 		<div class="span12">
 			<h5>Init scope</h5>
+
+			<p>
+				First of all it needs to initialize the scope. Few lines of code needed.
+			</p>
 			<pre class='prettyprint'>
 app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Resource, Crud) {
     Crud($scope, Resource);
 }]);</pre>
-			<h5>Controllers</h5>
+			<p>After that a few controllers will be added to scope. The controllers are used in forms.</p>
 			<table class='table table-bordered'>
 				<tr>
 					<th>Name</th>
@@ -74,9 +78,11 @@ app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Re
 					<td>Just gives two methods <code>destroy</code> and <code>cancel</code>.</td>
 				</tr>
 			</table>
-
+			<p>Crud service gives almost everthing for building crud interface.</p>
 			<h5>Show rows</h5>
+			<p>For loading data and show list of items <code>InitCtrl</code> controller is presented. The controller puts data into <code>model</code>. The name of the model may be changed.</p>
 			<pre class='prettyprint'>
+&lt;!-- The <code>InitCtrl</code> gives the data for the list --&gt;
 &lt;table ng-controller='InitCtrl'&gt;
 	&lt;tr ng-repeat='model in modelsList'&gt;
 		&lt;td&gt;{{model.name}}&lt;/td&gt;
@@ -84,7 +90,7 @@ app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Re
 	&lt;/tr&gt;
 &lt;/table&gt;</pre>
 
-			<h5>Busy spin</h5>
+			<p>Also <code>InitCtrl</code> manages <code>isBusy</code> model. While the loading data the <code>isBusy</code>is set to true. A special directive is used for spin indicator. The <code>spin</code> directive does the trick with locking controls.</p>
 			<pre class="prettyprint">
 &lt;!-- Directive 'spin' and 'isBusy' attribute are prsented here --&gt;
 &lt;div ng-show='isBusy' class='well' spin='isBusy'&gt;&lt;/div&gt;
