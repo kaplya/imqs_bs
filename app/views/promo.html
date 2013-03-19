@@ -1,87 +1,108 @@
-<div class='container'>
 
-	<div class='jumbotron'>
-		<h1>AngularLab</h1>
-		<p class='lead'>Cool ideas about development with <a href="http://angularjs.org/" target="_blank">Superheroic  AngularJS</a></p>
-		<a class="btn btn-large btn-success" href="#/locations">Discover</a>
-	</div>
-	<hr>
-	<div class='row-fluid'>
-		<div class='span4'>
-			<h2>About</h2>
-			<p>
-				The project is launched for descovering the best ways of development <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete" target='_blank'>CRUD</a> applications with <a href="http://angularjs.org/" target="_blank">Superheroic  AngularJS</a>.
-				It seems that the most complicated CRUD apps are in a bussiness software area, kind of ERP. For this apps is taken a little part from this area. The part is Inventory management software.
-			</p>
-		</div>
-		<div class='span4'>
-			<h2>Core concepts</h2>
-			<p>
-				The project builds with backend-less development in mind. The main focus of the research is UI. Testability and test driven development also play crucial role in development. Needs to say that we believe in <a href="http://en.wikipedia.org/wiki/Declarative_programming" target='_blank'>declarative programming</a>. It is the greates way for building UI. 
-			</p>
-		</div>
-		<div class='span4'>
-			<h2>Development</h2>
-			<p>
-				The key tool which is used for app development is <a href="http://yeoman.io/" target='_blank'>Yeoman</a>. <a href="http://testacular.github.com/">Testacular</a> takes the key role in a test proccess.
-			</p>
-		</div>
-	</div>
-	<hr>
-	
-	<div class="row-fluid">
-		<div class="span12">
-			<h2>Inside the app</h2>
-		</div>
+<div class='promo-container'>
+
+	<div class="github-ribbon">
+	    <a href="https://github.com/vavd/imqs_bs" target="_blank">Fork me on GitHub</a>
 	</div>
 
-	<div class="row-fluid">
-		<div class="span4">
-			<p>Let's look the exapmle (right side from here). This is a CRUD form. You can add new data there, read, update and delete rows. Also you can see spin there while opreation is performing. Forthermore, error hand is presented. Just print 'error' in any field of the form and submit data. The information about error will appear.</p>
-			<p>It is really easy to build the form like this with AngularJS. There many ways to organize your code. You  will find one of them below on this page.</p>
+	<div class='container'>
+
+		<div class='jumbotron'>	
+			<h1>AngularLab</h1>
+			<p class='lead'>Cool ideas about development with <a href="http://angularjs.org/" target="_blank">Superheroic  AngularJS</a></p>
+			<a class="btn btn-large btn-success" href="#/locations">Discover</a>
 		</div>
-		<div class="span8" ng-include='"views/promo_example.html"'></div>
-	</div>
+		
+		<div class='bs-docs-social'>		
+			<div class='container'>			
+				<ul class="bs-docs-social-buttons">
+					<li>
+						<iframe src="http://ghbtns.com/github-btn.html?user=vavd&amp;repo=imqs_bs&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+					</li>
+					<li>
+						<iframe src="http://ghbtns.com/github-btn.html?user=vavd&amp;repo=imqs_bs&amp;type=fork&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
+					</li>
+				</ul>
+			</div>
+		</div>
 
-	<div class="row-fluid">
-		<div class="span12">
-			<h5>Init scope</h5>
+		<hr>
+		<div class='row-fluid'>
+			<div class='span4'>
+				<h2>About</h2>
+				<p>
+					The project is launched for descovering the best ways of development <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete" target='_blank'>CRUD</a> applications with <a href="http://angularjs.org/" target="_blank">Superheroic  AngularJS</a>.
+					It seems that the most complicated CRUD apps are in a bussiness software area, kind of ERP. For this apps is taken a little part from this area. The part is Inventory management software.
+				</p>
+			</div>
+			<div class='span4'>
+				<h2>Core concepts</h2>
+				<p>
+					The project builds with backend-less development in mind. The main focus of the research is UI. Testability and test driven development also play crucial role in development. Needs to say that we believe in <a href="http://en.wikipedia.org/wiki/Declarative_programming" target='_blank'>declarative programming</a>. It is the greates way for building UI. 
+				</p>
+			</div>
+			<div class='span4'>
+				<h2>Development</h2>
+				<p>
+					The key tool which is used for app development is <a href="http://yeoman.io/" target='_blank'>Yeoman</a>. <a href="http://testacular.github.com/">Testacular</a> takes the key role in a test proccess.
+				</p>
+			</div>
+		</div>
+		<hr>
+		
+		<div class="row-fluid">
+			<div class="span12">
+				<h2>Inside the app</h2>
+			</div>
+		</div>
 
-			<p>
-				First of all it needs to initialize the scope. Few lines of code needed.
-			</p>
-			<pre class='prettyprint'>
+		<div class="row-fluid">
+			<div class="span4">
+				<p>Let's look the exapmle (right side from here). This is a CRUD form. You can add new data there, read, update and delete rows. Also you can see spin there while opreation is performing. Forthermore, error hand is presented. Just print 'error' in any field of the form and submit data. The information about error will appear.</p>
+				<p>It is really easy to build the form like this with AngularJS. There are many ways to organize your code. You  will find one of them below on this page.</p>
+			</div>
+			<div class="span8" ng-include='"views/promo_example.html"'></div>
+		</div>
+
+		<div class="row-fluid">
+			<div class="span12">
+				<h5>Init scope</h5>
+
+				<p>
+					First of all it needs to initialize the scope. Few lines of code needed.
+				</p>
+				<pre class='prettyprint'>
 app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Resource, Crud) {
     Crud($scope, Resource);
 }]);</pre>
-			<p>After that a few controllers will be added to scope. The controllers are used in forms.</p>
-			<table class='table table-bordered'>
-				<tr>
-					<th>Name</th>
-					<th>Descritption</th>
-				</tr>
-				<tr>
-					<td>InitCtrl</td>
-					<td>It queries data from the server and puts it to <code>model</code> or <code>modelsList</code>. Also gives you <code>edit</code> and <code>delete</code> metods. Furthermore it manages <code>mode</code> and <code>isBuse</code> attributes.</td>
-				</tr>
-				<tr>
-					<td>ShowFormCtrl</td>
-					<td>Don't do more. Manage <code>mode</code> and gives two methods: <code>edit</code> and <code>delete</code>.</td>
-				</tr>
-				<tr>
-					<td>NewOrEditFormCtrl</td>
-					<td>If in current scope <code>model</code> is presented it fetchs data from the server, otherway it doesn't. Also it gives <code>createOrUpdate</code>, <code>destroy</code> and <code>cancel</code> methods.
-					</td>
-				</tr>
-				<tr>
-					<td>DelFormCtrl</td>
-					<td>Just gives two methods <code>destroy</code> and <code>cancel</code>.</td>
-				</tr>
-			</table>
-			<p>Crud service gives almost everthing for building crud interface.</p>
-			<h5>Show rows</h5>
-			<p>For loading data and show list of items <code>InitCtrl</code> controller is presented. The controller puts data into <code>model</code>. The name of the model may be changed.</p>
-			<pre class='prettyprint'>
+				<p>After that a few controllers will be added to scope. The controllers are used in forms.</p>
+				<table class='table table-bordered'>
+					<tr>
+						<th>Name</th>
+						<th>Descritption</th>
+					</tr>
+					<tr>
+						<td>InitCtrl</td>
+						<td>It queries data from the server and puts it to <code>model</code> or <code>modelsList</code>. Also gives you <code>edit</code> and <code>delete</code> metods. Furthermore it manages <code>mode</code> and <code>isBuse</code> attributes.</td>
+					</tr>
+					<tr>
+						<td>ShowFormCtrl</td>
+						<td>Don't do more. Manage <code>mode</code> and gives two methods: <code>edit</code> and <code>delete</code>.</td>
+					</tr>
+					<tr>
+						<td>NewOrEditFormCtrl</td>
+						<td>If in current scope <code>model</code> is presented it fetchs data from the server, otherway it doesn't. Also it gives <code>createOrUpdate</code>, <code>destroy</code> and <code>cancel</code> methods.
+						</td>
+					</tr>
+					<tr>
+						<td>DelFormCtrl</td>
+						<td>Just gives two methods <code>destroy</code> and <code>cancel</code>.</td>
+					</tr>
+				</table>
+				<p>Crud service gives almost everthing for building crud interface.</p>
+				<h5>Show rows</h5>
+				<p>For loading data and show list of items <code>InitCtrl</code> controller is presented. The controller puts data into <code>model</code>. The name of the model may be changed.</p>
+				<pre class='prettyprint'>
 &lt;!-- The <code>InitCtrl</code> gives the data for the list --&gt;
 &lt;table ng-controller='InitCtrl'&gt;
 	&lt;tr ng-repeat='model in modelsList'&gt;
@@ -90,8 +111,8 @@ app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Re
 	&lt;/tr&gt;
 &lt;/table&gt;</pre>
 
-			<p>Also <code>InitCtrl</code> manages <code>isBusy</code> model. While the loading data the <code>isBusy</code>is set to true. A special directive is used for spin indicator. The <code>spin</code> directive does the trick with locking controls.</p>
-			<pre class="prettyprint">
+				<p>Also <code>InitCtrl</code> manages <code>isBusy</code> model. While the loading data the <code>isBusy</code>is set to true. A special directive is used for spin indicator. The <code>spin</code> directive does the trick with locking controls.</p>
+				<pre class="prettyprint">
 &lt;!-- Directive 'spin' and 'isBusy' attribute are prsented here --&gt;
 &lt;div ng-show='isBusy' class='well' spin='isBusy'&gt;&lt;/div&gt;
 &lt;table ng-hide='isBusy' ng-controller='InitCtrl'&gt;
@@ -101,8 +122,8 @@ app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Re
 	&lt;/tr&gt;
 &lt;/table&gt;</pre>
 			
-			<h5>Edit row</h5>
-			<pre class='prettyprint'>
+				<h5>Edit row</h5>
+				<pre class='prettyprint'>
 &lt;table ng-controller='InitCtrl'&gt;
 	&lt;!-- It needs part attribute and form controller --&gt;
 	&lt;tr part='NewOrEdit' is='row' part-controller='NewOrEditFormCtrl'&gt;
@@ -125,8 +146,8 @@ app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Re
 	&lt;/tr&gt;
 &lt;/table&gt;</pre>
 			
-			<h5>New row</h5>
-			<pre class='prettyprint'>			
+				<h5>New row</h5>
+				<pre class='prettyprint'>
 &lt;tr reveal on='mode'&gt;
 	&lt;td colspan=2&gt;
 		&lt;div class="btn-broup"&gt;
@@ -135,20 +156,22 @@ app.controller('ExampleCtrl', ['$scope', 'Resource', 'Crud', function($scope, Re
 	&lt;/td&gt;
 &lt;/tr&gt;</pre>
 		</div>
-	</div>
-
-
-	<div class='row-fluid'>
-		<div class='span12'>
-			<h3>A few words about CRUD service configuration</h3>
-			<pre>Crud($scope, Location, { modelName: 'l', modelsListName: 'locations'});</pre>
 		</div>
-	</div>
-	<hr>
-	<div class="footer" style='padding-bottom:40px;'>
-		<p>
-			Designed and built by <a href="http://ru.linkedin.com/in/vadimvdovin" target='_blank'>Vadim Vdovin</a>
-		</p>
+
+
+		<div class='row-fluid'>
+			<div class='span12'>
+				<h3>A few words about CRUD service configuration</h3>
+				<pre>Crud($scope, Location, { modelName: 'l', modelsListName: 'locations'});</pre>
+			</div>
+		</div>
+		<hr>
+		<div class="footer" style='padding-bottom:40px;'>
+			<p>
+				Designed and built by <a href="http://ru.linkedin.com/in/vadimvdovin" target='_blank'>Vadim Vdovin</a>
+			</p>
+		</div>
+
 	</div>
 
 </div>
